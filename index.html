@@ -1054,8 +1054,8 @@ body{
         <div class="fg" style="margin-bottom:14px;">
           <label>前次移轉年期</label>
           <div style="display:flex;gap:8px;align-items:center;">
-            <div class="input-grp" style="flex:1;"><input type="text" id="landPrevYear" placeholder="民國年" inputmode="numeric" style="width:100%;"><span class="input-sfx">年</span></div>
-            <div class="input-grp" style="flex:1;"><input type="text" id="landPrevMonth" placeholder="月" inputmode="numeric" style="width:100%;"><span class="input-sfx">月</span></div>
+            <select id="landPrevYear" style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;"></select>
+            <select id="landPrevMonth" style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;"></select>
           </div>
           <span class="hint">謄本「土地所有權部」登記日期（民國年月）</span>
         </div>
@@ -1321,7 +1321,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI'||el.id==='landPrevYear'||el.id==='landPrevMonth'||el.id==='landCPI'||el.id==='landShareNum'||el.id==='landShareDen') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI'||el.id==='landCPI'||el.id==='landShareNum'||el.id==='landShareDen') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1986,6 +1986,16 @@ function toggleGuide(el){
 }
 
 /* ========== 土地增值稅計算 ========== */
+// 前次移轉年期下拉選單
+(function(){
+  const ySel=document.getElementById('landPrevYear');
+  const mSel=document.getElementById('landPrevMonth');
+  ySel.innerHTML='<option value="">民國年</option>';
+  for(let y=115;y>=35;y--) ySel.innerHTML+='<option value="'+y+'">'+y+'年</option>';
+  mSel.innerHTML='<option value="">月</option>';
+  for(let m=1;m<=12;m++) mSel.innerHTML+='<option value="'+m+'">'+m+'月</option>';
+})();
+
 function calcLandTax(){
   const taxType=getRadioVal('landTaxType');
   const currValue=parseNum('landCurrValue');   /* 土地公告現值 元/m² */
