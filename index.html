@@ -784,9 +784,9 @@ body{
               <button class="radio-btn on" data-val="purchase">自行購買</button>
               <button class="radio-btn" data-val="inherit">繼承取得</button>
               <button class="radio-btn" data-val="inherit2">二次繼承</button>
-              <button class="radio-btn" data-val="spouseGift">夫妻贈與</button>
               <button class="radio-btn" data-val="gift">一般贈與</button>
             </div>
+            <span class="hint">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span>
           </div>
         </div>
       </div>
@@ -867,28 +867,6 @@ body{
             </div>
           </div>
           <div class="info-box">取得成本以最後一次繼承時公告現值計算。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
-        </div>
-        <!-- 夫妻贈與 -->
-        <div id="spouseGiftFields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">💍</span> 夫妻贈與資料</div>
-          <div class="form-grid" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>原配偶取得成本</label>
-              <div class="input-grp"><input type="text" id="spouseOrigCost" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-              <div class="hint">以原配偶原始買入價計算，非公告現值</div>
-            </div>
-          </div>
-          <div class="form-grid" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>原配偶取得日（民國）</label>
-              <input type="text" id="spouseOrigDate" placeholder="例：095/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
-            </div>
-            <div class="fg">
-              <label>贈與日（民國）</label>
-              <input type="text" id="spouseGiftDate" placeholder="例：113/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
-            </div>
-          </div>
-          <div class="info-box">夫妻贈與免課贈與稅及房地合一稅。取得成本以原配偶原始取得成本計算。持有期間可合併原配偶持有期間。</div>
         </div>
         <!-- 一般贈與 -->
         <div id="giftFields" style="display:none;">
@@ -1391,7 +1369,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='inherit2OrigDate'||el.id==='inherit2Date1'||el.id==='inherit2Date2'||el.id==='spouseOrigDate'||el.id==='spouseGiftDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='inherit2CPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldInherit2OrigDate'||el.id==='oldInherit2Date1'||el.id==='oldInherit2Date2'||el.id==='oldSpouseOrigDate'||el.id==='oldSpouseGiftDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldInherit2CPI'||el.id==='oldGiftCPI') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='inherit2OrigDate'||el.id==='inherit2Date1'||el.id==='inherit2Date2'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='inherit2CPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1462,17 +1440,12 @@ function switchAcquireMethod(method){
   const container=document.getElementById('acquireMethodFields');
   const buyPriceRow=document.getElementById('newBuyPrice').closest('.fg');
   const buyExpSection=document.getElementById('newBuyExpSection');
-  const subSections=['inheritFields','inherit2Fields','spouseGiftFields','giftFields'];
+  const subSections=['inheritFields','inherit2Fields','giftFields'];
   subSections.forEach(id=>document.getElementById(id).style.display='none');
   if(method==='purchase'){
     container.style.display='none';
     buyPriceRow.style.display='';
     buyExpSection.style.display='';
-  }else if(method==='spouseGift'){
-    container.style.display='';
-    buyPriceRow.style.display='none';
-    buyExpSection.style.display='';
-    document.getElementById('spouseGiftFields').style.display='';
   }else{
     container.style.display='';
     buyPriceRow.style.display='none';
@@ -1774,8 +1747,6 @@ function calcHoldPeriod(){
     from=parseRocDate('inheritOrigDate');
   }else if(method==='inherit2'){
     from=parseRocDate('inherit2OrigDate');
-  }else if(method==='spouseGift'){
-    from=parseRocDate('spouseOrigDate');
   }else if(method==='gift'){
     from=parseRocDate('giftDate');
   }else{
@@ -1814,10 +1785,6 @@ function calcNewTax(){
     buyCost=(hv+lv)*cpi;
     methodLabel='二次繼承';
     costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
-  }else if(method==='spouseGift'){
-    buyCost=parseNum('spouseOrigCost');
-    methodLabel='夫妻贈與';
-    costNote=`原配偶取得成本 ${fmtMoney(buyCost)}`;
   }else if(method==='gift'){
     const hv=parseNum('giftHouseVal');
     const lv=parseNum('giftLandVal');
@@ -1872,7 +1839,6 @@ function calcNewTax(){
   let fromDate=null;
   if(method==='inherit') fromDate=parseRocDate('inheritOrigDate');
   else if(method==='inherit2') fromDate=parseRocDate('inherit2OrigDate');
-  else if(method==='spouseGift') fromDate=parseRocDate('spouseOrigDate');
   else if(method==='gift') fromDate=parseRocDate('giftDate');
   else fromDate=parseRocDate('newAcquireDate');
   const toDate=parseRocDate('newTransferDate');
