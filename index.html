@@ -377,8 +377,8 @@ body{
   .nav-icon{font-size:14px;}
   .tab-divider{margin:8px 0;}
   .main{padding:16px 14px;}
-  .form-grid{grid-template-columns:1fr 1fr;}
-  .form-grid.three{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
+  .form-grid.three{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
   .result-grid{grid-template-columns:1fr;}
   .header{padding:12px 16px;}
   .header-title{font-size:16px;}
@@ -678,6 +678,16 @@ body{
               <button class="radio-btn" data-val="foreignCorp">境外法人</button>
             </div>
           </div>
+          <div class="fg">
+            <label>取得方式</label>
+            <div class="radio-group" id="newAcquireMethod" style="flex-wrap:nowrap;">
+              <button class="radio-btn on" data-val="purchase">自行購買</button>
+              <button class="radio-btn" data-val="inherit">繼承取得</button>
+              <button class="radio-btn" data-val="inherit2">二次繼承</button>
+              <button class="radio-btn" data-val="spouseGift">夫妻贈與</button>
+              <button class="radio-btn" data-val="gift">一般贈與</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -769,6 +779,118 @@ body{
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="section" id="acquireMethodFields" style="display:none;">
+        <!-- 繼承取得 -->
+        <div id="inheritFields" style="display:none;">
+          <div class="sec-title"><span class="sec-icon">📜</span> 繼承資料</div>
+          <div class="form-grid three" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>繼承時房屋評定現值</label>
+              <div class="input-grp"><input type="text" id="inheritHouseVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>繼承時土地公告現值</label>
+              <div class="input-grp"><input type="text" id="inheritLandVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>CPI調整係數</label>
+              <div class="input-grp"><input type="text" id="inheritCPI" placeholder="例：1.05"></div>
+            </div>
+          </div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>被繼承人取得日（民國）</label>
+              <input type="text" id="inheritOrigDate" placeholder="例：090/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+            <div class="fg">
+              <label>繼承日（民國）</label>
+              <input type="text" id="inheritDate" placeholder="例：112/06/15" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+          </div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間可合併被繼承人持有期間。</div>
+        </div>
+        <!-- 二次繼承 -->
+        <div id="inherit2Fields" style="display:none;">
+          <div class="sec-title"><span class="sec-icon">📜</span> 二次繼承資料</div>
+          <div class="form-grid three" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>繼承時房屋評定現值</label>
+              <div class="input-grp"><input type="text" id="inherit2HouseVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>繼承時土地公告現值</label>
+              <div class="input-grp"><input type="text" id="inherit2LandVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>CPI調整係數</label>
+              <div class="input-grp"><input type="text" id="inherit2CPI" placeholder="例：1.05"></div>
+            </div>
+          </div>
+          <div class="form-grid three" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>原始取得日（民國）</label>
+              <input type="text" id="inherit2OrigDate" placeholder="例：080/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+            <div class="fg">
+              <label>第一次繼承日（民國）</label>
+              <input type="text" id="inherit2Date1" placeholder="例：100/06/15" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+            <div class="fg">
+              <label>第二次繼承日（民國）</label>
+              <input type="text" id="inherit2Date2" placeholder="例：112/03/20" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+          </div>
+          <div class="info-box">取得成本以最後一次繼承時公告現值計算。持有期間可合併連續各次被繼承人持有期間。</div>
+        </div>
+        <!-- 夫妻贈與 -->
+        <div id="spouseGiftFields" style="display:none;">
+          <div class="sec-title"><span class="sec-icon">💍</span> 夫妻贈與資料</div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>原配偶取得成本</label>
+              <div class="input-grp"><input type="text" id="spouseOrigCost" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <div class="hint">以原配偶原始買入價計算，非公告現值</div>
+            </div>
+          </div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>原配偶取得日（民國）</label>
+              <input type="text" id="spouseOrigDate" placeholder="例：095/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+            <div class="fg">
+              <label>贈與日（民國）</label>
+              <input type="text" id="spouseGiftDate" placeholder="例：113/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+          </div>
+          <div class="info-box">夫妻贈與免課贈與稅及房地合一稅。取得成本以原配偶原始取得成本計算。持有期間可合併原配偶持有期間。</div>
+        </div>
+        <!-- 一般贈與 -->
+        <div id="giftFields" style="display:none;">
+          <div class="sec-title"><span class="sec-icon">🎁</span> 贈與資料</div>
+          <div class="form-grid three" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>贈與時房屋評定現值</label>
+              <div class="input-grp"><input type="text" id="giftHouseVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>贈與時土地公告現值</label>
+              <div class="input-grp"><input type="text" id="giftLandVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>CPI調整係數</label>
+              <div class="input-grp"><input type="text" id="giftCPI" placeholder="例：1.05"></div>
+            </div>
+          </div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>贈與日（民國）</label>
+              <input type="text" id="giftDate" placeholder="例：113/06/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+            </div>
+          </div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間從受贈日起算，不可合併贈與人持有期間。</div>
         </div>
       </div>
 
@@ -1153,7 +1275,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='inherit2OrigDate'||el.id==='inherit2Date1'||el.id==='inherit2Date2'||el.id==='spouseOrigDate'||el.id==='spouseGiftDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='inherit2CPI'||el.id==='giftCPI') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1202,9 +1324,32 @@ document.querySelectorAll('.radio-group').forEach(grp=>{
       if(grp.id==='newIdentity'){
         document.getElementById('newSelfUseSec').style.display=btn.dataset.val==='resident'?'':'none';
       }
+      if(grp.id==='newAcquireMethod'){
+        switchAcquireMethod(btn.dataset.val);
+      }
     });
   });
 });
+
+/* ========== 取得方式切換 ========== */
+function switchAcquireMethod(method){
+  const container=document.getElementById('acquireMethodFields');
+  const buyPriceRow=document.getElementById('newBuyPrice').closest('.fg');
+  const subSections=['inheritFields','inherit2Fields','spouseGiftFields','giftFields'];
+  subSections.forEach(id=>document.getElementById(id).style.display='none');
+  if(method==='purchase'){
+    container.style.display='none';
+    buyPriceRow.style.display='';
+  }else{
+    container.style.display='';
+    buyPriceRow.style.display='none';
+    if(method==='inherit') document.getElementById('inheritFields').style.display='';
+    else if(method==='inherit2') document.getElementById('inherit2Fields').style.display='';
+    else if(method==='spouseGift') document.getElementById('spouseGiftFields').style.display='';
+    else if(method==='gift') document.getElementById('giftFields').style.display='';
+  }
+  calcHoldPeriod();
+}
 
 /* 高價住宅房屋佔比自動計算 */
 ['oldLuxHouseVal','oldLuxLandVal'].forEach(id=>{
@@ -1449,8 +1594,20 @@ function parseRocDate(id){
   return new Date(y+1911,m-1,d);
 }
 function calcHoldPeriod(){
-  const from=parseRocDate('newAcquireDate');
+  const method=getRadioVal('newAcquireMethod');
+  let from=null;
   const to=parseRocDate('newTransferDate');
+  if(method==='inherit'){
+    from=parseRocDate('inheritOrigDate');
+  }else if(method==='inherit2'){
+    from=parseRocDate('inherit2OrigDate');
+  }else if(method==='spouseGift'){
+    from=parseRocDate('spouseOrigDate');
+  }else if(method==='gift'){
+    from=parseRocDate('giftDate');
+  }else{
+    from=parseRocDate('newAcquireDate');
+  }
   if(!from||!to||to<=from) return;
   let years=to.getFullYear()-from.getFullYear();
   let months=to.getMonth()-from.getMonth();
@@ -1465,6 +1622,38 @@ function calcNewTax(){
   const identity=getRadioVal('newIdentity');
   const sell=parseNum('newSellPrice');
   const buy=parseNum('newBuyPrice');
+  const method=getRadioVal('newAcquireMethod');
+  let buyCost=buy;
+  let methodLabel='';
+  let costNote='';
+
+  if(method==='inherit'){
+    const hv=parseNum('inheritHouseVal');
+    const lv=parseNum('inheritLandVal');
+    const cpi=parseFloat(document.getElementById('inheritCPI').value)||1;
+    buyCost=(hv+lv)*cpi;
+    methodLabel='繼承取得';
+    costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
+  }else if(method==='inherit2'){
+    const hv=parseNum('inherit2HouseVal');
+    const lv=parseNum('inherit2LandVal');
+    const cpi=parseFloat(document.getElementById('inherit2CPI').value)||1;
+    buyCost=(hv+lv)*cpi;
+    methodLabel='二次繼承';
+    costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
+  }else if(method==='spouseGift'){
+    buyCost=parseNum('spouseOrigCost');
+    methodLabel='夫妻贈與';
+    costNote=`原配偶取得成本 ${fmtMoney(buyCost)}`;
+  }else if(method==='gift'){
+    const hv=parseNum('giftHouseVal');
+    const lv=parseNum('giftLandVal');
+    const cpi=parseFloat(document.getElementById('giftCPI').value)||1;
+    buyCost=(hv+lv)*cpi;
+    methodLabel='一般贈與';
+    costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
+  }
+
   const newAutoExp=document.getElementById('newExpAuto').checked;
   sumNewExpense();
   const exp=parseNum('newExpense');
@@ -1475,7 +1664,7 @@ function calcNewTax(){
   const holdM=parseNum('newHoldMonths');
   const selfUse=document.getElementById('newSelfUse').checked&&identity==='resident';
 
-  let income=sell-buy-totalTransfer;
+  let income=sell-buyCost-totalTransfer;
 
   let expNote='';
   if(newAutoExp){
@@ -1483,8 +1672,13 @@ function calcNewTax(){
     expNote=`賣出費用按成交價 3% 自動計算：${fmtMoney(sellAutoExp)}（上限 30 萬）`;
   }
 
-  // 用日期精確計算持有天數
-  const fromDate=parseRocDate('newAcquireDate');
+  // 用日期精確計算持有天數（依取得方式決定起算日）
+  let fromDate=null;
+  if(method==='inherit') fromDate=parseRocDate('inheritOrigDate');
+  else if(method==='inherit2') fromDate=parseRocDate('inherit2OrigDate');
+  else if(method==='spouseGift') fromDate=parseRocDate('spouseOrigDate');
+  else if(method==='gift') fromDate=parseRocDate('giftDate');
+  else fromDate=parseRocDate('newAcquireDate');
   const toDate=parseRocDate('newTransferDate');
   let totalDays=0;
   let holdDesc='';
@@ -1548,6 +1742,11 @@ function calcNewTax(){
       <div class="result-item"><span class="r-label">持有期間</span><span class="r-value">${holdDesc}</span></div>
       <div class="result-item"><span class="r-label">適用稅率</span><span class="r-value">${selfUse&&income>0?'自用住宅優惠':rateDesc}</span></div>
       <div class="result-item"><span class="r-label">應納稅額</span><span class="r-value highlight">${fmtMoney(tax)}</span></div>`;
+
+  if(method!=='purchase'){
+    html+=`<div class="result-item full"><span class="r-label">取得方式</span><span class="r-value">${methodLabel}</span></div>`;
+    html+=`<div class="result-item full"><span class="r-label">取得成本</span><span class="r-value">${fmtMoney(buyCost)}（${costNote}）</span></div>`;
+  }
 
   if(expNote){
     html+=`<div class="result-item full"><span class="r-label">費用提醒</span><span class="r-value" style="font-size:12px;font-weight:500;color:var(--accent);">${expNote}</span></div>`;
