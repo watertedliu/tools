@@ -742,7 +742,14 @@ body{
               <input type="text" id="inheritDate" placeholder="例：112/06/15" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
             </div>
           </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間可合併被繼承人持有期間。</div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>繼承時貸款餘額（金融機構）</label>
+              <div class="input-grp"><input type="text" id="inheritLoan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <span class="hint">貸款超過公告現值的部分可列為額外負擔扣除</span>
+            </div>
+          </div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併被繼承人持有期間。</div>
         </div>
         <!-- 二次繼承 -->
         <div id="inherit2Fields" style="display:none;">
@@ -775,7 +782,14 @@ body{
               <input type="text" id="inherit2Date2" placeholder="例：112/03/20" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
             </div>
           </div>
-          <div class="info-box">取得成本以最後一次繼承時公告現值計算。持有期間可合併連續各次被繼承人持有期間。</div>
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="fg">
+              <label>繼承時貸款餘額（金融機構）</label>
+              <div class="input-grp"><input type="text" id="inherit2Loan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <span class="hint">貸款超過公告現值的部分可列為額外負擔扣除</span>
+            </div>
+          </div>
+          <div class="info-box">取得成本以最後一次繼承時公告現值計算。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間。</div>
         </div>
         <!-- 夫妻贈與 -->
         <div id="spouseGiftFields" style="display:none;">
@@ -1698,7 +1712,30 @@ function calcNewTax(){
   const holdM=parseNum('newHoldMonths');
   const selfUse=document.getElementById('newSelfUse').checked&&identity==='resident';
 
-  let income=sell-buyCost-totalTransfer;
+  // 繼承貸款額外負擔
+  let loanBurden=0;
+  let loanNote='';
+  if(method==='inherit'){
+    const loan=parseNum('inheritLoan');
+    const hv=parseNum('inheritHouseVal');
+    const lv=parseNum('inheritLandVal');
+    const currentVal=hv+lv;
+    if(loan>currentVal){
+      loanBurden=loan-currentVal;
+      loanNote=`繼承貸款額外負擔：${fmtMoney(loan)} - ${fmtMoney(currentVal)} = ${fmtMoney(loanBurden)}`;
+    }
+  }else if(method==='inherit2'){
+    const loan=parseNum('inherit2Loan');
+    const hv=parseNum('inherit2HouseVal');
+    const lv=parseNum('inherit2LandVal');
+    const currentVal=hv+lv;
+    if(loan>currentVal){
+      loanBurden=loan-currentVal;
+      loanNote=`繼承貸款額外負擔：${fmtMoney(loan)} - ${fmtMoney(currentVal)} = ${fmtMoney(loanBurden)}`;
+    }
+  }
+
+  let income=sell-buyCost-totalTransfer-loanBurden;
 
   let expNote='';
   if(newAutoExp){
@@ -1784,6 +1821,9 @@ function calcNewTax(){
 
   if(expNote){
     html+=`<div class="result-item full"><span class="r-label">費用提醒</span><span class="r-value" style="font-size:12px;font-weight:500;color:var(--accent);">${expNote}</span></div>`;
+  }
+  if(loanNote){
+    html+=`<div class="result-item full"><span class="r-label">貸款扣除</span><span class="r-value" style="font-size:12px;font-weight:500;color:#2563EB;">${loanNote}</span></div>`;
   }
 
   html+=`</div>`;
