@@ -41,6 +41,7 @@ body{
   font-family:'Inter','Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft JhengHei','PingFang TC',sans-serif;
   min-height:100vh;
   color:var(--text);
+  font-size:18px;
   overflow-x:hidden;
   background:var(--bg);
   font-variant-numeric:tabular-nums;
@@ -85,7 +86,7 @@ body{
   padding:14px 20px;
   border:none;border-bottom:3px solid transparent;
   background:transparent;
-  cursor:pointer;font-size:13px;font-weight:600;
+  cursor:pointer;font-size:16px;font-weight:600;
   color:var(--muted);
   transition:all 0.15s ease;
   font-family:inherit;white-space:nowrap;
@@ -125,7 +126,7 @@ body{
 .section:hover{box-shadow:0 6px 20px rgba(28,25,23,0.08);border-color:#D6D3D1;}
 
 .sec-title{
-  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
   color:var(--muted);
   padding-bottom:10px;border-bottom:1px solid var(--border);
   margin-bottom:16px;
@@ -136,9 +137,9 @@ body{
 /* Form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;}
 .form-grid.three{grid-template-columns:1fr 1fr 1fr;}
-.fg{display:flex;flex-direction:column;gap:5px;}
+.fg{display:flex;flex-direction:column;gap:5px;min-width:0;}
 .fg.full{grid-column:1/-1;}
-.fg label{font-size:12px;font-weight:600;color:var(--muted);padding-left:2px;letter-spacing:0.2px;}
+.fg label{font-size:14px;font-weight:600;color:var(--muted);padding-left:2px;letter-spacing:0.2px;}
 
 .fg input,.fg select{
   padding:10px 13px;
@@ -162,7 +163,7 @@ body{
 .fg .hint{font-size:11px;color:var(--muted);margin-top:1px;padding-left:2px;}
 
 .input-grp{display:flex;align-items:stretch;}
-.input-grp input{border-radius:var(--radius-xs) 0 0 var(--radius-xs);flex:1;min-width:0;}
+.input-grp input{border-radius:var(--radius-xs) 0 0 var(--radius-xs);flex:1;min-width:0;text-align:center;}
 .input-sfx{
   padding:10px 12px;
   border:1px solid var(--border);border-left:none;
@@ -409,6 +410,7 @@ body{
     <button class="nav-btn" data-page="mortgage">
       <span class="nav-icon">🏦</span>房貸試算
     </button>
+    <div class="tab-divider"></div>
   </div>
 
   <!-- Main Content -->
@@ -419,12 +421,12 @@ body{
       <div class="page-title"><span class="icon">🏠</span> 房屋交易所得稅（舊制）</div>
 
       <div class="info-box">
-        <strong>適用條件：</strong>2016/1/1 以前取得之房屋。舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）。<br>
-        房屋交易所得 = (房地總售價 - 房地總成本 - 費用) × 房屋佔比，併入個人綜合所得稅申報，適用 5%～40% 累進稅率。
+        <strong>適用條件：</strong>民國 105 年 1 月 1 日以前取得之房屋。舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）。<br>
+        房屋交易所得 = (房屋出售價 - 房屋買入價 - 費用) × 房屋佔比，併入個人綜合所得稅申報，適用 5%～40% 累進稅率。
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">👤</span> 納稅身分</div>
+        <div class="sec-title"><span class="sec-icon">👤</span> 納稅身份</div>
         <div class="radio-group" id="oldIdentity">
           <button class="radio-btn on" data-val="resident">境內居住者</button>
           <button class="radio-btn" data-val="nonresident">非境內居住者</button>
@@ -448,23 +450,19 @@ body{
         <div class="sec-title"><span class="sec-icon">💰</span> 交易資料</div>
         <div class="form-grid">
           <div class="fg">
-            <label>房地總售價</label>
+            <label>房屋出售價</label>
             <div class="input-grp"><input type="text" id="oldSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
           </div>
           <div class="fg">
-            <label>房地總取得成本</label>
+            <label>房屋買入價</label>
             <div class="input-grp"><input type="text" id="oldBuyPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
           </div>
         </div>
       </div>
 
       <div class="section" id="oldRatioSec">
-        <div class="sec-title"><span class="sec-icon">🏠</span> 房屋佔比（舊制僅對房屋課稅）</div>
-        <div class="info-box" style="margin-bottom:12px;">
-          舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）。<br>
-          請輸入房屋評定現值與土地公告現值，系統自動計算房屋佔比。
-        </div>
-        <div class="form-grid">
+        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">🏠</span> 房屋佔比（舊制僅對房屋課稅）<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）</span></div>
+        <div class="form-grid three">
           <div class="fg">
             <label>房屋評定現值</label>
             <div class="input-grp"><input type="text" id="oldHouseAssess" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
@@ -476,7 +474,6 @@ body{
           <div class="fg">
             <label style="font-weight:700;color:var(--text);">房屋佔比</label>
             <div class="input-grp"><input type="text" id="oldHouseRatio" value="—" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">%</span></div>
-            <span class="hint">= 房屋評定現值 ÷ (房屋評定現值 + 土地公告現值)</span>
           </div>
         </div>
       </div>
@@ -488,8 +485,8 @@ body{
           <label for="oldExpAuto">無法舉證，按售價 5% 計算（勾選後免填下方明細）</label>
         </div>
         <div id="oldExpDetail">
-          <div class="sec-title" style="font-size:10px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
-          <div class="form-grid" style="margin-bottom:14px;">
+          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
+          <div class="form-grid three" style="margin-bottom:14px;">
             <div class="fg">
               <label>買方仲介費</label>
               <div class="input-grp"><input type="text" id="oldExpBuyBroker" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
@@ -503,15 +500,15 @@ body{
               <div class="input-grp"><input type="text" id="oldExpBuyDeed" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
             </div>
             <div class="fg">
-              <label>印花稅</label>
-              <div class="input-grp"><input type="text" id="oldExpBuyStamp" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
-            </div>
-            <div class="fg">
               <label>規費（地政登記規費等）</label>
               <div class="input-grp"><input type="text" id="oldExpBuyRegFee" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
             </div>
             <div class="fg">
-              <label>履保開戶費</label>
+              <label>印花稅</label>
+              <div class="input-grp"><input type="text" id="oldExpBuyStamp" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>履保費</label>
               <div class="input-grp"><input type="text" id="oldExpBuyEscrow" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
             </div>
             <div class="fg">
@@ -519,8 +516,8 @@ body{
               <div class="input-grp"><input type="text" id="oldExpBuyRenovation" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
             </div>
           </div>
-          <div class="sec-title" style="font-size:10px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用</div>
-          <div class="form-grid" style="margin-bottom:14px;">
+          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用</div>
+          <div class="form-grid three" style="margin-bottom:14px;">
             <div class="fg">
               <label>賣方仲介費</label>
               <div class="input-grp"><input type="text" id="oldExpSellBroker" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
@@ -532,10 +529,9 @@ body{
             <div class="fg">
               <label>土地增值稅</label>
               <div class="input-grp"><input type="text" id="oldExpSellLandTax" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
-              <span class="hint">可至「土地增值稅」頁面試算</span>
             </div>
             <div class="fg">
-              <label>其他費用</label>
+              <label>履保費</label>
               <div class="input-grp"><input type="text" id="oldExpSellOther" placeholder="0" inputmode="numeric" class="old-exp-item"><span class="input-sfx">萬元</span></div>
             </div>
           </div>
@@ -562,7 +558,7 @@ body{
           <div class="info-box" style="margin-bottom:12px;">
             所得 = <strong>房屋評定現值 × 所得標準率</strong>（依各地區國稅局每年公告）
           </div>
-          <div class="form-grid">
+          <div class="form-grid three">
             <div class="fg">
               <label>房屋評定現值</label>
               <div class="input-grp"><input type="text" id="oldAssessVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
@@ -570,7 +566,11 @@ body{
             <div class="fg">
               <label>所得標準率</label>
               <div class="input-grp"><input type="text" id="oldStdRate" placeholder="例：48" inputmode="numeric"><span class="input-sfx">%</span></div>
-              <span class="hint">台北市約 41%~48%、新北市約 30%~46%，依各區不同</span>
+            </div>
+            <div class="fg" style="position:relative;">
+              <label>查詢 114 年度標準</label>
+              <div class="input-grp"><input type="text" id="rateSearchInput" placeholder="輸入區域名稱" oninput="searchRate114()"><span class="input-sfx">🔍</span></div>
+              <div id="rateSearchResult" style="position:absolute;top:100%;left:0;right:0;z-index:10;margin-top:4px;max-height:200px;overflow-y:auto"></div>
             </div>
           </div>
         </div>
@@ -607,13 +607,15 @@ body{
               </tr>
             </table>
             <br>
-            所得 = <strong>房地總售價 × 房屋佔比 × 20%</strong>
+            所得 = <strong>房屋出售價 × 房屋佔比 × 20%</strong>
           </div>
-          <div class="form-grid">
+          <div class="form-grid" style="margin-bottom:14px;">
             <div class="fg">
               <label>房地總成交金額（含車位）</label>
               <div class="input-grp"><input type="text" id="oldLuxSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
             </div>
+          </div>
+          <div class="form-grid three">
             <div class="fg">
               <label>房屋評定現值</label>
               <div class="input-grp"><input type="text" id="oldLuxHouseVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
@@ -625,19 +627,17 @@ body{
             <div class="fg">
               <label style="font-weight:700;color:var(--text);">房屋佔比</label>
               <div class="input-grp"><input type="text" id="oldLuxRatio" value="—" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">%</span></div>
-              <span class="hint">= 房屋評定現值 ÷ (房屋評定現值 + 土地公告現值)</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="section" id="oldIncomeSec">
-        <div class="sec-title"><span class="sec-icon">📑</span> 綜合所得稅資料</div>
+        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">📑</span> 綜合所得稅資料<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">用以判斷適用稅率級距（僅境內居住者需填）</span></div>
         <div class="form-grid">
           <div class="fg">
             <label>其他綜合所得淨額（不含本次交易）</label>
             <div class="input-grp"><input type="text" id="oldOtherIncome" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-            <span class="hint">用以判斷適用稅率級距（僅境內居住者需填）</span>
           </div>
         </div>
       </div>
@@ -652,25 +652,16 @@ body{
       <div class="page-title"><span class="icon">🏢</span> 房地合一稅（新制）</div>
 
       <div class="info-box">
-        <strong>適用條件：</strong>2016/1/1 以後取得之房地產。房屋與土地合併課稅，分離課稅不併入綜所稅。
+        <strong>適用條件：</strong>民國 105 年 1 月 1 日以後取得之房地產。房屋與土地合併課稅，分離課稅不併入綜所稅。
         <ul>
-          <li><strong>1.0 版</strong>（2016/1/1～2021/6/30 交易）：短持高稅率</li>
-          <li><strong>2.0 版</strong>（2021/7/1 以後交易）：加重短期持有稅率門檻</li>
         </ul>
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">📋</span> 適用版本與身分</div>
+        <div class="sec-title"><span class="sec-icon">📋</span> 適用版本與身份</div>
         <div class="form-grid">
           <div class="fg">
-            <label>適用版本</label>
-            <div class="radio-group" id="newVersion">
-              <button class="radio-btn on" data-val="2.0">2.0（2021/7/1後交易）</button>
-              <button class="radio-btn" data-val="1.0">1.0（2016～2021/6/30）</button>
-            </div>
-          </div>
-          <div class="fg">
-            <label>身分</label>
+            <label>身份</label>
             <div class="radio-group" id="newIdentity">
               <button class="radio-btn on" data-val="resident">境內個人</button>
               <button class="radio-btn" data-val="foreign">境外個人</button>
@@ -684,22 +675,18 @@ body{
         <div class="sec-title"><span class="sec-icon">💰</span> 交易資料</div>
         <div class="form-grid">
           <div class="fg">
-            <label>成交價額</label>
+            <label>房屋出售價</label>
             <div class="input-grp"><input type="text" id="newSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
           </div>
           <div class="fg">
-            <label>取得成本</label>
+            <label>房屋買入價</label>
             <div class="input-grp"><input type="text" id="newBuyPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
           </div>
           <div class="fg full">
             <label>相關費用明細</label>
-            <div class="check-row" style="margin-bottom:6px;">
-              <input type="checkbox" id="newExpAuto">
-              <label for="newExpAuto">無法舉證，按成交價 3% 計算（上限 30 萬）</label>
-            </div>
             <div id="newExpDetail">
-              <div class="sec-title" style="font-size:10px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
-              <div class="form-grid" style="margin-bottom:14px;">
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
+              <div class="form-grid three" style="margin-bottom:14px;">
                 <div class="fg">
                   <label>買方仲介費</label>
                   <div class="input-grp"><input type="text" id="newExpBuyBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
@@ -713,15 +700,15 @@ body{
                   <div class="input-grp"><input type="text" id="newExpBuyDeed" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
                 </div>
                 <div class="fg">
-                  <label>印花稅</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyStamp" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
                   <label>規費（地政登記規費等）</label>
                   <div class="input-grp"><input type="text" id="newExpBuyRegFee" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
                 </div>
                 <div class="fg">
-                  <label>履保開戶費</label>
+                  <label>印花稅</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyStamp" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>履保費</label>
                   <div class="input-grp"><input type="text" id="newExpBuyEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
                 </div>
                 <div class="fg">
@@ -729,38 +716,60 @@ body{
                   <div class="input-grp"><input type="text" id="newExpBuyRenovation" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
                 </div>
               </div>
-              <div class="sec-title" style="font-size:10px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用</div>
-              <div class="form-grid" style="margin-bottom:14px;">
-                <div class="fg">
-                  <label>賣方仲介費</label>
-                  <div class="input-grp"><input type="text" id="newExpSellBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>賣方代書費</label>
-                  <div class="input-grp"><input type="text" id="newExpSellScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>其他費用</label>
-                  <div class="input-grp"><input type="text" id="newExpSellOther" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用（移轉費用）</div>
+              <div class="check-row" style="margin-bottom:10px;">
+                <input type="checkbox" id="newExpAuto">
+                <label for="newExpAuto">無法舉證，按成交價 3% 計算（上限 30 萬）</label>
+              </div>
+              <div id="newSellExpDetail">
+                <div class="form-grid three" style="margin-bottom:14px;">
+                  <div class="fg">
+                    <label>賣方仲介費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <div class="fg">
+                    <label>賣方代書費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <div class="fg">
+                    <label>履保費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
                 </div>
               </div>
-              <div class="form-grid">
-                <div class="fg">
+              <div style="display:flex;align-items:end;gap:10px;">
+                <div class="fg" style="flex:1;">
                   <label style="font-weight:700;color:var(--text);">費用合計</label>
                   <div class="input-grp"><input type="text" id="newExpense" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
                 </div>
+                <span style="font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;">＋</span>
+                <div class="fg" style="flex:1;">
+                  <label style="font-weight:700;color:var(--text);">土地漲價總數額</label>
+                  <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+                </div>
+                <span style="font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;">＝</span>
+                <div class="fg" style="flex:1;">
+                  <label style="font-weight:700;color:var(--text);">總移轉費用</label>
+                  <div class="input-grp"><input type="text" id="newTotalTransfer" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="fg">
-            <label>土地漲價總數額</label>
-            <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
           </div>
         </div>
       </div>
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">📅</span> 持有期間</div>
+        <div class="form-grid three" style="margin-bottom:14px;">
+          <div class="fg">
+            <label>取得日期（民國）</label>
+            <input type="text" id="newAcquireDate" placeholder="例：100/03/05" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+          </div>
+          <div class="fg">
+            <label>移轉日期（民國）</label>
+            <input type="text" id="newTransferDate" placeholder="例：115/04/06" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
+          </div>
+        </div>
         <div class="form-grid three">
           <div class="fg">
             <label>持有年數</label>
@@ -1110,6 +1119,7 @@ body{
       <div id="mortgageResult"></div>
     </div>
 
+
   </div>
 </div>
 
@@ -1129,6 +1139,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1240,25 +1251,37 @@ document.getElementById('oldExpAuto').addEventListener('change',function(){
 document.querySelectorAll('.new-exp-item').forEach(inp=>{
   inp.addEventListener('input',()=>sumNewExpense());
 });
+document.getElementById('newSellPrice').addEventListener('input',()=>{
+  if(document.getElementById('newExpAuto').checked) sumNewExpense();
+});
+document.getElementById('newLandInc').addEventListener('input',()=>sumNewExpense());
 function sumNewExpense(){
-  const ids=['newExpBuyBroker','newExpBuyScrivener','newExpBuyDeed','newExpBuyStamp','newExpBuyRegFee','newExpBuyEscrow','newExpBuyRenovation',
-             'newExpSellBroker','newExpSellScrivener','newExpSellOther'];
+  const buyIds=['newExpBuyBroker','newExpBuyScrivener','newExpBuyDeed','newExpBuyStamp','newExpBuyRegFee','newExpBuyEscrow','newExpBuyRenovation'];
+  const sellIds=['newExpSellBroker','newExpSellScrivener','newExpSellEscrow'];
   let total=0;
-  ids.forEach(id=>{total+=parseNum(id);});
+  buyIds.forEach(id=>{total+=parseNum(id);});
+  const autoSell=document.getElementById('newExpAuto').checked;
+  if(autoSell){
+    const sell=parseNum('newSellPrice');
+    total+=Math.min(sell*0.03,30);
+  }else{
+    sellIds.forEach(id=>{total+=parseNum(id);});
+  }
   document.getElementById('newExpense').value=total>0?total.toLocaleString('zh-TW'):'0';
+  const land=parseNum('newLandInc');
+  const totalTransfer=total+land;
+  document.getElementById('newTotalTransfer').value=totalTransfer>0?totalTransfer.toLocaleString('zh-TW'):'0';
 }
 
 /* 新制費用按成交價 3%（上限30萬） */
 document.getElementById('newExpAuto').addEventListener('change',function(){
-  const detail=document.getElementById('newExpDetail');
+  const sellDetail=document.getElementById('newSellExpDetail');
   const totalInp=document.getElementById('newExpense');
   if(this.checked){
-    detail.style.display='none';
-    totalInp.value='';
-    totalInp.placeholder='自動按成交價 3% 計算';
+    sellDetail.style.display='none';
+    sumNewExpense();
   }else{
-    detail.style.display='';
-    totalInp.placeholder='0';
+    sellDetail.style.display='';
     sumNewExpense();
   }
 });
@@ -1303,7 +1326,7 @@ function calcOldTax(){
   }else{
     const stdType=getRadioVal('oldStdType');
     if(stdType==='luxury'){
-      /* 高價住宅：房地總售價 × 房屋佔比 × 20% */
+      /* 高價住宅：房屋出售價 × 房屋佔比 × 20% */
       const luxSell=parseNum('oldLuxSellPrice');
       const luxH=parseNum('oldLuxHouseVal');
       const luxL=parseNum('oldLuxLandVal');
@@ -1311,7 +1334,7 @@ function calcOldTax(){
       const houseRevenue=luxSell*luxRatio;
       income=houseRevenue*0.20;
       rawIncome=income;
-      ratioNote=`高價住宅標準認定：房地總售價 ${fmtMoney(luxSell)} × 房屋佔比 ${(luxRatio*100).toFixed(2)}% × 20% = ${fmtMoney(income)}`;
+      ratioNote=`高價住宅標準認定：房屋出售價 ${fmtMoney(luxSell)} × 房屋佔比 ${(luxRatio*100).toFixed(2)}% × 20% = ${fmtMoney(income)}`;
     }else{
       /* 一般房屋：房屋評定現值 × 所得標準率 */
       const assess=parseNum('oldAssessVal');
@@ -1394,23 +1417,55 @@ function calcOldTax(){
 }
 
 /* ========== 房地合一稅計算 ========== */
+function formatRocDate(el){
+  let v=el.value.replace(/[^\d]/g,'');
+  if(v.length>7) v=v.slice(0,7);
+  if(v.length>=7){
+    el.value=v.slice(0,3)+'/'+v.slice(3,5)+'/'+v.slice(5);
+  }
+}
+function parseRocDate(id){
+  const parts=document.getElementById(id).value.split('/');
+  if(parts.length!==3) return null;
+  const y=parseInt(parts[0])||0;
+  const m=parseInt(parts[1])||0;
+  const d=parseInt(parts[2])||0;
+  if(!y||!m||!d) return null;
+  return new Date(y+1911,m-1,d);
+}
+function calcHoldPeriod(){
+  const from=parseRocDate('newAcquireDate');
+  const to=parseRocDate('newTransferDate');
+  if(!from||!to||to<=from) return;
+  let years=to.getFullYear()-from.getFullYear();
+  let months=to.getMonth()-from.getMonth();
+  if(to.getDate()<from.getDate()) months--;
+  if(months<0){ years--; months+=12; }
+  document.getElementById('newHoldYears').value=years;
+  document.getElementById('newHoldMonths').value=months;
+}
+
 function calcNewTax(){
-  const version=getRadioVal('newVersion');
+  const version='2.0';
   const identity=getRadioVal('newIdentity');
   const sell=parseNum('newSellPrice');
   const buy=parseNum('newBuyPrice');
   const newAutoExp=document.getElementById('newExpAuto').checked;
-  const exp=newAutoExp?Math.min(sell*0.03,30):parseNum('newExpense');
+  sumNewExpense();
+  const exp=parseNum('newExpense');
   const land=parseNum('newLandInc');
+  const totalTransfer=exp+land;
+  document.getElementById('newTotalTransfer').value=totalTransfer>0?totalTransfer.toLocaleString('zh-TW'):'0';
   const holdY=parseNum('newHoldYears');
   const holdM=parseNum('newHoldMonths');
   const selfUse=document.getElementById('newSelfUse').checked&&identity==='resident';
 
-  let income=sell-buy-exp-land;
+  let income=sell-buy-totalTransfer;
 
   let expNote='';
   if(newAutoExp){
-    expNote=`費用按成交價 3% 自動計算：${fmtMoney(exp)}（上限 30 萬）`;
+    const sellAutoExp=Math.min(sell*0.03,30);
+    expNote=`賣出費用按成交價 3% 自動計算：${fmtMoney(sellAutoExp)}（上限 30 萬）`;
   }
 
   const totalMonths=holdY*12+holdM;
@@ -1721,6 +1776,184 @@ function toggleAmort(el){
     content.classList.add('on');
     el.textContent='▲ 收合攤還表';
   }
+}
+
+/* ========== 114年度 所得率查詢 ========== */
+const rateData114=[
+  // 臺北市
+  {city:'臺北市',district:'中山區',rate:50},{city:'臺北市',district:'松山區',rate:50},{city:'臺北市',district:'中正區',rate:50},{city:'臺北市',district:'大安區',rate:50},{city:'臺北市',district:'信義區',rate:50},
+  {city:'臺北市',district:'士林區',rate:48},{city:'臺北市',district:'內湖區',rate:48},{city:'臺北市',district:'大同區',rate:48},{city:'臺北市',district:'南港區',rate:48},
+  {city:'臺北市',district:'北投區',rate:47},{city:'臺北市',district:'萬華區',rate:47},{city:'臺北市',district:'文山區',rate:47},
+  // 新北市
+  {city:'新北市',district:'板橋區',rate:47},{city:'新北市',district:'永和區',rate:47},{city:'新北市',district:'中和區',rate:47},{city:'新北市',district:'三重區',rate:47},{city:'新北市',district:'新店區',rate:47},{city:'新北市',district:'蘆洲區',rate:47},{city:'新北市',district:'新莊區',rate:47},{city:'新北市',district:'土城區',rate:47},{city:'新北市',district:'林口區',rate:47},
+  {city:'新北市',district:'汐止區',rate:46},{city:'新北市',district:'樹林區',rate:46},
+  {city:'新北市',district:'泰山區',rate:41},
+  {city:'新北市',district:'五股區',rate:39},
+  {city:'新北市',district:'三峽區',rate:34},
+  {city:'新北市',district:'淡水區',rate:31},
+  {city:'新北市',district:'八里區',rate:27},
+  {city:'新北市',district:'深坑區',rate:25},
+  {city:'新北市',district:'鶯歌區',rate:24},
+  {city:'新北市',district:'萬里區',rate:23},{city:'新北市',district:'瑞芳區',rate:23},
+  {city:'新北市',district:'三芝區',rate:20},
+  {city:'新北市',district:'金山區',rate:19},
+  {city:'新北市',district:'石碇區',rate:14},{city:'新北市',district:'烏來區',rate:14},{city:'新北市',district:'平溪區',rate:14},{city:'新北市',district:'坪林區',rate:14},{city:'新北市',district:'石門區',rate:14},{city:'新北市',district:'雙溪區',rate:14},{city:'新北市',district:'貢寮區',rate:14},
+  // 桃園市
+  {city:'桃園市',district:'桃園區',rate:38},{city:'桃園市',district:'中壢區',rate:38},
+  {city:'桃園市',district:'八德區',rate:37},
+  {city:'桃園市',district:'蘆竹區',rate:35},{city:'桃園市',district:'龜山區',rate:35},
+  {city:'桃園市',district:'平鎮區',rate:30},
+  {city:'桃園市',district:'楊梅區',rate:27},{city:'桃園市',district:'大園區',rate:27},
+  {city:'桃園市',district:'龍潭區',rate:23},{city:'桃園市',district:'大溪區',rate:23},
+  {city:'桃園市',district:'新屋區',rate:18},
+  {city:'桃園市',district:'觀音區',rate:16},
+  {city:'桃園市',district:'復興區',rate:8},
+  // 臺中市
+  {city:'臺中市',district:'西屯區',rate:40},
+  {city:'臺中市',district:'南屯區',rate:38},
+  {city:'臺中市',district:'南區',rate:35},
+  {city:'臺中市',district:'北屯區',rate:34},
+  {city:'臺中市',district:'西區',rate:32},{city:'臺中市',district:'東區',rate:32},
+  {city:'臺中市',district:'北區',rate:30},
+  {city:'臺中市',district:'太平區',rate:29},
+  {city:'臺中市',district:'中區',rate:28},
+  {city:'臺中市',district:'烏日區',rate:26},{city:'臺中市',district:'大里區',rate:26},
+  {city:'臺中市',district:'豐原區',rate:24},
+  {city:'臺中市',district:'潭子區',rate:23},{city:'臺中市',district:'沙鹿區',rate:23},
+  {city:'臺中市',district:'大雅區',rate:22},
+  {city:'臺中市',district:'龍井區',rate:21},{city:'臺中市',district:'大肚區',rate:21},{city:'臺中市',district:'霧峰區',rate:21},
+  {city:'臺中市',district:'后里區',rate:20},{city:'臺中市',district:'神岡區',rate:20},
+  {city:'臺中市',district:'大甲區',rate:19},
+  {city:'臺中市',district:'梧棲區',rate:18},
+  {city:'臺中市',district:'清水區',rate:17},
+  {city:'臺中市',district:'東勢區',rate:15},
+  {city:'臺中市',district:'外埔區',rate:14},
+  {city:'臺中市',district:'新社區',rate:12},{city:'臺中市',district:'大安區',rate:12},
+  {city:'臺中市',district:'石岡區',rate:10},
+  {city:'臺中市',district:'和平區',rate:8},
+  // 臺南市
+  {city:'臺南市',district:'東區',rate:32},
+  {city:'臺南市',district:'安南區',rate:30},{city:'臺南市',district:'北區',rate:30},{city:'臺南市',district:'中西區',rate:30},{city:'臺南市',district:'安平區',rate:30},
+  {city:'臺南市',district:'永康區',rate:28},{city:'臺南市',district:'南區',rate:28},
+  {city:'臺南市',district:'善化區',rate:26},{city:'臺南市',district:'新市區',rate:26},
+  {city:'臺南市',district:'歸仁區',rate:25},{city:'臺南市',district:'仁德區',rate:25},
+  {city:'臺南市',district:'安定區',rate:24},
+  {city:'臺南市',district:'新營區',rate:21},
+  {city:'臺南市',district:'官田區',rate:20},{city:'臺南市',district:'西港區',rate:20},
+  {city:'臺南市',district:'麻豆區',rate:19},{city:'臺南市',district:'新化區',rate:19},
+  {city:'臺南市',district:'柳營區',rate:18},{city:'臺南市',district:'佳里區',rate:18},
+  {city:'臺南市',district:'關廟區',rate:17},
+  {city:'臺南市',district:'鹽水區',rate:16},{city:'臺南市',district:'學甲區',rate:16},
+  {city:'臺南市',district:'六甲區',rate:15},
+  {city:'臺南市',district:'玉井區',rate:14},
+  {city:'臺南市',district:'白河區',rate:12},{city:'臺南市',district:'後壁區',rate:12},{city:'臺南市',district:'東山區',rate:12},{city:'臺南市',district:'下營區',rate:12},{city:'臺南市',district:'山上區',rate:12},
+  {city:'臺南市',district:'將軍區',rate:11},{city:'臺南市',district:'七股區',rate:11},
+  {city:'臺南市',district:'龍崎區',rate:8},{city:'臺南市',district:'北門區',rate:8},{city:'臺南市',district:'左鎮區',rate:8},{city:'臺南市',district:'大內區',rate:8},{city:'臺南市',district:'楠西區',rate:8},{city:'臺南市',district:'南化區',rate:8},
+  // 高雄市
+  {city:'高雄市',district:'左營區',rate:38},{city:'高雄市',district:'鼓山區',rate:38},{city:'高雄市',district:'三民區',rate:38},
+  {city:'高雄市',district:'前金區',rate:37},
+  {city:'高雄市',district:'新興區',rate:36},{city:'高雄市',district:'前鎮區',rate:36},
+  {city:'高雄市',district:'苓雅區',rate:35},
+  {city:'高雄市',district:'楠梓區',rate:33},{city:'高雄市',district:'小港區',rate:33},
+  {city:'高雄市',district:'鳳山區',rate:31},
+  {city:'高雄市',district:'橋頭區',rate:27},{city:'高雄市',district:'仁武區',rate:27},
+  {city:'高雄市',district:'岡山區',rate:26},{city:'高雄市',district:'鳥松區',rate:26},{city:'高雄市',district:'鹽埕區',rate:26},
+  {city:'高雄市',district:'路竹區',rate:25},
+  {city:'高雄市',district:'燕巢區',rate:21},{city:'高雄市',district:'大社區',rate:21},
+  {city:'高雄市',district:'大樹區',rate:20},{city:'高雄市',district:'梓官區',rate:20},{city:'高雄市',district:'大寮區',rate:20},{city:'高雄市',district:'旗津區',rate:20},
+  {city:'高雄市',district:'湖內區',rate:18},
+  {city:'高雄市',district:'林園區',rate:17},
+  {city:'高雄市',district:'美濃區',rate:16},{city:'高雄市',district:'阿蓮區',rate:16},
+  {city:'高雄市',district:'茄萣區',rate:15},
+  {city:'高雄市',district:'旗山區',rate:13},{city:'高雄市',district:'永安區',rate:13},{city:'高雄市',district:'彌陀區',rate:13},
+  {city:'高雄市',district:'田寮區',rate:8},{city:'高雄市',district:'甲仙區',rate:8},{city:'高雄市',district:'六龜區',rate:8},{city:'高雄市',district:'桃源區',rate:8},{city:'高雄市',district:'茂林區',rate:8},{city:'高雄市',district:'杉林區',rate:8},{city:'高雄市',district:'內門區',rate:8},{city:'高雄市',district:'那瑪夏區',rate:8},
+  // 其他縣市 - 市（省轄市）
+  {city:'新竹市',district:'新竹市',rate:32},
+  {city:'嘉義市',district:'嘉義市',rate:25},
+  {city:'基隆市',district:'基隆市',rate:24},
+  // 其他縣市 - 縣轄市
+  {city:'新竹縣',district:'竹北市',rate:42},
+  {city:'嘉義縣',district:'太保市',rate:23},
+  {city:'屏東縣',district:'屏東市',rate:22},
+  {city:'嘉義縣',district:'朴子市',rate:21},
+  {city:'苗栗縣',district:'頭份市',rate:20},
+  {city:'彰化縣',district:'彰化市',rate:19},{city:'南投縣',district:'南投市',rate:19},{city:'雲林縣',district:'斗六市',rate:19},
+  {city:'彰化縣',district:'員林市',rate:18},{city:'宜蘭縣',district:'宜蘭市',rate:18},{city:'臺東縣',district:'臺東市',rate:18},
+  {city:'花蓮縣',district:'花蓮市',rate:17},
+  {city:'苗栗縣',district:'苗栗市',rate:16},
+  {city:'澎湖縣',district:'馬公市',rate:15},
+  // 其他縣市 - 鄉鎮
+  {city:'苗栗縣',district:'竹南鎮',rate:21},
+  {city:'屏東縣',district:'長治鄉',rate:19},
+  {city:'新竹縣',district:'新埔鎮',rate:18},{city:'嘉義縣',district:'中埔鄉',rate:18},{city:'屏東縣',district:'九如鄉',rate:18},{city:'屏東縣',district:'萬丹鄉',rate:18},{city:'屏東縣',district:'潮州鎮',rate:18},{city:'屏東縣',district:'新園鄉',rate:18},{city:'屏東縣',district:'東港鎮',rate:18},
+  {city:'新竹縣',district:'新豐鄉',rate:17},{city:'苗栗縣',district:'後龍鎮',rate:17},{city:'彰化縣',district:'二林鎮',rate:17},{city:'嘉義縣',district:'大林鎮',rate:17},{city:'嘉義縣',district:'民雄鄉',rate:17},{city:'屏東縣',district:'里港鄉',rate:17},{city:'屏東縣',district:'內埔鄉',rate:17},
+  {city:'彰化縣',district:'溪湖鎮',rate:16},{city:'彰化縣',district:'埔心鄉',rate:16},{city:'南投縣',district:'埔里鎮',rate:16},{city:'嘉義縣',district:'水上鄉',rate:16},
+  {city:'新竹縣',district:'寶山鄉',rate:15},{city:'新竹縣',district:'竹東鎮',rate:15},{city:'苗栗縣',district:'苑裡鎮',rate:15},{city:'彰化縣',district:'田中鎮',rate:15},{city:'彰化縣',district:'大村鄉',rate:15},{city:'彰化縣',district:'永靖鄉',rate:15},{city:'彰化縣',district:'溪州鄉',rate:15},{city:'彰化縣',district:'秀水鄉',rate:15},{city:'彰化縣',district:'和美鎮',rate:15},{city:'南投縣',district:'草屯鎮',rate:15},{city:'雲林縣',district:'斗南鎮',rate:15},{city:'雲林縣',district:'大埤鄉',rate:15},{city:'屏東縣',district:'麟洛鄉',rate:15},{city:'屏東縣',district:'鹽埔鄉',rate:15},{city:'屏東縣',district:'枋寮鄉',rate:15},{city:'宜蘭縣',district:'羅東鎮',rate:15},{city:'宜蘭縣',district:'員山鄉',rate:15},{city:'金門縣',district:'金寧鄉',rate:15},
+  {city:'新竹縣',district:'芎林鄉',rate:14},{city:'新竹縣',district:'湖口鄉',rate:14},{city:'彰化縣',district:'北斗鎮',rate:14},{city:'彰化縣',district:'社頭鄉',rate:14},{city:'彰化縣',district:'伸港鄉',rate:14},{city:'彰化縣',district:'鹿港鎮',rate:14},{city:'彰化縣',district:'福興鄉',rate:14},{city:'雲林縣',district:'土庫鎮',rate:14},{city:'雲林縣',district:'虎尾鎮',rate:14},{city:'宜蘭縣',district:'礁溪鄉',rate:14},{city:'宜蘭縣',district:'頭城鎮',rate:14},{city:'宜蘭縣',district:'三星鄉',rate:14},{city:'金門縣',district:'金湖鎮',rate:14},{city:'金門縣',district:'金城鎮',rate:14},
+  {city:'苗栗縣',district:'造橋鄉',rate:13},{city:'苗栗縣',district:'銅鑼鄉',rate:13},{city:'彰化縣',district:'線西鄉',rate:13},{city:'彰化縣',district:'埤頭鄉',rate:13},{city:'南投縣',district:'鹿谷鄉',rate:13},{city:'雲林縣',district:'莿桐鄉',rate:13},{city:'雲林縣',district:'古坑鄉',rate:13},{city:'雲林縣',district:'西螺鎮',rate:13},{city:'雲林縣',district:'崙背鄉',rate:13},{city:'嘉義縣',district:'新港鄉',rate:13},{city:'嘉義縣',district:'六腳鄉',rate:13},{city:'屏東縣',district:'竹田鄉',rate:13},{city:'宜蘭縣',district:'五結鄉',rate:13},{city:'宜蘭縣',district:'壯圍鄉',rate:13},{city:'花蓮縣',district:'吉安鄉',rate:13},{city:'花蓮縣',district:'新城鄉',rate:13},
+  {city:'新竹縣',district:'關西鎮',rate:12},{city:'苗栗縣',district:'公館鄉',rate:12},{city:'彰化縣',district:'芬園鄉',rate:12},{city:'彰化縣',district:'埔鹽鄉',rate:12},{city:'彰化縣',district:'花壇鄉',rate:12},{city:'彰化縣',district:'田尾鄉',rate:12},{city:'南投縣',district:'竹山鎮',rate:12},{city:'南投縣',district:'名間鄉',rate:12},{city:'雲林縣',district:'北港鎮',rate:12},{city:'雲林縣',district:'麥寮鄉',rate:12},{city:'雲林縣',district:'二崙鄉',rate:12},{city:'屏東縣',district:'萬巒鄉',rate:12},{city:'屏東縣',district:'崁頂鄉',rate:12},{city:'屏東縣',district:'佳冬鄉',rate:12},{city:'屏東縣',district:'恆春鎮',rate:12},{city:'屏東縣',district:'琉球鄉',rate:12},{city:'宜蘭縣',district:'冬山鄉',rate:12},{city:'宜蘭縣',district:'蘇澳鎮',rate:12},{city:'花蓮縣',district:'壽豐鄉',rate:12},{city:'金門縣',district:'烈嶼鄉',rate:12},{city:'金門縣',district:'烏坵鄉',rate:12},{city:'金門縣',district:'金沙鎮',rate:12},
+  {city:'苗栗縣',district:'頭屋鄉',rate:11},{city:'苗栗縣',district:'通霄鎮',rate:11},{city:'苗栗縣',district:'三義鄉',rate:11},{city:'南投縣',district:'水里鄉',rate:11},{city:'嘉義縣',district:'梅山鄉',rate:11},{city:'嘉義縣',district:'竹崎鄉',rate:11},{city:'嘉義縣',district:'番路鄉',rate:11},{city:'屏東縣',district:'高樹鄉',rate:11},{city:'屏東縣',district:'南州鄉',rate:11},{city:'屏東縣',district:'林邊鄉',rate:11},{city:'屏東縣',district:'車城鄉',rate:11},
+  {city:'苗栗縣',district:'大湖鄉',rate:10},{city:'彰化縣',district:'芳苑鄉',rate:10},{city:'彰化縣',district:'二水鄉',rate:10},{city:'南投縣',district:'集集鎮',rate:10},{city:'雲林縣',district:'元長鄉',rate:10},{city:'雲林縣',district:'大埤鄉',rate:10},{city:'花蓮縣',district:'玉里鎮',rate:10},{city:'臺東縣',district:'卑南鄉',rate:10},
+  {city:'苗栗縣',district:'三灣鄉',rate:9},{city:'苗栗縣',district:'卓蘭鎮',rate:9},{city:'苗栗縣',district:'南庄鄉',rate:9},{city:'苗栗縣',district:'獅潭鄉',rate:9},{city:'彰化縣',district:'竹塘鄉',rate:9},{city:'彰化縣',district:'大城鄉',rate:9},{city:'南投縣',district:'中寮鄉',rate:9},{city:'南投縣',district:'信義鄉',rate:9},{city:'南投縣',district:'國姓鄉',rate:9},{city:'南投縣',district:'魚池鄉',rate:9},{city:'雲林縣',district:'林內鄉',rate:9},{city:'雲林縣',district:'褒忠鄉',rate:9},{city:'雲林縣',district:'口湖鄉',rate:9},{city:'雲林縣',district:'水林鄉',rate:9},{city:'花蓮縣',district:'鳳林鎮',rate:9},{city:'臺東縣',district:'成功鎮',rate:9},{city:'臺東縣',district:'太麻里鄉',rate:9},
+  // 其他地區
+  {city:'其他',district:'其他未列明地區',rate:8}
+];
+
+function searchRateDistrict(){
+  let q=document.getElementById('rateLookupInput').value.trim();
+  const box=document.getElementById('rateLookupResult');
+  if(!q){
+    box.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0;">請輸入區域名稱進行查詢</div>';
+    return;
+  }
+  // 台 <-> 臺 互換
+  const qNorm=q.replace(/台/g,'臺');
+  const qAlt=q.replace(/臺/g,'台');
+  const results=rateData114.filter(d=>{
+    const full=d.city+d.district;
+    return full.includes(qNorm)||full.includes(qAlt)||d.district.includes(qNorm)||d.district.includes(qAlt)||d.city.includes(qNorm)||d.city.includes(qAlt);
+  });
+  if(results.length===0){
+    box.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0;">查無符合「'+q+'」的區域資料。未列明地區一律適用 <strong>8%</strong>。</div>';
+    return;
+  }
+  let html='<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">共找到 '+results.length+' 筆結果</div>';
+  html+='<div style="border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;">';
+  html+='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+  html+='<thead><tr style="background:var(--bg);border-bottom:2px solid var(--border);">';
+  html+='<th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--muted);font-size:12px;">縣市</th>';
+  html+='<th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--muted);font-size:12px;">區域</th>';
+  html+='<th style="padding:10px 14px;text-align:right;font-weight:700;color:var(--muted);font-size:12px;">所得率</th>';
+  html+='</tr></thead><tbody>';
+  results.forEach(d=>{
+    html+='<tr style="border-bottom:1px solid var(--border);">';
+    html+='<td style="padding:10px 14px;font-weight:500;">'+d.city+'</td>';
+    html+='<td style="padding:10px 14px;font-weight:600;color:var(--text);">'+d.district+'</td>';
+    html+='<td style="padding:10px 14px;text-align:right;font-weight:700;font-size:16px;color:#B45309;">'+d.rate+'%</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table></div>';
+  box.innerHTML=html;
+}
+function searchRate114(){
+  let q=document.getElementById('rateSearchInput').value.trim();
+  const box=document.getElementById('rateSearchResult');
+  if(!q){ box.innerHTML=''; return; }
+  const qNorm=q.replace(/台/g,'臺');
+  const qAlt=q.replace(/臺/g,'台');
+  const results=rateData114.filter(d=>{
+    const full=d.city+d.district;
+    return full.includes(qNorm)||full.includes(qAlt)||d.district.includes(qNorm)||d.district.includes(qAlt)||d.city.includes(qNorm)||d.city.includes(qAlt);
+  });
+  if(results.length===0){ box.innerHTML='<div style="color:var(--muted);font-size:12px;padding:4px 0;">查無結果，未列明地區適用 8%</div>'; return; }
+  let html='';
+  results.forEach(d=>{
+    html+='<div onclick="document.getElementById(\'oldStdRate\').value=\''+d.rate+'\';document.getElementById(\'rateSearchResult\').innerHTML=\'\';document.getElementById(\'rateSearchInput\').value=\''+d.city+d.district+' '+d.rate+'%\';calcOldSystem();" style="padding:6px 10px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center" onmouseover="this.style.background=\'var(--bg)\'" onmouseout="this.style.background=\'transparent\'">';
+    html+='<span>'+d.city+' '+d.district+'</span>';
+    html+='<span style="font-weight:700;color:#B45309;">'+d.rate+'%</span>';
+    html+='</div>';
+  });
+  box.innerHTML='<div style="border:2px solid #B45309;border-radius:8px;overflow:hidden;max-height:180px;overflow-y:auto;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">'+html+'</div>';
 }
 </script>
 </body>
