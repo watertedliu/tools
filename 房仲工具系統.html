@@ -368,6 +368,10 @@ body{
 .transfer-op{font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;}
 .transfer-fg{width:25%;}
 @media(min-width:769px){
+  .land-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 18px;}
+  .land-fields .fg{margin-bottom:0 !important;}
+}
+@media(min-width:769px){
   .transfer-summary{display:flex;flex-direction:row;align-items:end;gap:10px;flex-wrap:wrap;}
   .transfer-summary .transfer-row{flex:1;}
   .transfer-summary .transfer-row:last-child{flex:0 1 auto;min-width:200px;}
@@ -1054,38 +1058,34 @@ body{
           </div>
           <span class="hint">謄本「土地所有權部」登記日期（民國年月）</span>
         </div>
-        <div class="form-grid three land-grid" style="margin-bottom:14px;">
-          <div class="fg">
+        <div class="land-fields">
+          <div class="fg" style="margin-bottom:14px;">
             <label>土地公告現值</label>
             <div class="input-grp"><input type="text" id="landCurrValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元/每平方公尺</span></div>
             <span class="hint">本次移轉之公告土地現值（每平方公尺）</span>
           </div>
-          <div class="fg">
+          <div class="fg" style="margin-bottom:14px;">
             <label>原規定地價或前次移轉現值</label>
             <div class="input-grp"><input type="text" id="landPrevValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元/每平方公尺</span></div>
             <span class="hint">謄本「前次移轉現值或原規定地價」欄位</span>
           </div>
-        </div>
-        <div class="form-grid three land-grid" style="margin-bottom:14px;">
-          <div class="fg">
+          <div class="fg" style="margin-bottom:14px;">
             <label>消費者物價總指數</label>
             <div class="input-grp"><input type="text" id="landCPI" placeholder="例：105.00" inputmode="decimal"><span class="input-sfx">%</span></div>
             <span class="hint">依財政部公告之物價總指數百分比</span>
           </div>
-          <div class="fg">
+          <div class="fg" style="margin-bottom:14px;">
             <label>土地宗地面積</label>
             <div class="input-grp"><input type="text" id="landArea" placeholder="0" inputmode="decimal"><span class="input-sfx">平方公尺</span></div>
           </div>
-        </div>
-        <div class="form-grid three land-grid" style="margin-bottom:14px;">
-          <div class="fg">
+          <div class="fg" style="margin-bottom:14px;">
             <label>土地類型</label>
             <div class="radio-group" id="landLandType" style="margin-top:4px;">
               <button class="radio-btn on" data-val="urban">都市土地</button>
               <button class="radio-btn" data-val="rural">非都市土地</button>
             </div>
           </div>
-          <div class="fg">
+          <div class="fg" style="margin-bottom:14px;">
             <label>移轉或設典範圍</label>
             <div style="display:flex;gap:8px;align-items:center;">
               <div class="input-grp" style="flex:1;"><input type="text" id="landShareNum" placeholder="分子" inputmode="numeric" style="width:100%;"></div>
