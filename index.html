@@ -714,99 +714,6 @@ body{
         </div>
       </div>
 
-      <div class="section">
-        <div class="sec-title"><span class="sec-icon">💰</span> 交易資料</div>
-        <div class="form-grid">
-          <div class="fg">
-            <label>房屋出售價</label>
-            <div class="input-grp"><input type="text" id="newSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-          </div>
-          <div class="fg">
-            <label>房屋買入價</label>
-            <div class="input-grp"><input type="text" id="newBuyPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-          </div>
-          <div class="fg full">
-            <label>相關費用明細</label>
-            <div id="newExpDetail">
-              <div id="newBuyExpSection">
-              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
-              <div class="form-grid three" style="margin-bottom:14px;">
-                <div class="fg">
-                  <label>買方仲介費</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>買方代書費</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>契稅</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyDeed" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>規費（地政登記規費等）</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyRegFee" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>印花稅</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyStamp" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>履保費</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-                <div class="fg">
-                  <label>裝修 / 改良費用</label>
-                  <div class="input-grp"><input type="text" id="newExpBuyRenovation" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                </div>
-              </div>
-              </div>
-              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用（移轉費用）</div>
-              <div class="check-row" style="margin-bottom:10px;">
-                <input type="checkbox" id="newExpAuto">
-                <label for="newExpAuto">無法舉證，按成交價 3% 計算（上限 30 萬）</label>
-              </div>
-              <div id="newSellExpDetail">
-                <div class="form-grid three" style="margin-bottom:14px;">
-                  <div class="fg">
-                    <label>賣方仲介費</label>
-                    <div class="input-grp"><input type="text" id="newExpSellBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                  </div>
-                  <div class="fg">
-                    <label>賣方代書費</label>
-                    <div class="input-grp"><input type="text" id="newExpSellScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                  </div>
-                  <div class="fg">
-                    <label>履保費</label>
-                    <div class="input-grp"><input type="text" id="newExpSellEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="transfer-summary">
-                <div class="transfer-row">
-                  <div class="fg" style="flex:1;">
-                    <label style="font-weight:700;color:var(--text);">費用合計</label>
-                    <div class="input-grp"><input type="text" id="newExpense" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
-                  </div>
-                  <span class="transfer-op">＋</span>
-                  <div class="fg" style="flex:1;">
-                    <label style="font-weight:700;color:var(--text);">土地漲價總數額</label>
-                    <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-                  </div>
-                </div>
-                <div class="transfer-row">
-                  <span class="transfer-op">＝</span>
-                  <div class="fg" style="flex:1;">
-                    <label style="font-weight:700;color:var(--text);">總移轉費用</label>
-                    <div class="input-grp"><input type="text" id="newTotalTransfer" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="section" id="acquireMethodFields" style="display:none;">
         <!-- 繼承取得 -->
         <div id="inheritFields" style="display:none;">
@@ -916,6 +823,99 @@ body{
             </div>
           </div>
           <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間從受贈日起算，不可合併贈與人持有期間。</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">💰</span> 交易資料</div>
+        <div class="form-grid">
+          <div class="fg">
+            <label>房屋出售價</label>
+            <div class="input-grp"><input type="text" id="newSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+          </div>
+          <div class="fg">
+            <label>房屋買入價</label>
+            <div class="input-grp"><input type="text" id="newBuyPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+          </div>
+          <div class="fg full">
+            <label>相關費用明細</label>
+            <div id="newExpDetail">
+              <div id="newBuyExpSection">
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
+              <div class="form-grid three" style="margin-bottom:14px;">
+                <div class="fg">
+                  <label>買方仲介費</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>買方代書費</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>契稅</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyDeed" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>規費（地政登記規費等）</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyRegFee" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>印花稅</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyStamp" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>履保費</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+                <div class="fg">
+                  <label>裝修 / 改良費用</label>
+                  <div class="input-grp"><input type="text" id="newExpBuyRenovation" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                </div>
+              </div>
+              </div>
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用（移轉費用）</div>
+              <div class="check-row" style="margin-bottom:10px;">
+                <input type="checkbox" id="newExpAuto">
+                <label for="newExpAuto">無法舉證，按成交價 3% 計算（上限 30 萬）</label>
+              </div>
+              <div id="newSellExpDetail">
+                <div class="form-grid three" style="margin-bottom:14px;">
+                  <div class="fg">
+                    <label>賣方仲介費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellBroker" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <div class="fg">
+                    <label>賣方代書費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellScrivener" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <div class="fg">
+                    <label>履保費</label>
+                    <div class="input-grp"><input type="text" id="newExpSellEscrow" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="transfer-summary">
+                <div class="transfer-row">
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">費用合計</label>
+                    <div class="input-grp"><input type="text" id="newExpense" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <span class="transfer-op">＋</span>
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">土地漲價總數額</label>
+                    <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+                  </div>
+                </div>
+                <div class="transfer-row">
+                  <span class="transfer-op">＝</span>
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">總移轉費用</label>
+                    <div class="input-grp"><input type="text" id="newTotalTransfer" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
