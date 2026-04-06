@@ -728,6 +728,7 @@ body{
           <div class="fg full">
             <label>相關費用明細</label>
             <div id="newExpDetail">
+              <div id="newBuyExpSection">
               <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
               <div class="form-grid three" style="margin-bottom:14px;">
                 <div class="fg">
@@ -758,6 +759,7 @@ body{
                   <label>裝修 / 改良費用</label>
                   <div class="input-grp"><input type="text" id="newExpBuyRenovation" placeholder="0" inputmode="numeric" class="new-exp-item"><span class="input-sfx">萬元</span></div>
                 </div>
+              </div>
               </div>
               <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">💸</span> 賣出時費用（移轉費用）</div>
               <div class="check-row" style="margin-bottom:10px;">
@@ -1358,17 +1360,24 @@ document.querySelectorAll('.radio-group').forEach(grp=>{
 function switchAcquireMethod(method){
   const container=document.getElementById('acquireMethodFields');
   const buyPriceRow=document.getElementById('newBuyPrice').closest('.fg');
+  const buyExpSection=document.getElementById('newBuyExpSection');
   const subSections=['inheritFields','inherit2Fields','spouseGiftFields','giftFields'];
   subSections.forEach(id=>document.getElementById(id).style.display='none');
   if(method==='purchase'){
     container.style.display='none';
     buyPriceRow.style.display='';
+    buyExpSection.style.display='';
+  }else if(method==='spouseGift'){
+    container.style.display='';
+    buyPriceRow.style.display='none';
+    buyExpSection.style.display='';
+    document.getElementById('spouseGiftFields').style.display='';
   }else{
     container.style.display='';
     buyPriceRow.style.display='none';
+    buyExpSection.style.display='none';
     if(method==='inherit') document.getElementById('inheritFields').style.display='';
     else if(method==='inherit2') document.getElementById('inherit2Fields').style.display='';
-    else if(method==='spouseGift') document.getElementById('spouseGiftFields').style.display='';
     else if(method==='gift') document.getElementById('giftFields').style.display='';
   }
   calcHoldPeriod();
@@ -1441,7 +1450,8 @@ function sumNewExpense(){
   const buyIds=['newExpBuyBroker','newExpBuyScrivener','newExpBuyDeed','newExpBuyStamp','newExpBuyRegFee','newExpBuyEscrow','newExpBuyRenovation'];
   const sellIds=['newExpSellBroker','newExpSellScrivener','newExpSellEscrow'];
   let total=0;
-  buyIds.forEach(id=>{total+=parseNum(id);});
+  const buyExpVisible=document.getElementById('newBuyExpSection').style.display!=='none';
+  if(buyExpVisible) buyIds.forEach(id=>{total+=parseNum(id);});
   const autoSell=document.getElementById('newExpAuto').checked;
   if(autoSell){
     const sell=parseNum('newSellPrice');
