@@ -965,7 +965,7 @@ body{
 
       <div class="info-box">
         <strong>土地增值稅</strong>是土地所有權移轉時，按土地漲價總數額課徵的稅。<br>
-        計算基礎來自謄本上的「前次移轉現值」與「申報移轉現值」，再依物價指數調整後計算漲價總數額。
+        計算公式：漲價總數額 = 申報移轉現值 −（前次移轉現值 × 消費者物價總指數 ÷ 100），所有單價需乘以面積及移轉範圍比例。
         <ul>
           <li><strong>一般稅率：</strong>按漲價倍數累進 20%／30%／40%</li>
           <li><strong>自用住宅優惠：</strong>一生一次 10%、一生一屋 10%</li>
@@ -991,38 +991,44 @@ body{
             <div class="guide-title">📋 土地登記謄本 — 關鍵欄位對照</div>
             <table class="guide-table">
               <tr>
-                <td class="field-name">前次移轉現值<br>或原規定地價</td>
+                <td class="field-name">前次移轉年期</td>
                 <td class="field-arrow">→</td>
-                <td class="field-sample">例：1,234,567 元/m²</td>
+                <td class="field-sample">例：095年06月</td>
+                <td class="field-desc">
+                  位於謄本<strong>「土地所有權部」</strong>的<strong>「登記日期」</strong>欄（民國年月）。<br>
+                  用於判斷持有年數及對應消費者物價總指數。
+                </td>
+              </tr>
+              <tr>
+                <td class="field-name">土地公告現值</td>
+                <td class="field-arrow">→</td>
+                <td class="field-sample">例：45,678 元/m²</td>
+                <td class="field-desc">
+                  本次移轉時的<strong>公告土地現值</strong>（每平方公尺）。<br>
+                  可查詢：內政部地政司「公告土地現值查詢」或各縣市地政局網站。
+                </td>
+              </tr>
+              <tr>
+                <td class="field-name">原規定地價或<br>前次移轉現值</td>
+                <td class="field-arrow">→</td>
+                <td class="field-sample">例：12,345 元/m²</td>
                 <td class="field-desc">
                   位於謄本<strong>「土地所有權部」</strong>的<strong>「前次移轉現值或原規定地價」</strong>欄。<br>
-                  注意：此為每平方公尺單價，需 × 面積 × 持分 = 總額。<br>
-                  <em>若謄本已載明總額則直接填入。</em>
+                  注意：此為每平方公尺單價。
                 </td>
               </tr>
               <tr>
-                <td class="field-name">申報移轉現值</td>
+                <td class="field-name">消費者物價總指數</td>
                 <td class="field-arrow">→</td>
-                <td class="field-sample">例：2,345,678 元</td>
-                <td class="field-desc">
-                  通常為本次交易申報時的<strong>公告土地現值</strong>。<br>
-                  可查詢：內政部地政司「公告土地現值查詢」或各縣市地政局網站。<br>
-                  <em>計算方式：公告現值(元/m²) × 面積(m²) × 持分</em>
-                </td>
-              </tr>
-              <tr>
-                <td class="field-name">物價指數</td>
-                <td class="field-arrow">→</td>
-                <td class="field-sample">前次：105.00<br>本次：115.00</td>
+                <td class="field-sample">例：105.00%</td>
                 <td class="field-desc">
                   用於調整前次移轉現值。查詢方式：<br>
-                  <strong>內政部地政司</strong>網站 →「消費者物價總指數表」<br>
-                  前次指數 = 前次移轉登記「年月」的指數值<br>
-                  本次指數 = 本次移轉「年月」的指數值
+                  <strong>財政部</strong>土地增值稅試算網站或內政部地政司「消費者物價總指數表」<br>
+                  依前次移轉年月查詢對應之物價指數百分比。
                 </td>
               </tr>
               <tr>
-                <td class="field-name">土地面積</td>
+                <td class="field-name">土地宗地面積</td>
                 <td class="field-arrow">→</td>
                 <td class="field-sample">例：123.45 m²</td>
                 <td class="field-desc">
@@ -1030,13 +1036,12 @@ body{
                 </td>
               </tr>
               <tr>
-                <td class="field-name">持分比例</td>
+                <td class="field-name">移轉或設典範圍<br>（分子／分母）</td>
                 <td class="field-arrow">→</td>
-                <td class="field-sample">例：10000分之2500<br>→ 填 0.25</td>
+                <td class="field-sample">例：2500／10000</td>
                 <td class="field-desc">
                   位於謄本<strong>「土地所有權部」</strong>的<strong>「權利範圍」</strong>欄。<br>
-                  全部：填 1｜10000分之5000：填 0.5<br>
-                  公寓大廈常見持分如：10000分之168 → 填 0.0168
+                  全部：分子分母皆填 1｜10000分之2500：分子填 2500、分母填 10000
                 </td>
               </tr>
             </table>
@@ -1046,36 +1051,52 @@ body{
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">💰</span> 謄本資料輸入</div>
-        <div class="form-grid">
+        <div class="fg" style="margin-bottom:14px;">
+          <label>前次移轉年期</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="input-grp" style="flex:1;"><input type="text" id="landPrevYear" placeholder="民國年" inputmode="numeric" style="width:100%;"><span class="input-sfx">年</span></div>
+            <div class="input-grp" style="flex:1;"><input type="text" id="landPrevMonth" placeholder="月" inputmode="numeric" style="width:100%;"><span class="input-sfx">月</span></div>
+          </div>
+          <span class="hint">謄本「土地所有權部」登記日期（民國年月）</span>
+        </div>
+        <div class="form-grid" style="margin-bottom:14px;">
           <div class="fg">
-            <label>前次移轉現值（謄本記載）</label>
-            <div class="input-grp"><input type="text" id="landPrevValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            <label>土地公告現值</label>
+            <div class="input-grp"><input type="text" id="landCurrValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元/每平方公尺</span></div>
+            <span class="hint">本次移轉之公告土地現值（每平方公尺）</span>
+          </div>
+          <div class="fg">
+            <label>原規定地價或前次移轉現值</label>
+            <div class="input-grp"><input type="text" id="landPrevValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元/每平方公尺</span></div>
             <span class="hint">謄本「前次移轉現值或原規定地價」欄位</span>
           </div>
+        </div>
+        <div class="form-grid three" style="margin-bottom:14px;">
           <div class="fg">
-            <label>申報移轉現值（本次移轉）</label>
-            <div class="input-grp"><input type="text" id="landCurrValue" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
-            <span class="hint">通常為公告土地現值，謄本或稅單可查</span>
+            <label>消費者物價總指數</label>
+            <div class="input-grp"><input type="text" id="landCPI" placeholder="例：105.00" inputmode="decimal"><span class="input-sfx">%</span></div>
+            <span class="hint">依財政部公告之物價總指數百分比</span>
           </div>
           <div class="fg">
-            <label>前次移轉年月物價指數</label>
-            <div class="input-grp"><input type="text" id="landPrevIndex" placeholder="例：105.00" inputmode="decimal"><span class="input-sfx"></span></div>
-            <span class="hint">依內政部公告之消費者物價總指數</span>
-          </div>
-          <div class="fg">
-            <label>本次移轉年月物價指數</label>
-            <div class="input-grp"><input type="text" id="landCurrIndex" placeholder="例：115.00" inputmode="decimal"><span class="input-sfx"></span></div>
-            <span class="hint">可至地政司或稅捐處查詢</span>
-          </div>
-          <div class="fg">
-            <label>土地面積</label>
+            <label>土地宗地面積</label>
             <div class="input-grp"><input type="text" id="landArea" placeholder="0" inputmode="decimal"><span class="input-sfx">平方公尺</span></div>
           </div>
           <div class="fg">
-            <label>持分比例</label>
-            <div class="input-grp"><input type="text" id="landShare" placeholder="1" inputmode="decimal"><span class="input-sfx"></span></div>
-            <span class="hint">完整持有填 1，持分1/2填 0.5</span>
+            <label>土地類型</label>
+            <div class="radio-group" id="landLandType" style="margin-top:4px;">
+              <button class="radio-btn on" data-val="urban">都市土地</button>
+              <button class="radio-btn" data-val="rural">非都市土地</button>
+            </div>
           </div>
+        </div>
+        <div class="fg">
+          <label>移轉或設典範圍</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="input-grp" style="flex:1;"><input type="text" id="landShareNum" placeholder="分子" inputmode="numeric" style="width:100%;"></div>
+            <span style="font-weight:600;font-size:16px;">／</span>
+            <div class="input-grp" style="flex:1;"><input type="text" id="landShareDen" placeholder="分母" inputmode="numeric" style="width:100%;"></div>
+          </div>
+          <span class="hint">全部填 1／1，10000分之2500填 2500／10000</span>
         </div>
       </div>
 
@@ -1300,7 +1321,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI'||el.id==='landPrevYear'||el.id==='landPrevMonth'||el.id==='landCPI'||el.id==='landShareNum'||el.id==='landShareDen') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1967,58 +1988,64 @@ function toggleGuide(el){
 /* ========== 土地增值稅計算 ========== */
 function calcLandTax(){
   const taxType=getRadioVal('landTaxType');
-  const prevVal=parseNum('landPrevValue');
-  const currVal=parseNum('landCurrValue');
-  const prevIdx=parseNum('landPrevIndex');
-  const currIdx=parseNum('landCurrIndex');
-  const area=parseNum('landArea');
-  const share=parseNum('landShare')||1;
+  const currValue=parseNum('landCurrValue');   /* 土地公告現值 元/m² */
+  const prevValue=parseNum('landPrevValue');    /* 原規定地價或前次移轉現值 元/m² */
+  const cpi=parseNum('landCPI');               /* 消費者物價總指數 % */
+  const area=parseNum('landArea');             /* 土地宗地面積 m² */
+  const shareNum=parseNum('landShareNum');
+  const shareDen=parseNum('landShareDen');
   const holdYears=parseNum('landHoldYears');
 
-  if(prevVal<=0||currVal<=0){
-    document.getElementById('landTaxResult').innerHTML='<div class="result-box"><div class="result-title">請輸入前次移轉現值與申報移轉現值</div></div>';
+  if(prevValue<=0||currValue<=0){
+    document.getElementById('landTaxResult').innerHTML='<div class="result-box"><div class="result-title">請輸入土地公告現值與前次移轉現值</div></div>';
     return;
   }
 
-  /* 物價指數調整後的原地價 */
-  let adjustedPrev=prevVal;
-  if(prevIdx>0&&currIdx>0){
-    adjustedPrev=prevVal*(currIdx/prevIdx);
-  }
-  adjustedPrev=Math.round(adjustedPrev);
+  /* 移轉範圍比例 */
+  const shareRatio=(shareNum>0&&shareDen>0)?(shareNum/shareDen):1;
+  const totalArea=area*shareRatio;
 
-  /* 漲價總數額（考慮面積與持分） */
-  const totalIncrease=Math.max(currVal-adjustedPrev,0)*share;
+  /* 申報移轉現值總額 */
+  const currentTotal=currValue*totalArea;
+
+  /* 物價指數調整後的前次移轉現值總額 */
+  const cpiRate=(cpi>0)?(cpi/100):1;
+  const prevAdjustedUnit=prevValue*cpiRate;
+  const prevAdjustedTotal=prevAdjustedUnit*totalArea;
+
+  /* 漲價總數額 */
+  const appreciation=Math.max(currentTotal-prevAdjustedTotal,0);
+
+  /* 原地價總額（未調整，用於計算漲價倍數） */
+  const origBase=prevValue*totalArea;
 
   let tax=0;
   let taxDetail='';
 
   if(taxType==='selfUse'){
     /* 自用住宅：一律 10% */
-    tax=totalIncrease*0.10;
+    tax=appreciation*0.10;
     taxDetail='自用住宅用地優惠稅率 10%';
   }else{
-    /* 一般用地：累進稅率 */
-    const base=adjustedPrev*share; /* 原規定地價（已調整）做為倍數基準 */
-
-    if(base<=0){
-      tax=totalIncrease*0.20;
+    /* 一般用地：累進稅率，漲價倍數 = 漲價總數額 / 原地價總額 */
+    if(origBase<=0){
+      tax=appreciation*0.20;
       taxDetail='原地價為0，全額適用 20%';
     }else{
-      const ratio=totalIncrease/base;
+      const ratio=appreciation/origBase;
       let t1=0,t2=0,t3=0;
 
       if(ratio<=1){
-        t1=totalIncrease*0.20;
+        t1=appreciation*0.20;
         taxDetail=`漲價倍數 ${ratio.toFixed(2)}（未超過100%）→ 全額 20%`;
       }else if(ratio<=2){
-        t1=base*0.20;
-        t2=(totalIncrease-base)*0.30;
+        t1=origBase*0.20;
+        t2=(appreciation-origBase)*0.30;
         taxDetail=`漲價倍數 ${ratio.toFixed(2)}（100%~200%）→ 20% + 30%`;
       }else{
-        t1=base*0.20;
-        t2=base*0.30;
-        t3=(totalIncrease-base*2)*0.40;
+        t1=origBase*0.20;
+        t2=origBase*0.30;
+        t3=(appreciation-origBase*2)*0.40;
         taxDetail=`漲價倍數 ${ratio.toFixed(2)}（超過200%）→ 20% + 30% + 40%`;
       }
       tax=t1+t2+t3;
@@ -2042,15 +2069,17 @@ function calcLandTax(){
   let html=`<div class="result-box">
     <div class="result-title">📊 土地增值稅試算結果</div>
     <div class="result-grid">
-      <div class="result-item"><span class="r-label">前次移轉現值</span><span class="r-value">${fmt(prevVal,0)} 元</span></div>
-      <div class="result-item"><span class="r-label">物價調整後原地價</span><span class="r-value">${fmt(adjustedPrev,0)} 元</span></div>
-      <div class="result-item"><span class="r-label">申報移轉現值</span><span class="r-value">${fmt(currVal,0)} 元</span></div>
-      <div class="result-item"><span class="r-label">漲價總數額</span><span class="r-value">${fmt(Math.round(totalIncrease),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">土地公告現值（元/m²）</span><span class="r-value">${fmt(currValue,0)} 元</span></div>
+      <div class="result-item"><span class="r-label">前次移轉現值（元/m²）</span><span class="r-value">${fmt(prevValue,0)} 元</span></div>
+      <div class="result-item"><span class="r-label">物價指數調整後原地價（元/m²）</span><span class="r-value">${fmt(Math.round(prevAdjustedUnit),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">移轉面積</span><span class="r-value">${totalArea.toFixed(4)} m²（${area} × ${shareNum||1}/${shareDen||1}）</span></div>
+      <div class="result-item"><span class="r-label">申報移轉現值總額</span><span class="r-value">${fmt(Math.round(currentTotal),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">漲價總數額</span><span class="r-value">${fmt(Math.round(appreciation),0)} 元</span></div>
       <div class="result-item full"><span class="r-label">稅率適用</span><span class="r-value" style="font-size:13px;font-weight:600;">${taxDetail}</span></div>
       <div class="result-item full"><span class="r-label">應納土地增值稅</span><span class="r-value highlight">${fmt(tax,0)} 元${tax>=10000?' （約 '+fmt(tax/10000,2)+' 萬元）':''}</span></div>
     </div>`;
 
-  if(totalIncrease<=0){
+  if(appreciation<=0){
     html+=`<div class="result-msg success">土地無漲價（或跌價），免徵土地增值稅。</div>`;
   }
 
