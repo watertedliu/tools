@@ -1823,7 +1823,11 @@ function calcNewTax(){
     html+=`<div class="result-msg warning"><strong>自用住宅優惠：</strong>${taxDesc}</div>`;
   }
 
-  html+=`<div class="result-msg warning">⏰ <strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
+  if(identity==='foreign'||identity==='foreignCorp'){
+    html+=`<div class="result-msg warning"><strong>注意：</strong>非境內居住者／境外法人之房地合一稅，由買受人（扣繳義務人）代為申報繳納，應於所有權移轉登記完成之次日起 30 天內辦理。</div>`;
+  }else{
+    html+=`<div class="result-msg warning">⏰ <strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
+  }
   html+=`</div>`;
   document.getElementById('newResult').innerHTML=html;
 }
