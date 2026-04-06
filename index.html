@@ -564,10 +564,6 @@ body{
 
       <div class="section" id="oldExpSec">
         <div class="sec-title"><span class="sec-icon">📑</span> 相關費用</div>
-        <div class="check-row" style="margin-bottom:8px;">
-          <input type="checkbox" id="oldExpAuto">
-          <label for="oldExpAuto">無法舉證，按售價 5% 計算（勾選後免填下方明細）</label>
-        </div>
         <div id="oldExpDetail">
           <div id="oldBuyExpSection">
           <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">🛒</span> 買入時費用（屬取得成本）</div>
@@ -1452,19 +1448,6 @@ function sumOldExpense(){
 }
 
 /* 費用按售價 5% 自動計算 checkbox */
-document.getElementById('oldExpAuto').addEventListener('change',function(){
-  const detail=document.getElementById('oldExpDetail');
-  const totalInp=document.getElementById('oldExpense');
-  if(this.checked){
-    detail.style.display='none';
-    totalInp.value='';
-    totalInp.placeholder='自動按售價 5% 計算';
-  }else{
-    detail.style.display='';
-    totalInp.placeholder='0';
-    sumOldExpense();
-  }
-});
 
 /* 新制費用明細自動加總 */
 document.querySelectorAll('.new-exp-item').forEach(inp=>{
@@ -1525,9 +1508,7 @@ function calcOldTax(){
   if(method==='actual'){
     const sell=parseNum('oldSellPrice');
     const buy=parseNum('oldBuyPrice');
-    const autoExp=document.getElementById('oldExpAuto').checked;
-    const exp=autoExp?(sell*0.05):parseNum('oldExpense');
-    if(autoExp) expNote=`費用按售價 5% 自動計算：${fmtMoney(exp)}`;
+    const exp=parseNum('oldExpense');
 
     /* 取得方式：決定取得成本 */
     const oldMethod=getRadioVal('oldAcquireMethod');
