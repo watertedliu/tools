@@ -760,7 +760,7 @@ body{
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="newAcquireMethodSec">
         <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">📋</span> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px;">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span></div>
         <div class="fg" id="newAcquireMethodRow">
           <div class="radio-group" id="newAcquireMethod" style="flex-wrap:nowrap;">
@@ -1488,7 +1488,7 @@ document.querySelectorAll('.radio-group').forEach(grp=>{
       if(grp.id==='newIdentity'){
         document.getElementById('newSelfUseSec').style.display=btn.dataset.val==='resident'?'':'none';
         const isCorp=btn.dataset.val==='corp'||btn.dataset.val==='foreignCorp';
-        document.getElementById('newAcquireMethodRow').style.display=isCorp?'none':'';
+        document.getElementById('newAcquireMethodSec').style.display=isCorp?'none':'';
         if(isCorp){
           // 重置為自行購買
           document.querySelectorAll('#newAcquireMethod .radio-btn').forEach(b=>b.classList.remove('on'));
