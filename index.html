@@ -361,6 +361,15 @@ body{
 .pdf-page-thumb:hover{opacity:0.85;transform:scale(1.03);}
 .pdf-page-thumb.selected:hover{opacity:1;}
 
+.transfer-summary{display:flex;flex-direction:column;gap:10px;}
+.transfer-row{display:flex;align-items:end;gap:10px;}
+.transfer-op{font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;}
+@media(min-width:769px){
+  .transfer-summary{display:flex;flex-direction:row;align-items:end;gap:10px;flex-wrap:wrap;}
+  .transfer-summary .transfer-row{flex:1;}
+  .transfer-summary .transfer-row:last-child{flex:0 1 auto;min-width:200px;}
+}
+
 /* Responsive */
 @media(max-width:768px){
   .tab-bar{padding:0 6px;}
@@ -368,7 +377,7 @@ body{
   .nav-icon{font-size:14px;}
   .tab-divider{margin:8px 0;}
   .main{padding:16px 14px;}
-  .form-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr 1fr;}
   .form-grid.three{grid-template-columns:1fr 1fr;}
   .result-grid{grid-template-columns:1fr;}
   .header{padding:12px 16px;}
@@ -738,20 +747,24 @@ body{
                   </div>
                 </div>
               </div>
-              <div style="display:flex;align-items:end;gap:10px;">
-                <div class="fg" style="flex:1;">
-                  <label style="font-weight:700;color:var(--text);">費用合計</label>
-                  <div class="input-grp"><input type="text" id="newExpense" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+              <div class="transfer-summary">
+                <div class="transfer-row">
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">費用合計</label>
+                    <div class="input-grp"><input type="text" id="newExpense" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                  </div>
+                  <span class="transfer-op">＋</span>
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">土地漲價總數額</label>
+                    <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+                  </div>
                 </div>
-                <span style="font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;">＋</span>
-                <div class="fg" style="flex:1;">
-                  <label style="font-weight:700;color:var(--text);">土地漲價總數額</label>
-                  <div class="input-grp"><input type="text" id="newLandInc" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-                </div>
-                <span style="font-size:20px;font-weight:700;color:var(--muted);padding-bottom:8px;">＝</span>
-                <div class="fg" style="flex:1;">
-                  <label style="font-weight:700;color:var(--text);">總移轉費用</label>
-                  <div class="input-grp"><input type="text" id="newTotalTransfer" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                <div class="transfer-row">
+                  <span class="transfer-op">＝</span>
+                  <div class="fg" style="flex:1;">
+                    <label style="font-weight:700;color:var(--text);">總移轉費用</label>
+                    <div class="input-grp"><input type="text" id="newTotalTransfer" value="0" readonly style="background:var(--bg);font-weight:700;"><span class="input-sfx">萬元</span></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -787,7 +800,7 @@ body{
         <div class="sec-title"><span class="sec-icon">🏡</span> 自用住宅優惠</div>
         <div class="check-row">
           <input type="checkbox" id="newSelfUse">
-          <label for="newSelfUse">適用自用住宅優惠（課稅所得400萬免稅，超過部分10%）</label>
+          <label for="newSelfUse">自用住宅優惠（課稅所得400萬免稅，超過部分10%）</label>
         </div>
         <div class="info-box" style="margin-top:10px;margin-bottom:0;">
           須同時符合：本人/配偶/未成年子女設籍、持有並居住連續滿6年、無出租無營業、6年內未曾適用。
@@ -1411,6 +1424,7 @@ function calcOldTax(){
       html+=`<div class="result-msg success">本次交易無獲利（虧損 ${fmtMoney(Math.abs(rawIncome))}），虧損可在往後3年的財產交易所得中扣除。</div>`;
     }
 
+    html+=`<div class="result-msg warning">⏰ <strong>申報期限：</strong>隔年 5 月併入綜合所得稅申報。</div>`;
     html+=`</div>`;
   }
 
@@ -1476,9 +1490,12 @@ function calcNewTax(){
   let holdDesc='';
   if(fromDate&&toDate&&toDate>fromDate){
     totalDays=Math.floor((toDate-fromDate)/(1000*60*60*24));
-    const y=Math.floor(totalDays/365);
-    const d=totalDays%365;
-    holdDesc=`${y}年${d}天（共${totalDays}天）`;
+    let hy=toDate.getFullYear()-fromDate.getFullYear();
+    let hm=toDate.getMonth()-fromDate.getMonth();
+    let hd=toDate.getDate()-fromDate.getDate();
+    if(hd<0){ hm--; const prev=new Date(toDate.getFullYear(),toDate.getMonth(),0); hd+=prev.getDate(); }
+    if(hm<0){ hy--; hm+=12; }
+    holdDesc=`${hy}年${hm}個月${hd}天（共${totalDays}天）`;
   }else{
     // fallback: 用手動輸入的年月
     totalDays=(holdY*365)+(holdM*30);
@@ -1497,8 +1514,8 @@ function calcNewTax(){
     if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
     else{rate=0.35;rateDesc='超過2年 → 35%';}
   }else if(identity==='corp'){
-    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
-    else if(totalDays<=1825){rate=0.35;rateDesc='2~5年 → 35%';}
+    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%（併入營所稅）';}
+    else if(totalDays<=1825){rate=0.35;rateDesc='2~5年 → 35%（併入營所稅）';}
     else{rate=0.20;rateDesc='超過5年 → 20%（併入營所稅）';}
   }else if(identity==='foreignCorp'){
     if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
@@ -1546,6 +1563,7 @@ function calcNewTax(){
     html+=`<div class="result-msg warning"><strong>自用住宅優惠：</strong>${taxDesc}</div>`;
   }
 
+  html+=`<div class="result-msg warning">⏰ <strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
   html+=`</div>`;
   document.getElementById('newResult').innerHTML=html;
 }
