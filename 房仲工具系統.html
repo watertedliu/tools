@@ -922,7 +922,7 @@ body{
       <div class="section">
         <div class="sec-title"><span class="sec-icon">📅</span> 持有期間</div>
         <div class="form-grid three" style="margin-bottom:14px;">
-          <div class="fg">
+          <div class="fg" id="newAcquireDateRow">
             <label>取得日期（民國）</label>
             <input type="text" id="newAcquireDate" placeholder="例：100/03/05" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
           </div>
@@ -1371,16 +1371,19 @@ function switchAcquireMethod(method){
   const container=document.getElementById('acquireMethodFields');
   const buyPriceRow=document.getElementById('newBuyPrice').closest('.fg');
   const buyExpSection=document.getElementById('newBuyExpSection');
+  const acquireDateRow=document.getElementById('newAcquireDateRow');
   const subSections=['inheritFields','giftFields'];
   subSections.forEach(id=>document.getElementById(id).style.display='none');
   if(method==='purchase'){
     container.style.display='none';
     buyPriceRow.style.display='';
     buyExpSection.style.display='';
+    acquireDateRow.style.display='';
   }else{
     container.style.display='';
     buyPriceRow.style.display='none';
     buyExpSection.style.display='none';
+    acquireDateRow.style.display='none';
     if(method==='inherit') document.getElementById('inheritFields').style.display='';
     else if(method==='gift') document.getElementById('giftFields').style.display='';
   }
