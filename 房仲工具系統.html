@@ -659,10 +659,10 @@ body{
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">📋</span> 適用版本與身份</div>
-        <div class="form-grid">
+        <div>
           <div class="fg">
             <label>身份</label>
-            <div class="radio-group" id="newIdentity">
+            <div class="radio-group" id="newIdentity" style="flex-wrap:nowrap;">
               <button class="radio-btn on" data-val="resident">境內個人</button>
               <button class="radio-btn" data-val="foreign">境外個人</button>
               <button class="radio-btn" data-val="corp">境內法人</button>
@@ -1469,37 +1469,39 @@ function calcNewTax(){
     expNote=`賣出費用按成交價 3% 自動計算：${fmtMoney(sellAutoExp)}（上限 30 萬）`;
   }
 
-  const totalMonths=holdY*12+holdM;
+  // 用日期精確計算持有天數
+  const fromDate=parseRocDate('newAcquireDate');
+  const toDate=parseRocDate('newTransferDate');
+  let totalDays=0;
+  let holdDesc='';
+  if(fromDate&&toDate&&toDate>fromDate){
+    totalDays=Math.floor((toDate-fromDate)/(1000*60*60*24));
+    const y=Math.floor(totalDays/365);
+    const d=totalDays%365;
+    holdDesc=`${y}年${d}天（共${totalDays}天）`;
+  }else{
+    // fallback: 用手動輸入的年月
+    totalDays=(holdY*365)+(holdM*30);
+    holdDesc=`${holdY}年${holdM}個月（約${totalDays}天）`;
+  }
 
   let rate=0;
   let rateDesc='';
 
   if(identity==='resident'){
-    if(version==='2.0'){
-      if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
-      else if(totalMonths<=60){rate=0.35;rateDesc='2~5年 → 35%';}
-      else if(totalMonths<=120){rate=0.20;rateDesc='5~10年 → 20%';}
-      else{rate=0.15;rateDesc='超過10年 → 15%';}
-    }else{
-      if(totalMonths<=12){rate=0.45;rateDesc='1年以內 → 45%';}
-      else if(totalMonths<=24){rate=0.35;rateDesc='1~2年 → 35%';}
-      else if(totalMonths<=120){rate=0.20;rateDesc='2~10年 → 20%';}
-      else{rate=0.15;rateDesc='超過10年 → 15%';}
-    }
+    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
+    else if(totalDays<=1825){rate=0.35;rateDesc='2~5年 → 35%';}
+    else if(totalDays<=3650){rate=0.20;rateDesc='5~10年 → 20%';}
+    else{rate=0.15;rateDesc='超過10年 → 15%';}
   }else if(identity==='foreign'){
-    if(version==='2.0'){
-      if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
-      else{rate=0.35;rateDesc='超過2年 → 35%';}
-    }else{
-      if(totalMonths<=12){rate=0.45;rateDesc='1年以內 → 45%';}
-      else{rate=0.35;rateDesc='超過1年 → 35%';}
-    }
+    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
+    else{rate=0.35;rateDesc='超過2年 → 35%';}
   }else if(identity==='corp'){
-    if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
-    else if(totalMonths<=60){rate=0.35;rateDesc='2~5年 → 35%';}
+    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
+    else if(totalDays<=1825){rate=0.35;rateDesc='2~5年 → 35%';}
     else{rate=0.20;rateDesc='超過5年 → 20%（併入營所稅）';}
   }else if(identity==='foreignCorp'){
-    if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
+    if(totalDays<=730){rate=0.45;rateDesc='2年以內 → 45%';}
     else{rate=0.35;rateDesc='超過2年 → 35%';}
   }
 
@@ -1526,7 +1528,7 @@ function calcNewTax(){
     <div class="result-title">📊 計算結果（房地合一稅 ${version}）</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">課稅所得</span><span class="r-value">${income>0?fmtMoney(income):'0 元（虧損 '+fmtMoney(Math.abs(income))+'）'}</span></div>
-      <div class="result-item"><span class="r-label">持有期間</span><span class="r-value">${holdY}年${holdM}個月（${totalMonths}個月）</span></div>
+      <div class="result-item"><span class="r-label">持有期間</span><span class="r-value">${holdDesc}</span></div>
       <div class="result-item"><span class="r-label">適用稅率</span><span class="r-value">${selfUse&&income>0?'自用住宅優惠':rateDesc}</span></div>
       <div class="result-item"><span class="r-label">應納稅額</span><span class="r-value highlight">${fmtMoney(tax)}</span></div>`;
 
