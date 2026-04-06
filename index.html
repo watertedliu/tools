@@ -666,6 +666,7 @@ body{
               <button class="radio-btn on" data-val="resident">境內個人</button>
               <button class="radio-btn" data-val="foreign">境外個人</button>
               <button class="radio-btn" data-val="corp">境內法人</button>
+              <button class="radio-btn" data-val="foreignCorp">境外法人</button>
             </div>
           </div>
         </div>
@@ -1493,15 +1494,13 @@ function calcNewTax(){
       if(totalMonths<=12){rate=0.45;rateDesc='1年以內 → 45%';}
       else{rate=0.35;rateDesc='超過1年 → 35%';}
     }
-  }else{
-    if(version==='2.0'){
-      if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
-      else if(totalMonths<=60){rate=0.35;rateDesc='2~5年 → 35%';}
-      else{rate=0.20;rateDesc='超過5年 → 20%（併入營所稅）';}
-    }else{
-      rate=0.20;
-      rateDesc='法人1.0版 → 併入營所稅 20%';
-    }
+  }else if(identity==='corp'){
+    if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
+    else if(totalMonths<=60){rate=0.35;rateDesc='2~5年 → 35%';}
+    else{rate=0.20;rateDesc='超過5年 → 20%（併入營所稅）';}
+  }else if(identity==='foreignCorp'){
+    if(totalMonths<=24){rate=0.45;rateDesc='2年以內 → 45%';}
+    else{rate=0.35;rateDesc='超過2年 → 35%';}
   }
 
   let tax=0;
