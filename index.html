@@ -783,7 +783,6 @@ body{
             <div class="radio-group" id="newAcquireMethod" style="flex-wrap:nowrap;">
               <button class="radio-btn on" data-val="purchase">自行購買</button>
               <button class="radio-btn" data-val="inherit">繼承取得</button>
-              <button class="radio-btn" data-val="inherit2">二次繼承</button>
               <button class="radio-btn" data-val="gift">一般贈與</button>
             </div>
             <span class="hint">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span>
@@ -826,47 +825,7 @@ body{
               <span class="hint">貸款超過公告現值的部分可列為額外負擔扣除</span>
             </div>
           </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併被繼承人持有期間。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
-        </div>
-        <!-- 二次繼承 -->
-        <div id="inherit2Fields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">📜</span> 二次繼承資料</div>
-          <div class="form-grid three" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>繼承時房屋評定現值</label>
-              <div class="input-grp"><input type="text" id="inherit2HouseVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-            </div>
-            <div class="fg">
-              <label>繼承時土地公告現值</label>
-              <div class="input-grp"><input type="text" id="inherit2LandVal" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-            </div>
-            <div class="fg">
-              <label>CPI調整係數</label>
-              <div class="input-grp"><input type="text" id="inherit2CPI" placeholder="例：1.05"></div>
-            </div>
-          </div>
-          <div class="form-grid three" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>原始取得日（民國）</label>
-              <input type="text" id="inherit2OrigDate" placeholder="例：080/01/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
-            </div>
-            <div class="fg">
-              <label>第一次繼承日（民國）</label>
-              <input type="text" id="inherit2Date1" placeholder="例：100/06/15" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
-            </div>
-            <div class="fg">
-              <label>第二次繼承日（民國）</label>
-              <input type="text" id="inherit2Date2" placeholder="例：112/03/20" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
-            </div>
-          </div>
-          <div class="form-grid" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>繼承時貸款餘額（金融機構）</label>
-              <div class="input-grp"><input type="text" id="inherit2Loan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-              <span class="hint">貸款超過公告現值的部分可列為額外負擔扣除</span>
-            </div>
-          </div>
-          <div class="info-box">取得成本以最後一次繼承時公告現值計算。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (最後一次繼承時房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間，「被繼承人取得日」請填最早的取得日。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
         </div>
         <!-- 一般贈與 -->
         <div id="giftFields" style="display:none;">
@@ -1369,7 +1328,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='inherit2OrigDate'||el.id==='inherit2Date1'||el.id==='inherit2Date2'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='inherit2CPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -1440,7 +1399,7 @@ function switchAcquireMethod(method){
   const container=document.getElementById('acquireMethodFields');
   const buyPriceRow=document.getElementById('newBuyPrice').closest('.fg');
   const buyExpSection=document.getElementById('newBuyExpSection');
-  const subSections=['inheritFields','inherit2Fields','giftFields'];
+  const subSections=['inheritFields','giftFields'];
   subSections.forEach(id=>document.getElementById(id).style.display='none');
   if(method==='purchase'){
     container.style.display='none';
@@ -1451,7 +1410,6 @@ function switchAcquireMethod(method){
     buyPriceRow.style.display='none';
     buyExpSection.style.display='none';
     if(method==='inherit') document.getElementById('inheritFields').style.display='';
-    else if(method==='inherit2') document.getElementById('inherit2Fields').style.display='';
     else if(method==='gift') document.getElementById('giftFields').style.display='';
   }
   calcHoldPeriod();
@@ -1745,8 +1703,6 @@ function calcHoldPeriod(){
   const to=parseRocDate('newTransferDate');
   if(method==='inherit'){
     from=parseRocDate('inheritOrigDate');
-  }else if(method==='inherit2'){
-    from=parseRocDate('inherit2OrigDate');
   }else if(method==='gift'){
     from=parseRocDate('giftDate');
   }else{
@@ -1777,13 +1733,6 @@ function calcNewTax(){
     const cpi=parseFloat(document.getElementById('inheritCPI').value)||1;
     buyCost=(hv+lv)*cpi;
     methodLabel='繼承取得';
-    costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
-  }else if(method==='inherit2'){
-    const hv=parseNum('inherit2HouseVal');
-    const lv=parseNum('inherit2LandVal');
-    const cpi=parseFloat(document.getElementById('inherit2CPI').value)||1;
-    buyCost=(hv+lv)*cpi;
-    methodLabel='二次繼承';
     costNote=`(${fmtMoney(hv)} + ${fmtMoney(lv)}) × ${cpi} = ${fmtMoney(buyCost)}`;
   }else if(method==='gift'){
     const hv=parseNum('giftHouseVal');
@@ -1816,15 +1765,6 @@ function calcNewTax(){
       loanBurden=loan-currentVal;
       loanNote=`繼承貸款額外負擔：${fmtMoney(loan)} - ${fmtMoney(currentVal)} = ${fmtMoney(loanBurden)}`;
     }
-  }else if(method==='inherit2'){
-    const loan=parseNum('inherit2Loan');
-    const hv=parseNum('inherit2HouseVal');
-    const lv=parseNum('inherit2LandVal');
-    const currentVal=hv+lv;
-    if(loan>currentVal){
-      loanBurden=loan-currentVal;
-      loanNote=`繼承貸款額外負擔：${fmtMoney(loan)} - ${fmtMoney(currentVal)} = ${fmtMoney(loanBurden)}`;
-    }
   }
 
   let income=sell-buyCost-totalTransfer-loanBurden;
@@ -1838,7 +1778,6 @@ function calcNewTax(){
   // 用日期精確計算持有天數（依取得方式決定起算日）
   let fromDate=null;
   if(method==='inherit') fromDate=parseRocDate('inheritOrigDate');
-  else if(method==='inherit2') fromDate=parseRocDate('inherit2OrigDate');
   else if(method==='gift') fromDate=parseRocDate('giftDate');
   else fromDate=parseRocDate('newAcquireDate');
   const toDate=parseRocDate('newTransferDate');
