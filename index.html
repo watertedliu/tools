@@ -505,14 +505,7 @@ body{
               <div class="input-grp"><input type="text" id="oldInheritCPI" placeholder="例：1.05"></div>
             </div>
           </div>
-          <div class="form-grid" style="margin-bottom:14px;">
-            <div class="fg">
-              <label>繼承時貸款餘額（金融機構）</label>
-              <div class="input-grp"><input type="text" id="oldInheritLoan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-              <span class="hint">貸款超過公告現值的部分可列為額外負擔扣除</span>
-            </div>
-          </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;">👉 查詢CPI調整係數（財政部）</a></div>
         </div>
         <!-- 夫妻贈與 -->
         <!-- 一般贈與 -->
@@ -1539,15 +1532,12 @@ function calcOldTax(){
     /* 取得方式：決定取得成本 */
     const oldMethod=getRadioVal('oldAcquireMethod');
     let buyCost=buy;
-    let oldLoanBurden=0;
 
     if(oldMethod==='inherit'){
       const hv=parseNum('oldInheritHouseVal');
       const lv=parseNum('oldInheritLandVal');
       const cpi=parseFloat(document.getElementById('oldInheritCPI').value)||1;
       buyCost=(hv+lv)*cpi;
-      const loan=parseNum('oldInheritLoan');
-      if(loan>(hv+lv)) oldLoanBurden=loan-(hv+lv);
     }else if(oldMethod==='gift'){
       const hv=parseNum('oldGiftHouseVal');
       const lv=parseNum('oldGiftLandVal');
@@ -1566,7 +1556,7 @@ function calcOldTax(){
       ratioNote='未填房屋/土地現值，預設以全額計算（建議填入以精確分離房屋所得）';
     }
 
-    const totalGain=sell-buyCost-exp-oldLoanBurden;
+    const totalGain=sell-buyCost-exp;
     rawIncome=totalGain*houseRatio;
     income=Math.max(rawIncome,0);
   }else{
