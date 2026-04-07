@@ -67,19 +67,26 @@ body{
 .header-sub{font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.3px;}
 
 /* Layout */
-.layout{display:flex;flex-direction:column;min-height:calc(100vh - 51px);position:relative;z-index:1;padding-top:98px;}
+.layout{display:flex;flex-direction:column;min-height:calc(100vh - 51px);position:relative;z-index:1;padding-top:145px;}
 
-/* Tab bar (原 Sidebar 改為頂部標籤列) */
-.tab-bar{
+/* Tab bar (兩行頁籤列) */
+.tab-bar-wrap{
+  position:fixed;top:51px;left:0;right:0;z-index:99;
   background:#FFFFFF;
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 8px rgba(0,0,0,0.04);
-  padding:0 20px;
-  position:fixed;top:51px;left:0;right:0;z-index:99;
+}
+.tab-bar{
   display:flex;align-items:stretch;justify-content:center;gap:0;
+  padding:0 20px;
   overflow-x:auto;
   scrollbar-width:none;
+  background:transparent;
+  border-bottom:1px solid var(--border);
 }
+.tab-bar:last-child{border-bottom:none;}
+.tab-bar .nav-btn{flex:1;justify-content:center;max-width:180px;}
+.tab-bar .tab-divider{display:none;}
 .tab-bar::-webkit-scrollbar{display:none;}
 .tab-bar-label{display:none;}
 .nav-btn{
@@ -404,9 +411,9 @@ body{
 
 /* Responsive */
 @media(max-width:768px){
-  .tab-bar{padding:0 6px;justify-content:flex-start;}
-  .nav-btn{padding:10px 14px;font-size:14px;gap:5px;}
-  .nav-icon{font-size:14px;}
+  .tab-bar{padding:0 6px;justify-content:center;}
+  .tab-bar .nav-btn{max-width:none;padding:8px 10px;font-size:13px;gap:4px;}
+  .nav-icon{font-size:13px;}
   .tab-divider{margin:8px 0;}
   .main{padding:16px 14px;}
   .form-grid{grid-template-columns:1fr 1fr !important;}
@@ -416,8 +423,8 @@ body{
   .header-title{font-size:14px;letter-spacing:2px;}
   .header-sep{display:none;}
   .header-sub{display:none;}
-  .tab-bar{top:39px;}
-  .layout{padding-top:85px;}
+  .tab-bar-wrap{top:39px;}
+  .layout{padding-top:120px;}
   .page-title{font-size:18px;}
   .section{padding:14px;}
   .radio-group{flex-wrap:wrap !important;}
@@ -430,10 +437,14 @@ body{
   .transfer-fg{width:auto !important;flex:1;min-width:120px;}
   .transfer-summary-row{flex-wrap:wrap;}
   .form-grid.land-grid{grid-template-columns:1fr !important;}
+  /* 買方/賣方費用 */
+  .bc-row{grid-template-columns:1fr auto;gap:10px;}
+  .bc-result{font-size:14px;padding:8px 12px;min-width:auto;}
+  .bc-row .hint{display:none;}
 }
 @media(max-width:400px){
-  .nav-btn{padding:9px 10px;font-size:13px;gap:4px;}
-  .nav-icon{font-size:13px;}
+  .tab-bar .nav-btn{padding:7px 6px;font-size:12px;gap:3px;}
+  .nav-icon{font-size:12px;}
   .header-title{font-size:13px;letter-spacing:1px;}
   .form-grid{grid-template-columns:1fr 1fr !important;}
   .form-grid.three{grid-template-columns:1fr 1fr !important;}
@@ -441,6 +452,8 @@ body{
   .section{padding:12px;}
   .radio-btn{padding:5px 10px;font-size:12px;}
   .page-title{font-size:16px;}
+  .bc-row{grid-template-columns:1fr;gap:6px;}
+  .bc-result{justify-self:start;}
 }
 </style>
 </head>
@@ -458,36 +471,38 @@ body{
 
 <div class="layout">
   <!-- Tab Bar -->
-  <div class="tab-bar">
-    <button class="nav-btn active" data-page="oldTax">
-      <span class="nav-icon">🏠</span>舊制所得稅
-    </button>
-    <button class="nav-btn" data-page="newTax">
-      <span class="nav-icon">🏢</span>房地合一稅
-    </button>
-    <button class="nav-btn" data-page="landTax">
-      <span class="nav-icon">🏗️</span>土地增值稅
-    </button>
-    <div class="tab-divider"></div>
-    <button class="nav-btn" data-page="estateTax">
-      <span class="nav-icon">📜</span>其他稅法
-    </button>
-    <div class="tab-divider"></div>
-    <button class="nav-btn" data-page="mortgage">
-      <span class="nav-icon">🏦</span>房貸試算
-    </button>
-    <div class="tab-divider"></div>
-    <button class="nav-btn" data-page="buyerCost">
-      <span class="nav-icon">🧾</span>買方費用
-    </button>
-    <button class="nav-btn" data-page="sellerCost">
-      <span class="nav-icon">💰</span>賣方費用
-    </button>
-    <div class="tab-divider"></div>
-    <button class="nav-btn" data-page="dealFlow">
-      <span class="nav-icon">📋</span>成交流程
-    </button>
-    <div class="tab-divider"></div>
+  <div class="tab-bar-wrap">
+    <div class="tab-bar">
+      <button class="nav-btn active" data-page="oldTax">
+        <span class="nav-icon">🏠</span>舊制所得稅
+      </button>
+      <button class="nav-btn" data-page="newTax">
+        <span class="nav-icon">🏢</span>房地合一稅
+      </button>
+      <button class="nav-btn" data-page="landTax">
+        <span class="nav-icon">🏗️</span>土地增值稅
+      </button>
+      <div class="tab-divider"></div>
+      <button class="nav-btn" data-page="estateTax">
+        <span class="nav-icon">📜</span>其他稅法
+      </button>
+    </div>
+    <div class="tab-bar">
+      <button class="nav-btn" data-page="buyerCost">
+        <span class="nav-icon">🧾</span>買方費用
+      </button>
+      <button class="nav-btn" data-page="sellerCost">
+        <span class="nav-icon">💰</span>賣方費用
+      </button>
+      <div class="tab-divider"></div>
+      <button class="nav-btn" data-page="dealFlow">
+        <span class="nav-icon">📋</span>成交流程
+      </button>
+      <div class="tab-divider"></div>
+      <button class="nav-btn" data-page="mortgage">
+        <span class="nav-icon">🏦</span>房貸試算
+      </button>
+    </div>
   </div>
 
   <!-- Main Content -->
