@@ -289,6 +289,14 @@ body{
   padding-bottom:8px;
 }
 
+/* Fee info toggle */
+/* 桌機：隱藏按鈕，說明直接顯示 */
+.bc-info-btn{display:none;}
+.bc-info-content{
+  font-size:11px;color:var(--muted);
+  padding:6px 0 2px 2px;line-height:1.6;
+}
+
 /* Calc Button */
 .btn-calc{
   display:block;width:100%;padding:14px;
@@ -440,7 +448,16 @@ body{
   /* 買方/賣方費用 */
   .bc-row{grid-template-columns:1fr auto;gap:10px;}
   .bc-result{font-size:14px;padding:8px 12px;min-width:auto;}
-  .bc-row .hint{display:none;}
+  .bc-info-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--bg);border:1px solid var(--border);
+    color:var(--muted);font-size:13px;font-weight:700;
+    cursor:pointer;flex-shrink:0;align-self:end;margin-bottom:6px;
+  }
+  .bc-info-btn.on{background:var(--deep);color:#FAFAF9;border-color:var(--deep);}
+  .bc-info-content{display:none;}
+  .bc-info-content.on{display:block;}
 }
 @media(max-width:400px){
   .tab-bar .nav-btn{padding:7px 6px;font-size:12px;gap:3px;}
@@ -1548,33 +1565,45 @@ body{
       <div class="section">
         <div class="sec-title"><span class="sec-icon">📌</span> 代書費</div>
         <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
-          <div class="bc-row">
-            <div class="fg">
-              <label>簽約金</label>
-              <div class="input-grp"><input type="text" id="bcSignFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>簽約金</label>
+                <div class="input-grp"><input type="text" id="bcSignFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：1,000 元｜買、賣雙方各 1,000 元</span>
+            <div class="bc-info-content">參考：1,000 元｜買、賣雙方各 1,000 元</div>
           </div>
-          <div class="bc-row">
-            <div class="fg">
-              <label>產權移轉登記</label>
-              <div class="input-grp"><input type="text" id="bcTransferFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>產權移轉登記</label>
+                <div class="input-grp"><input type="text" id="bcTransferFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：14,000 元｜一筆土地一棟建物。土地每增加一筆加收 $1,000，建物每增加一棟加收 $2,000。產權所有人為一人以上時，每多一人加收 1,500 元</span>
+            <div class="bc-info-content">參考：14,000 元｜一筆土地一棟建物。土地每增加一筆加收 $1,000，建物每增加一棟加收 $2,000。產權所有人為一人以上時，每多一人加收 1,500 元</div>
           </div>
-          <div class="bc-row">
-            <div class="fg">
-              <label>抵押權設定登記</label>
-              <div class="input-grp"><input type="text" id="bcMortgageRegFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>抵押權設定登記</label>
+                <div class="input-grp"><input type="text" id="bcMortgageRegFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：6,000 元｜一筆土地一棟建物。土地建物每增加一筆或一棟加收 1/4</span>
+            <div class="bc-info-content">參考：6,000 元｜一筆土地一棟建物。土地建物每增加一筆或一棟加收 1/4</div>
           </div>
-          <div class="bc-row">
-            <div class="fg">
-              <label>實價登錄</label>
-              <div class="input-grp"><input type="text" id="bcActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>實價登錄</label>
+                <div class="input-grp"><input type="text" id="bcActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜買賣雙方各半</span>
+            <div class="bc-info-content">參考：2,000 元｜買賣雙方各半</div>
           </div>
         </div>
         <div class="bc-row">
@@ -1622,26 +1651,35 @@ body{
       <div class="section">
         <div class="sec-title"><span class="sec-icon">📌</span> 代書費</div>
         <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
-          <div class="bc-row">
-            <div class="fg">
-              <label>簽約金</label>
-              <div class="input-grp"><input type="text" id="scSignFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>簽約金</label>
+                <div class="input-grp"><input type="text" id="scSignFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：1,000 元｜買、賣雙方各 1,000 元</span>
+            <div class="bc-info-content">參考：1,000 元｜買、賣雙方各 1,000 元</div>
           </div>
-          <div class="bc-row">
-            <div class="fg">
-              <label>塗銷登記</label>
-              <div class="input-grp"><input type="text" id="scCancelFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>塗銷登記</label>
+                <div class="input-grp"><input type="text" id="scCancelFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜一筆土地一棟建物 2,000 元。土地建物每增加一筆或一棟加收 1/4</span>
+            <div class="bc-info-content">參考：2,000 元｜一筆土地一棟建物 2,000 元。土地建物每增加一筆或一棟加收 1/4</div>
           </div>
-          <div class="bc-row">
-            <div class="fg">
-              <label>實價登錄</label>
-              <div class="input-grp"><input type="text" id="scActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+          <div class="bc-fee-item">
+            <div class="bc-row">
+              <div class="fg">
+                <label>實價登錄</label>
+                <div class="input-grp"><input type="text" id="scActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+              </div>
+              <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜買賣雙方各半</span>
+            <div class="bc-info-content">參考：2,000 元｜買賣雙方各半</div>
           </div>
         </div>
         <div class="bc-row">
@@ -2363,6 +2401,13 @@ document.querySelectorAll('#otherTaxTab .radio-btn').forEach(btn=>{
 });
 
 /* ========== 謄本欄位對照指南 toggle ========== */
+function toggleFeeInfo(btn){
+  const item=btn.closest('.bc-fee-item');
+  const content=item.querySelector('.bc-info-content');
+  btn.classList.toggle('on');
+  content.classList.toggle('on');
+}
+
 function toggleGuide(el){
   const content=el.nextElementSibling;
   if(content.classList.contains('on')){
