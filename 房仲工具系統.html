@@ -161,7 +161,7 @@ body{
 }
 .fg select{cursor:pointer;}
 .fg input::-webkit-outer-spin-button,.fg input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.fg .hint{font-size:11px;color:var(--muted);margin-top:1px;padding-left:2px;}
+.hint{font-size:11px;color:var(--muted);margin-top:1px;padding-left:2px;}
 
 .input-grp{display:flex;align-items:stretch;}
 .input-grp input{border-radius:var(--radius-xs) 0 0 var(--radius-xs);flex:1;min-width:0;text-align:center;}
@@ -257,6 +257,29 @@ body{
   height:100%;border-radius:2px;
   background:linear-gradient(90deg,#57534E,#78716C);
   transition:width 0.6s ease;
+}
+
+/* Buyer cost inline row */
+.bc-row{
+  display:grid;grid-template-columns:280px auto;gap:16px;align-items:end;
+}
+.bc-row .fg{margin-bottom:0;}
+.bc-result{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xs);
+  padding:10px 16px;
+  font-size:16px;font-weight:700;color:var(--text);
+  white-space:nowrap;
+  justify-self:start;
+  height:40px;display:flex;align-items:center;
+  margin-bottom:0;
+  transition:all 0.2s;
+}
+.bc-auto-hint{
+  font-size:13px;color:var(--muted);font-weight:500;
+  align-self:end;
+  padding-bottom:8px;
 }
 
 /* Calc Button */
@@ -371,6 +394,7 @@ body{
 @media(min-width:769px){
   .land-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 18px;}
   .land-fields .fg{margin-bottom:0 !important;}
+  .land-fields .fg:nth-child(3),.land-fields .fg:nth-child(5){grid-column:1;}
 }
 @media(min-width:769px){
   .transfer-summary{display:flex;flex-direction:row;align-items:end;gap:10px;flex-wrap:wrap;}
@@ -451,6 +475,17 @@ body{
     <div class="tab-divider"></div>
     <button class="nav-btn" data-page="mortgage">
       <span class="nav-icon">🏦</span>房貸試算
+    </button>
+    <div class="tab-divider"></div>
+    <button class="nav-btn" data-page="buyerCost">
+      <span class="nav-icon">🧾</span>買方費用
+    </button>
+    <button class="nav-btn" data-page="sellerCost">
+      <span class="nav-icon">💰</span>賣方費用
+    </button>
+    <div class="tab-divider"></div>
+    <button class="nav-btn" data-page="dealFlow">
+      <span class="nav-icon">📋</span>成交流程
     </button>
     <div class="tab-divider"></div>
   </div>
@@ -762,7 +797,7 @@ body{
       </div>
 
       <div class="section" id="newAcquireMethodSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">📋</span> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px;">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">📋</span> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span></div>
         <div class="fg" id="newAcquireMethodRow">
           <div class="radio-group" id="newAcquireMethod" style="flex-wrap:nowrap;">
             <button class="radio-btn on" data-val="purchase">自行購買</button>
@@ -952,10 +987,10 @@ body{
       </div>
 
       <div class="section" id="newSelfUseSec">
-        <div class="sec-title"><span class="sec-icon">🏡</span> 自用住宅優惠</div>
+        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">🏡</span> 自用住宅優惠<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">課稅所得400萬免稅，超過部分10%</span></div>
         <div class="check-row">
           <input type="checkbox" id="newSelfUse">
-          <label for="newSelfUse">自用住宅優惠<br>（課稅所得400萬免稅，超過部分10%）</label>
+          <label for="newSelfUse">自用住宅優惠</label>
         </div>
         <div class="info-box" style="margin-top:10px;margin-bottom:0;">
           須同時符合：本人/配偶/未成年子女設籍、持有並居住連續滿6年、無出租無營業、6年內未曾適用。
@@ -1411,6 +1446,221 @@ body{
       <button class="btn-calc primary" onclick="calcMortgage()">計算房貸</button>
 
       <div id="mortgageResult"></div>
+    </div>
+
+    <!-- ========== 買方買房費用 ========== -->
+    <div class="page" id="page-buyerCost">
+      <div class="page-title"><span class="icon">🧾</span> 買方買房應付費用</div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 契稅 ＝ 房屋評定現值 × 6%</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>房屋評定現值</label>
+            <div class="input-grp"><input type="text" id="bcHouseValue" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+
+          <span class="bc-result" id="bcR_deed">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 房屋印花稅 ＝ 建物買賣契約金額 × 0.1%</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>建物買賣契約金額</label>
+            <div class="input-grp"><input type="text" id="bcBuildingContract" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+
+          <span class="bc-result" id="bcR_buildStamp">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 土地印花稅 ＝ 土地公告現值總額 × 0.1%</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>土地公告現值總額</label>
+            <div class="input-grp"><input type="text" id="bcLandDeclValue" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+
+          <span class="bc-result" id="bcR_landStamp">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 登記規費 ＝（房屋現值 ＋ 土地現值）× 0.1%</div>
+        <div class="bc-row">
+          <span class="bc-auto-hint">自動依上方房屋評定現值＋土地公告現值計算</span>
+
+          <span class="bc-result" id="bcR_regFee">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 設定規費 ＝ 抵押權設定金額 × 0.1%</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>抵押權設定金額</label>
+            <div class="input-grp"><input type="text" id="bcMortgageAmt" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+          <span class="bc-result" id="bcR_mortReg">0 元</span>
+        </div>
+        <span class="hint">通常為貸款金額的 1.2 倍</span>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 書狀費 ＝ 每張 80 元（建物＋土地各 1 張）</div>
+        <div class="bc-row">
+          <span class="bc-auto-hint">預設 2 張，如有多筆土地請自行加計</span>
+
+          <span class="bc-result" id="bcR_cert">160 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 履保開戶費 ＝ 成交總價 × 萬分之六 ÷ 2（買賣雙方各半）</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>買賣總價</label>
+            <div class="input-grp"><input type="text" id="bcTotalPrice" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">萬元</span></div>
+          </div>
+
+          <span class="bc-result" id="bcR_escrow">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 代書費</div>
+        <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
+          <div class="bc-row">
+            <div class="fg">
+              <label>簽約金</label>
+              <div class="input-grp"><input type="text" id="bcSignFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：1,000 元｜買、賣雙方各 1,000 元</span>
+          </div>
+          <div class="bc-row">
+            <div class="fg">
+              <label>產權移轉登記</label>
+              <div class="input-grp"><input type="text" id="bcTransferFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：14,000 元｜一筆土地一棟建物。土地每增加一筆加收 $1,000，建物每增加一棟加收 $2,000。產權所有人為一人以上時，每多一人加收 1,500 元</span>
+          </div>
+          <div class="bc-row">
+            <div class="fg">
+              <label>抵押權設定登記</label>
+              <div class="input-grp"><input type="text" id="bcMortgageRegFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：6,000 元｜一筆土地一棟建物。土地建物每增加一筆或一棟加收 1/4</span>
+          </div>
+          <div class="bc-row">
+            <div class="fg">
+              <label>實價登錄</label>
+              <div class="input-grp"><input type="text" id="bcActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜買賣雙方各半</span>
+          </div>
+        </div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>代書費小計</label>
+          </div>
+          <span class="bc-result" id="bcR_scriv">0 元</span>
+        </div>
+      </div>
+
+      <div class="section" style="background:var(--deep);border-color:var(--deep);text-align:center;">
+        <div style="font-size:15px;font-weight:800;color:#FAFAF9;letter-spacing:1px;margin-bottom:10px;">買方應付費用合計</div>
+        <span class="bc-result" id="bcR_total" style="color:#FAFAF9;font-size:22px;font-weight:800;background:var(--deep);border-color:var(--deep);display:inline-flex;">160 元</span>
+      </div>
+
+    </div>
+
+    <!-- ========== 賣方應付費用 ========== -->
+    <div class="page" id="page-sellerCost">
+      <div class="page-title"><span class="icon">💰</span> 賣方應付費用</div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 土地增值稅</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>土地增值稅</label>
+            <div class="input-grp"><input type="text" id="scLandTax" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+          <span class="bc-result" id="scR_landTax">0 元</span>
+        </div>
+        <span class="hint">可至「土地增值稅」頁籤試算後填入</span>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 履保費 ＝ 成交總價 × 萬分之六 ÷ 2（買賣雙方各半）</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>買賣總價</label>
+            <div class="input-grp"><input type="text" id="scTotalPrice" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">萬元</span></div>
+          </div>
+          <span class="bc-result" id="scR_escrow">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 代書費</div>
+        <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
+          <div class="bc-row">
+            <div class="fg">
+              <label>簽約金</label>
+              <div class="input-grp"><input type="text" id="scSignFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：1,000 元｜買、賣雙方各 1,000 元</span>
+          </div>
+          <div class="bc-row">
+            <div class="fg">
+              <label>塗銷登記</label>
+              <div class="input-grp"><input type="text" id="scCancelFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜一筆土地一棟建物 2,000 元。土地建物每增加一筆或一棟加收 1/4</span>
+          </div>
+          <div class="bc-row">
+            <div class="fg">
+              <label>實價登錄</label>
+              <div class="input-grp"><input type="text" id="scActualPriceFee" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+            </div>
+            <span class="hint" style="flex:1;align-self:end;padding-bottom:8px;">參考：2,000 元｜買賣雙方各半</span>
+          </div>
+        </div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>代書費小計</label>
+          </div>
+          <span class="bc-result" id="scR_scriv">0 元</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-icon">📌</span> 出售所得稅</div>
+        <div class="bc-row">
+          <div class="fg">
+            <label>出售所得稅</label>
+            <div class="input-grp"><input type="text" id="scIncomeTax" placeholder="0" inputmode="numeric" oninput="calcSellerCostLive()"><span class="input-sfx">元</span></div>
+          </div>
+          <span class="bc-result" id="scR_incomeTax">0 元</span>
+        </div>
+        <span class="hint">可至「舊制所得稅」或「房地合一稅」頁籤試算後填入</span>
+      </div>
+
+      <div class="section" style="background:var(--deep);border-color:var(--deep);text-align:center;">
+        <div style="font-size:15px;font-weight:800;color:#FAFAF9;letter-spacing:1px;margin-bottom:10px;">賣方應付費用合計</div>
+        <span class="bc-result" id="scR_total" style="color:#FAFAF9;font-size:22px;font-weight:800;background:var(--deep);border-color:var(--deep);display:inline-flex;">0 元</span>
+      </div>
+    </div>
+
+    <!-- ========== 成交流程 ========== -->
+    <div class="page" id="page-dealFlow">
+      <div class="page-title"><span class="icon">📋</span> 成交條件預定表</div>
+      <div class="section" style="padding:12px;text-align:center;">
+        <img src="成交條件預定表.jpg" alt="成交條件預定表" style="max-width:100%;border-radius:var(--radius-xs);">
+      </div>
     </div>
 
 
@@ -2235,6 +2485,57 @@ function autoFillCPI(){
   if(cpi!=null){
     el.value=cpi;
   }
+}
+
+/* ========== 買方費用即時試算 ========== */
+function calcBuyerCostLive(){
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
+  const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
+
+  const houseValue=g('bcHouseValue');
+  const buildingContract=g('bcBuildingContract');
+  const landDeclValue=g('bcLandDeclValue');
+  const totalPrice=g('bcTotalPrice')*10000;
+  const mortgageAmt=g('bcMortgageAmt');
+  const scrivenerFee=g('bcSignFee')+g('bcTransferFee')+g('bcMortgageRegFee')+g('bcActualPriceFee');
+
+  const deedTax=houseValue*0.06;
+  const buildingStamp=buildingContract*0.001;
+  const landStamp=landDeclValue*0.001;
+  const regFee=(houseValue+landDeclValue)*0.001;
+  const mortgageRegFee=mortgageAmt*0.001;
+  const certFee=160;
+  const escrowFee=totalPrice*0.0006/2;
+  const total=deedTax+buildingStamp+landStamp+regFee+mortgageRegFee+certFee+escrowFee+scrivenerFee;
+
+  document.getElementById('bcR_deed').textContent=f(deedTax);
+  document.getElementById('bcR_buildStamp').textContent=f(buildingStamp);
+  document.getElementById('bcR_landStamp').textContent=f(landStamp);
+  document.getElementById('bcR_regFee').textContent=f(regFee);
+  document.getElementById('bcR_mortReg').textContent=f(mortgageRegFee);
+  document.getElementById('bcR_cert').textContent=f(certFee);
+  document.getElementById('bcR_escrow').textContent=f(escrowFee);
+  document.getElementById('bcR_scriv').textContent=f(scrivenerFee);
+  document.getElementById('bcR_total').textContent=f(total);
+}
+
+/* ========== 賣方費用即時試算 ========== */
+function calcSellerCostLive(){
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
+  const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
+
+  const landTax=g('scLandTax');
+  const totalPrice=g('scTotalPrice')*10000;
+  const escrowFee=totalPrice*0.0006/2;
+  const scrivenerFee=g('scSignFee')+g('scCancelFee')+g('scActualPriceFee');
+  const incomeTax=g('scIncomeTax');
+  const total=landTax+escrowFee+scrivenerFee+incomeTax;
+
+  document.getElementById('scR_landTax').textContent=f(landTax);
+  document.getElementById('scR_escrow').textContent=f(escrowFee);
+  document.getElementById('scR_scriv').textContent=f(scrivenerFee);
+  document.getElementById('scR_incomeTax').textContent=f(incomeTax);
+  document.getElementById('scR_total').textContent=f(total);
 }
 
 function calcLandHoldYears(){
