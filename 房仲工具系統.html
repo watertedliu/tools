@@ -1142,7 +1142,7 @@ body{
           <div class="fg" style="margin-bottom:14px;">
             <label>消費者物價總指數</label>
             <div class="input-grp"><input type="text" id="landCPI" placeholder="例：105.00" inputmode="decimal"><span class="input-sfx">%</span></div>
-            <span class="hint">依財政部公告之物價總指數百分比</span>
+            <span class="hint">依115年4月財政部公告之物價總指數百分比</span>
           </div>
           <div class="fg" style="margin-bottom:14px;">
             <label>土地宗地面積</label>
@@ -2632,43 +2632,35 @@ function calcLandTax(){
   const shareRatio=(shareNum>0&&shareDen>0)?(shareNum/shareDen):1;
   const totalArea=area*shareRatio;
 
-  /* 申報移轉現值總額 */
-  const currentTotal=currValue*totalArea;
+  /* 申報移轉現值總額（無條件捨去） */
+  const currentTotal=Math.floor(currValue*totalArea);
 
-  /* 物價指數調整後的前次移轉現值總額 */
+  /* 物價指數調整後的前次移轉現值總額（無條件捨去） */
   const cpiRate=(cpi>0)?(cpi/100):1;
   const prevAdjustedUnit=prevValue*cpiRate;
-  const prevAdjustedTotal=prevAdjustedUnit*totalArea;
+  const prevAdjustedTotal=Math.floor(prevAdjustedUnit*totalArea);
 
   /* 漲價總數額 */
   const appreciation=Math.max(currentTotal-prevAdjustedTotal,0);
 
-  /* 原地價總額（未調整，用於計算漲價倍數） */
-  const origBase=prevValue*totalArea;
-
-  /* === 一般用地計算 === */
+  /* === 一般用地計算（以物價調整後原地價為漲價倍數基準） === */
   let generalTax=0;
   let generalDetail='';
-  if(origBase<=0){
+  if(prevAdjustedTotal<=0){
     generalTax=appreciation*0.20;
     generalDetail='原地價為0，全額適用 20%';
   }else{
-    const ratio=appreciation/origBase;
-    let t1=0,t2=0,t3=0;
+    const ratio=appreciation/prevAdjustedTotal;
     if(ratio<=1){
-      t1=appreciation*0.20;
-      generalDetail=`漲價倍數 ${ratio.toFixed(2)}（未超過100%）→ 全額 20%`;
+      generalTax=appreciation*0.20;
+      generalDetail=`漲價倍數 ${ratio.toFixed(3)}（未超過100%）→ 漲價總數額 × 20%`;
     }else if(ratio<=2){
-      t1=origBase*0.20;
-      t2=(appreciation-origBase)*0.30;
-      generalDetail=`漲價倍數 ${ratio.toFixed(2)}（100%~200%）→ 20% + 30%`;
+      generalTax=appreciation*0.30-prevAdjustedTotal*0.10;
+      generalDetail=`漲價倍數 ${ratio.toFixed(3)}（100%~200%）→ 漲價總數額 × 30% − 調整後原地價 × 10%`;
     }else{
-      t1=origBase*0.20;
-      t2=origBase*0.30;
-      t3=(appreciation-origBase*2)*0.40;
-      generalDetail=`漲價倍數 ${ratio.toFixed(2)}（超過200%）→ 20% + 30% + 40%`;
+      generalTax=appreciation*0.40-prevAdjustedTotal*0.30;
+      generalDetail=`漲價倍數 ${ratio.toFixed(3)}（超過200%）→ 漲價總數額 × 40% − 調整後原地價 × 30%`;
     }
-    generalTax=t1+t2+t3;
   }
 
   /* 長期持有減徵 */
@@ -2692,10 +2684,10 @@ function calcLandTax(){
     <div class="result-grid">
       <div class="result-item"><span class="r-label">土地公告現值（元/m²）</span><span class="r-value">${fmt(currValue,0)} 元</span></div>
       <div class="result-item"><span class="r-label">前次移轉現值（元/m²）</span><span class="r-value">${fmt(prevValue,0)} 元</span></div>
-      <div class="result-item"><span class="r-label">物價指數調整後原地價（元/m²）</span><span class="r-value">${fmt(Math.round(prevAdjustedUnit),0)} 元</span></div>
-      <div class="result-item"><span class="r-label">移轉面積</span><span class="r-value">${totalArea.toFixed(4)} m²（${area} × ${shareNum||1}/${shareDen||1}）</span></div>
-      <div class="result-item"><span class="r-label">申報移轉現值總額</span><span class="r-value">${fmt(Math.round(currentTotal),0)} 元</span></div>
-      <div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(Math.round(appreciation),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">物價指數調整後原地價（元/m²）</span><span class="r-value">${fmt(Math.floor(prevAdjustedUnit),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">移轉面積</span><span class="r-value">${totalArea.toFixed(2)} m²（${area} × ${shareNum||1}/${shareDen||1}）</span></div>
+      <div class="result-item"><span class="r-label">申報移轉現值總額</span><span class="r-value">${fmt(currentTotal,0)} 元</span></div>
+      <div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(appreciation,0)} 元</span></div>
     </div>
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
     <div class="result-grid">
