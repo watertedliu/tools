@@ -77,15 +77,18 @@ body{
   box-shadow:0 2px 8px rgba(0,0,0,0.04);
 }
 .tab-bar{
-  display:flex;align-items:stretch;justify-content:center;gap:0;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  align-items:stretch;
+  gap:0;
   padding:0 20px;
-  overflow-x:auto;
-  scrollbar-width:none;
+  max-width:760px;
+  margin:0 auto;
   background:transparent;
   border-bottom:1px solid var(--border);
 }
 .tab-bar:last-child{border-bottom:none;}
-.tab-bar .nav-btn{flex:1;justify-content:center;max-width:180px;}
+.tab-bar .nav-btn{justify-content:center;width:100%;}
 .tab-bar .tab-divider{display:none;}
 .tab-bar::-webkit-scrollbar{display:none;}
 .tab-bar-label{display:none;}
@@ -417,22 +420,22 @@ body{
   .transfer-summary .transfer-row:last-child{flex:0 1 auto;min-width:200px;}
 }
 
+/* ══ 手機底部 Bar (桌面預設隱藏) ══ */
+.mobile-bottom-bar{display:none;}
+.mobile-bar-overlay{display:none;}
+.mobile-bar-submenu{display:none;}
+
 /* Responsive */
 @media(max-width:768px){
-  .tab-bar{padding:0 6px;justify-content:center;}
-  .tab-bar .nav-btn{max-width:none;padding:8px 10px;font-size:13px;gap:4px;}
-  .nav-icon{font-size:13px;}
-  .tab-divider{margin:8px 0;}
+  /* 手機版：隱藏桌面 header 和頂部 tab-bar，改用底部 bar */
+  .header{display:none;}
+  .tab-bar-wrap{display:none;}
+  .layout{padding-top:16px;padding-bottom:90px;}
+
   .main{padding:16px 14px;}
   .form-grid{grid-template-columns:1fr 1fr !important;}
   .form-grid.three{grid-template-columns:1fr 1fr !important;}
   .result-grid{grid-template-columns:1fr;}
-  .header{padding:10px 14px;}
-  .header-title{font-size:14px;letter-spacing:2px;}
-  .header-sep{display:none;}
-  .header-sub{display:none;}
-  .tab-bar-wrap{top:39px;}
-  .layout{padding-top:120px;}
   .page-title{font-size:18px;}
   .section{padding:14px;}
   .radio-group{flex-wrap:wrap !important;}
@@ -460,11 +463,82 @@ body{
   .bc-info-btn.on{background:var(--deep);color:#FAFAF9;border-color:var(--deep);}
   .bc-info-content{display:none;}
   .bc-info-content.on{display:block;}
+
+  /* ── 手機底部 Bar ── */
+  .mobile-bottom-bar{
+    display:flex;
+    position:fixed;left:0;right:0;bottom:0;
+    background:#FFFFFF;
+    z-index:200;
+    padding:8px 14px calc(8px + env(safe-area-inset-bottom));
+    box-shadow:0 -4px 16px rgba(0,0,0,.08);
+    justify-content:space-around;
+    align-items:stretch;
+    gap:6px;
+    border-top:1px solid var(--border);
+  }
+  .mobile-bar-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;padding:8px 4px;
+    border:none;background:transparent;
+    cursor:pointer;font-family:inherit;
+    color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.3px;
+    border-radius:var(--radius-sm);
+    transition:all .2s;
+    position:relative;
+  }
+  .mobile-bar-btn .mbar-icon{font-size:22px;line-height:1;}
+  .mobile-bar-btn:hover{color:var(--text);background:var(--bg);}
+  .mobile-bar-btn.active{color:var(--deep);}
+  .mobile-bar-btn.active::before{
+    content:"";position:absolute;top:2px;left:50%;transform:translateX(-50%);
+    width:28px;height:3px;background:var(--deep);border-radius:2px;
+  }
+
+  /* 底部 bar 彈出的子選單 */
+  .mobile-bar-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:201;
+    animation:mbarFadeIn .2s ease;
+  }
+  .mobile-bar-overlay.on{display:block;}
+  .mobile-bar-submenu{
+    display:none;
+    position:fixed;left:10px;right:10px;
+    bottom:calc(80px + env(safe-area-inset-bottom));
+    background:#FFFFFF;
+    border-radius:var(--radius);
+    padding:14px;
+    z-index:202;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    animation:mbarSlideUp .25s ease;
+  }
+  .mobile-bar-submenu.on{display:block;}
+  .mobile-bar-submenu h4{
+    font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px;padding:0 6px;
+  }
+  .mobile-bar-submenu button{
+    display:flex;align-items:center;gap:10px;
+    width:100%;padding:14px 16px;
+    border:1px solid var(--border);background:var(--bg);
+    border-radius:var(--radius-sm);
+    font-family:inherit;font-size:15px;font-weight:700;
+    color:var(--text);cursor:pointer;
+    margin-bottom:8px;
+    transition:all .2s;
+  }
+  .mobile-bar-submenu button:last-child{margin-bottom:0;}
+  .mobile-bar-submenu button:hover,.mobile-bar-submenu button.active{
+    background:var(--deep);color:#FAFAF9;border-color:var(--deep);
+  }
+  .mobile-bar-submenu button .sub-icon{font-size:20px;}
+  @keyframes mbarFadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes mbarSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 }
 @media(max-width:400px){
-  .tab-bar .nav-btn{padding:7px 6px;font-size:12px;gap:3px;}
-  .nav-icon{font-size:12px;}
-  .header-title{font-size:13px;letter-spacing:1px;}
   .form-grid{grid-template-columns:1fr 1fr !important;}
   .form-grid.three{grid-template-columns:1fr 1fr !important;}
   .form-grid.land-grid{grid-template-columns:1fr !important;}
@@ -473,6 +547,8 @@ body{
   .page-title{font-size:16px;}
   .bc-row{grid-template-columns:1fr;gap:6px;}
   .bc-result{justify-self:start;}
+  .mobile-bar-btn{font-size:10px;}
+  .mobile-bar-btn .mbar-icon{font-size:20px;}
 }
 </style>
 </head>
@@ -1722,6 +1798,28 @@ body{
   </div>
 </div>
 
+<!-- ══ 手機底部 Bar（桌面預設隱藏） ══ -->
+<div class="mobile-bottom-bar">
+  <button class="mobile-bar-btn" data-mgroup="tax">
+    <span class="mbar-icon">🧮</span>
+    <span>稅務</span>
+  </button>
+  <button class="mobile-bar-btn" data-mgroup="cost">
+    <span class="mbar-icon">💰</span>
+    <span>費用</span>
+  </button>
+  <button class="mobile-bar-btn" data-mpage="dealFlow">
+    <span class="mbar-icon">📋</span>
+    <span>流程</span>
+  </button>
+  <button class="mobile-bar-btn" data-mpage="mortgage">
+    <span class="mbar-icon">🏦</span>
+    <span>房貸</span>
+  </button>
+</div>
+<div class="mobile-bar-overlay" id="mobileBarOverlay" onclick="closeMobileSubmenu()"></div>
+<div class="mobile-bar-submenu" id="mobileBarSubmenu"></div>
+
 <script>
 /* ========== Utility ========== */
 function parseNum(id){
@@ -1751,15 +1849,100 @@ document.addEventListener('input',function(e){
 });
 
 /* ========== Nav ========== */
+// 底部 bar：哪一頁屬於哪一個群組
+var MOBILE_GROUP_MAP = {
+  tax:  ['oldTax','newTax','landTax','estateTax'],
+  cost: ['buyerCost','sellerCost']
+};
+var MOBILE_GROUP_LABELS = {
+  tax: [
+    { page:'oldTax',    icon:'🏠',   label:'舊制所得稅' },
+    { page:'newTax',    icon:'🏢',   label:'房地合一稅' },
+    { page:'landTax',   icon:'🏗️', label:'土地增值稅' },
+    { page:'estateTax', icon:'📜',   label:'其他稅法'   }
+  ],
+  cost: [
+    { page:'buyerCost',  icon:'🧾', label:'買方費用' },
+    { page:'sellerCost', icon:'💰', label:'賣方費用' }
+  ]
+};
+
+function switchToPage(pageName){
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.page===pageName);
+  });
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  var el=document.getElementById('page-'+pageName);
+  if(el) el.classList.add('active');
+  updateMobileBarActive(pageName);
+  window.scrollTo(0,0);
+}
+
+function updateMobileBarActive(pageName){
+  document.querySelectorAll('.mobile-bar-btn').forEach(b=>{
+    b.classList.remove('active');
+    if(b.dataset.mpage===pageName){
+      b.classList.add('active');
+    } else if(b.dataset.mgroup){
+      var list=MOBILE_GROUP_MAP[b.dataset.mgroup]||[];
+      if(list.indexOf(pageName)>-1) b.classList.add('active');
+    }
+  });
+}
+
+// 頂部 nav-btn 綁事件
 document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>switchToPage(btn.dataset.page));
+});
+
+// 底部 bar：直接切頁（流程、房貸）
+document.querySelectorAll('.mobile-bar-btn[data-mpage]').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('page-'+btn.dataset.page).classList.add('active');
-    window.scrollTo(0,0);
+    closeMobileSubmenu();
+    switchToPage(btn.dataset.mpage);
   });
 });
+
+// 底部 bar：彈出子選單（稅務、費用）
+document.querySelectorAll('.mobile-bar-btn[data-mgroup]').forEach(btn=>{
+  btn.addEventListener('click',()=>openMobileSubmenu(btn.dataset.mgroup));
+});
+
+function openMobileSubmenu(group){
+  var items=MOBILE_GROUP_LABELS[group]||[];
+  if(items.length===0) return;
+  var curPage=(document.querySelector('.page.active')||{}).id||'';
+  curPage=curPage.replace(/^page-/,'');
+  var menu=document.getElementById('mobileBarSubmenu');
+  var title=group==='tax'?'稅務試算':'費用試算';
+  var html='<h4>'+title+'</h4>';
+  items.forEach(function(it){
+    var act=(it.page===curPage)?' class="active"':'';
+    html+='<button data-mp="'+it.page+'"'+act+'>' +
+          '<span class="sub-icon">'+it.icon+'</span>' +
+          '<span>'+it.label+'</span></button>';
+  });
+  menu.innerHTML=html;
+  menu.classList.add('on');
+  document.getElementById('mobileBarOverlay').classList.add('on');
+  menu.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      switchToPage(b.dataset.mp);
+      closeMobileSubmenu();
+    });
+  });
+}
+
+function closeMobileSubmenu(){
+  document.getElementById('mobileBarSubmenu').classList.remove('on');
+  document.getElementById('mobileBarOverlay').classList.remove('on');
+}
+
+// 初始化：進頁面時讓底部 bar 的 active 對到目前頁
+(function initMobileBar(){
+  var curPage=(document.querySelector('.page.active')||{}).id||'page-oldTax';
+  updateMobileBarActive(curPage.replace(/^page-/,''));
+})();
 
 /* ========== Radio Group ========== */
 document.querySelectorAll('.radio-group').forEach(grp=>{
