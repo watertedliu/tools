@@ -450,7 +450,11 @@ body{
     font-size:12px;
     border-radius:var(--radius-xs);
   }
+  .sm-br{display:block;}
+  .sm-hide{display:none;}
 }
+.sm-br{display:none;}
+.sm-hide{display:inline;}
 @media(max-width:400px){
   #otherTaxTab{
     grid-template-columns:repeat(2, 1fr);
@@ -1683,7 +1687,7 @@ body{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">📌</span> 履保開戶費 ＝ 成交總價 × 萬分之六 ÷ 2（買賣雙方各半）</div>
+        <div class="sec-title"><span class="sec-icon">📌</span> 履保開戶費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
         <div class="bc-row">
           <div class="fg">
             <label>買賣總價</label>
@@ -1735,7 +1739,7 @@ body{
               </div>
               <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <div class="bc-info-content">參考：2,000 元｜買賣雙方各半</div>
+            <div class="bc-info-content">參考：2,000 元｜買賣雙方</div>
           </div>
         </div>
         <div class="bc-row">
@@ -1770,7 +1774,7 @@ body{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">📌</span> 履保費 ＝ 成交總價 × 萬分之六 ÷ 2（買賣雙方各半）</div>
+        <div class="sec-title"><span class="sec-icon">📌</span> 履保費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
         <div class="bc-row">
           <div class="fg">
             <label>買賣總價</label>
@@ -1811,7 +1815,7 @@ body{
               </div>
               <span class="bc-info-btn" onclick="toggleFeeInfo(this)">?</span>
             </div>
-            <div class="bc-info-content">參考：2,000 元｜買賣雙方各半</div>
+            <div class="bc-info-content">參考：2,000 元｜買賣雙方</div>
           </div>
         </div>
         <div class="bc-row">
