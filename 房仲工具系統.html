@@ -3139,5 +3139,10 @@ function searchRate114(){
   box.innerHTML='<div style="border:2px solid #B45309;border-radius:8px;overflow:hidden;max-height:180px;overflow-y:auto;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">'+html+'</div>';
 }
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(function(){});
+}
+</script>
 </body>
 </html>
