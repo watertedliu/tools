@@ -739,7 +739,11 @@ body{
 /* 進入列印模式：CSS 無條件生效，不依賴 JS 加 class
    這樣 iOS Safari 和所有瀏覽器的 window.print() 都能套用 */
 @media print{
-  @page{size:A4;margin:12mm 10mm 14mm 10mm;}
+  /* 縮小頁面邊距，讓內容有更多空間（對短報告塞進一頁特別重要）*/
+  @page{size:A4;margin:8mm 8mm 8mm 8mm;}
+
+  /* iOS Safari 會把 orphans/widows 用在計算分頁時機，設 1 可以減少無意義分頁 */
+  *{orphans:1;widows:1;}
 
   /* 1. 隱藏所有干擾性螢幕元素（導覽、底部 bar、overlay 等） */
   .bg-layer,
@@ -796,12 +800,12 @@ body{
     display:block !important;margin-top:8px;
   }
 
-  /* 7. 列印時顯示 print-header / print-footer — 精品深藍金色風 */
+  /* 7. 列印時顯示 print-header / print-footer — 精品深藍金色風（已壓縮尺寸） */
   .printable-result .print-header{
     display:block !important;
     text-align:center;
-    padding:20px 24px 18px 24px;
-    margin-bottom:18px;
+    padding:14px 20px 12px 20px;
+    margin-bottom:12px;
     background:linear-gradient(135deg,#1a3a5c 0%,#2a5a8c 100%) !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
     border-radius:6px;
@@ -811,63 +815,64 @@ body{
   .printable-result .print-header::after{
     content:'';
     display:block;
-    width:80px;height:2px;
+    width:70px;height:2px;
     background:#c8a45a;
-    margin:10px auto 0 auto;
+    margin:7px auto 0 auto;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
   .printable-result .print-header .title{
-    font-size:22px;font-weight:800;color:#FFFFFF !important;letter-spacing:3px;
-    margin-bottom:6px;
+    font-size:18px;font-weight:800;color:#FFFFFF !important;letter-spacing:2px;
+    margin-bottom:4px;
+    line-height:1.3;
   }
   .printable-result .print-header .date{
-    font-size:11px;color:#c8a45a !important;letter-spacing:1px;
+    font-size:10px;color:#c8a45a !important;letter-spacing:0.5px;
   }
   .printable-result .print-footer{
     display:block !important;
-    margin-top:12px;padding-top:10px;
+    margin-top:8px;padding-top:6px;
     border-top:1px solid #c8a45a !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    font-size:11px;color:#666;line-height:1.5;text-align:center;
+    font-size:10px;color:#666;line-height:1.4;text-align:center;
     page-break-before:avoid;
     break-before:avoid;
   }
 
-  /* 8. 結果卡片：精品風 — 深藍邊框 + 淡底 + 無 shadow */
+  /* 8. 結果卡片：精品風 — 深藍邊框 + 淡底 + 無 shadow（已壓縮尺寸） */
   .printable-result .result-box{
     background:#FFFFFF !important;
     box-shadow:none !important;
     border:1px solid #1a3a5c !important;
     border-left:1px solid #1a3a5c !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    padding:16px 20px !important;margin-top:0 !important;
+    padding:12px 16px !important;margin-top:0 !important;
     page-break-inside:avoid;
   }
   .printable-result .result-title{
-    font-size:14px;color:#1a3a5c !important;margin-bottom:14px;
-    padding-left:10px !important;
+    font-size:12px;color:#1a3a5c !important;margin-bottom:10px;
+    padding-left:8px !important;
     border-left:3px solid #c8a45a !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
   .printable-result .result-grid{
-    grid-template-columns:1fr 1fr !important;gap:6px !important;
+    grid-template-columns:1fr 1fr !important;gap:5px !important;
   }
   .printable-result .result-item{
     background:#FAFAF9 !important;
     border:1px solid #DDD !important;
-    padding:10px 12px !important;
+    padding:7px 10px !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
   .printable-result .result-item .r-label{
-    font-size:11px;color:#666 !important;
+    font-size:10px;color:#666 !important;
   }
   .printable-result .result-item .r-value{
-    font-size:14px;color:#1a3a5c !important;
+    font-size:13px;color:#1a3a5c !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
   .printable-result .result-item .r-value.highlight{
-    color:#1a3a5c !important;font-size:17px;font-weight:800;
-    padding:4px 10px !important;
+    color:#1a3a5c !important;font-size:15px;font-weight:800;
+    padding:3px 8px !important;
     border:2px solid #c8a45a !important;
     border-radius:4px !important;
     background:#FFFBF0 !important;
