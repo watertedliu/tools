@@ -2789,8 +2789,8 @@ function calcMortgage(){
     <div class="result-item"><span class="r-label">末月還款</span><span class="r-value green">${fmt(Math.round(lastRepay.payment),0)} 元</span></div>`;
   }
 
-  html+=`<div class="result-item"><span class="r-label">總利息支出</span><span class="r-value">${fmt(Math.round(totalInterest),0)} 元（${fmt(totalInterest/10000,2)} 萬）</span></div>
-      <div class="result-item"><span class="r-label">總還款金額</span><span class="r-value">${fmt(Math.round(totalPayment),0)} 元（${fmt(totalPayment/10000,2)} 萬）</span></div>
+  html+=`<div class="result-item"><span class="r-label">總利息支出</span><span class="r-value">${fmt(Math.round(totalInterest),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">總還款金額</span><span class="r-value">${fmt(Math.round(totalPayment),0)} 元</span></div>
     </div>
   </div>`;
 
@@ -3276,12 +3276,12 @@ function calcLandTax(){
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
     <div class="result-grid">
       <div class="result-item full"><span class="r-label">【一般用地】稅率適用</span><span class="r-value" style="font-size:13px;font-weight:600;">${generalDetail}</span></div>
-      <div class="result-item full"><span class="r-label">【一般用地】應納土地增值稅</span><span class="r-value highlight">${fmt(generalTax,0)} 元${generalTax>=10000?' （約 '+fmt(generalTax/10000,2)+' 萬元）':''}</span></div>
+      <div class="result-item full"><span class="r-label">【一般用地】應納土地增值稅</span><span class="r-value highlight">${fmt(generalTax,0)} 元</span></div>
     </div>
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
     <div class="result-grid">
       <div class="result-item full"><span class="r-label">【自用住宅用地】優惠稅率 10%</span><span class="r-value" style="font-size:13px;font-weight:600;">一生一次 / 一生一屋</span></div>
-      <div class="result-item full"><span class="r-label">【自用住宅用地】應納土地增值稅</span><span class="r-value highlight">${fmt(selfUseTax,0)} 元${selfUseTax>=10000?' （約 '+fmt(selfUseTax/10000,2)+' 萬元）':''}</span></div>
+      <div class="result-item full"><span class="r-label">【自用住宅用地】應納土地增值稅</span><span class="r-value highlight">${fmt(selfUseTax,0)} 元</span></div>
     </div>`;
 
   if(appreciation<=0){
