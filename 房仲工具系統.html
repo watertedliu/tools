@@ -736,53 +736,63 @@ body{
 /* 平常隱藏、列印時顯示的區塊（例如買方/賣方費用的動態報告容器）*/
 .hidden-for-screen{display:none;}
 
-/* 進入列印模式時：body.printing-report + data-print-target="<pageId>" 決定要印哪一頁 */
+/* 進入列印模式：CSS 無條件生效，不依賴 JS 加 class
+   這樣 iOS Safari 和所有瀏覽器的 window.print() 都能套用 */
 @media print{
   @page{size:A4;margin:12mm 10mm 14mm 10mm;}
 
-  /* 隱藏干擾性容器（頂部導覽、底部 bar 等），保留 layout 路徑 */
-  body.printing-report .bg-layer,
-  body.printing-report .header,
-  body.printing-report .mobile-bottom-bar,
-  body.printing-report .mobile-bar-overlay,
-  body.printing-report .mobile-bar-submenu,
-  body.printing-report .nav,
-  body.printing-report .nav-mobile{
+  /* 1. 隱藏所有干擾性螢幕元素（導覽、底部 bar、overlay 等） */
+  .bg-layer,
+  .header,
+  .tab-bar-wrap,
+  .mobile-bottom-bar,
+  .mobile-bar-overlay,
+  .mobile-bar-submenu,
+  .nav,
+  .nav-mobile{
     display:none !important;
   }
 
-  /* 讓 layout / main 變成透明容器 */
-  body.printing-report .layout,
-  body.printing-report .main{
+  /* 2. 讓 body / layout / main 重置 padding 和 margin，撐滿紙張 */
+  html, body{
+    background:#FFFFFF !important;
+    margin:0 !important;padding:0 !important;
+  }
+  .layout{
+    display:block !important;
+    padding:0 !important;margin:0 !important;
+    min-height:0 !important;
+    background:transparent !important;
+  }
+  .main{
     display:block !important;
     padding:0 !important;margin:0 !important;
     width:100% !important;max-width:none !important;
     background:transparent !important;
   }
 
-  /* 隱藏所有 .page，JS 會用 data-print-target 選中當前要印的頁面 */
-  body.printing-report .page{display:none !important;}
-  body.printing-report .page.print-target{
+  /* 3. 只顯示當前 active 的 page，隱藏其他 */
+  .page{display:none !important;}
+  .page.active{
     display:block !important;
     padding:0 !important;margin:0 !important;width:100% !important;max-width:none !important;
   }
 
-  /* print-target 頁面內部：隱藏所有子元素，只保留 .printable-result
-     用後代選擇器 + * 確保任何深度都被隱藏 */
-  body.printing-report .page.print-target > *{display:none !important;}
-  body.printing-report .page.print-target > .printable-result{display:block !important;}
+  /* 4. active page 內部只保留 .printable-result，隱藏輸入區、計算按鈕、頁面標題等 */
+  .page.active > *{display:none !important;}
+  .page.active > .printable-result{display:block !important;}
 
-  /* 結果容器內：隱藏螢幕專用的 toggle 按鈕和「下載 PDF」按鈕 */
-  body.printing-report .printable-result .toggle-detail{display:none !important;}
-  body.printing-report .printable-result .btn-calc{display:none !important;}
+  /* 5. 結果容器內：隱藏螢幕專用的 toggle 按鈕和「下載 PDF」按鈕 */
+  .printable-result .toggle-detail{display:none !important;}
+  .printable-result .btn-calc{display:none !important;}
 
-  /* 列印時強制展開攤還表、明細區 */
-  body.printing-report .printable-result .detail-content{
+  /* 6. 列印時強制展開 detail-content（攤還表等）*/
+  .printable-result .detail-content{
     display:block !important;margin-top:8px;
   }
 
-  /* 列印時顯示 print-header / print-footer — 精品深藍金色風 */
-  body.printing-report .printable-result .print-header{
+  /* 7. 列印時顯示 print-header / print-footer — 精品深藍金色風 */
+  .printable-result .print-header{
     display:block !important;
     text-align:center;
     padding:20px 24px 18px 24px;
@@ -793,7 +803,7 @@ body{
     border:none;
     position:relative;
   }
-  body.printing-report .printable-result .print-header::after{
+  .printable-result .print-header::after{
     content:'';
     display:block;
     width:80px;height:2px;
@@ -801,14 +811,14 @@ body{
     margin:10px auto 0 auto;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
-  body.printing-report .printable-result .print-header .title{
+  .printable-result .print-header .title{
     font-size:22px;font-weight:800;color:#FFFFFF !important;letter-spacing:3px;
     margin-bottom:6px;
   }
-  body.printing-report .printable-result .print-header .date{
+  .printable-result .print-header .date{
     font-size:11px;color:#c8a45a !important;letter-spacing:1px;
   }
-  body.printing-report .printable-result .print-footer{
+  .printable-result .print-footer{
     display:block !important;
     margin-top:20px;padding-top:12px;
     border-top:1px solid #c8a45a !important;
@@ -816,38 +826,39 @@ body{
     font-size:11px;color:#666;line-height:1.6;text-align:center;
   }
 
-  /* 結果卡片：精品風 — 深藍邊框 + 淡底 + 無 shadow */
-  body.printing-report .printable-result .result-box{
+  /* 8. 結果卡片：精品風 — 深藍邊框 + 淡底 + 無 shadow */
+  .printable-result .result-box{
     background:#FFFFFF !important;
     box-shadow:none !important;
     border:1px solid #1a3a5c !important;
+    border-left:1px solid #1a3a5c !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
     padding:16px 20px !important;margin-top:0 !important;
     page-break-inside:avoid;
   }
-  body.printing-report .printable-result .result-title{
+  .printable-result .result-title{
     font-size:14px;color:#1a3a5c !important;margin-bottom:14px;
     padding-left:10px !important;
     border-left:3px solid #c8a45a !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
-  body.printing-report .printable-result .result-grid{
-    grid-template-columns:1fr 1fr;gap:6px;
+  .printable-result .result-grid{
+    grid-template-columns:1fr 1fr !important;gap:6px !important;
   }
-  body.printing-report .printable-result .result-item{
+  .printable-result .result-item{
     background:#FAFAF9 !important;
     border:1px solid #DDD !important;
     padding:10px 12px !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
-  body.printing-report .printable-result .result-item .r-label{
+  .printable-result .result-item .r-label{
     font-size:11px;color:#666 !important;
   }
-  body.printing-report .printable-result .result-item .r-value{
+  .printable-result .result-item .r-value{
     font-size:14px;color:#1a3a5c !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
-  body.printing-report .printable-result .result-item .r-value.highlight{
+  .printable-result .result-item .r-value.highlight{
     color:#1a3a5c !important;font-size:17px;font-weight:800;
     padding:4px 10px !important;
     border:2px solid #c8a45a !important;
@@ -856,35 +867,35 @@ body{
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
 
-  /* 攤還表：移除捲動、恢復完整表格、自動分頁 */
-  body.printing-report .printable-result .amort-wrap{
+  /* 9. 攤還表：強制移除捲動容器、完整顯示、自動分頁 */
+  .printable-result .amort-wrap{
     max-height:none !important;
     overflow:visible !important;
     border:1px solid #999 !important;
-    margin-top:10px;
+    margin-top:10px !important;
   }
-  body.printing-report .printable-result .amort-table{
-    width:100%;font-size:9px !important;border-collapse:collapse;
+  .printable-result .amort-table{
+    width:100% !important;font-size:9px !important;border-collapse:collapse !important;
   }
-  body.printing-report .printable-result .amort-table thead{
-    display:table-header-group;
+  .printable-result .amort-table thead{
+    display:table-header-group !important;
   }
-  body.printing-report .printable-result .amort-table tr{
+  .printable-result .amort-table tr{
     page-break-inside:avoid;
   }
-  body.printing-report .printable-result .amort-table th{
+  .printable-result .amort-table th{
     background:#EEEEEE !important;color:#333 !important;
     padding:6px 6px !important;
     border:1px solid #999 !important;
     position:static !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
-  body.printing-report .printable-result .amort-table td{
+  .printable-result .amort-table td{
     padding:4px 6px !important;
     border:1px solid #DDD !important;
     color:#222 !important;
   }
-  body.printing-report .printable-result .amort-table tr.grace td{
+  .printable-result .amort-table tr.grace td{
     background:#FEF3C7 !important;color:#92400E !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
@@ -2971,15 +2982,18 @@ function calcMortgage(){
 }
 
 /* ========== 通用 PDF 下載函式 ==========
- * pageId: 要列印的分頁 ID（例如 'page-mortgage'、'page-landTax'）
+ * pageId: 要列印的分頁 ID（保留參數以相容買方/賣方費用的呼叫方式）
  * fileTitle: PDF 檔名（會設為 document.title）
- * 會自動展開所有 detail-content（攤還表等）
+ * 注意：CSS @media print 已改為無條件生效，不再依賴 body class 或 print-target。
+ * 這樣 iOS Safari 也能正確套用列印樣式（iOS 在列印對話框會 reset 動態加的 class）。
+ * 此函式只需要：設 title、展開攤還表、呼叫 window.print()。
  */
 function downloadReportPDF(pageId, fileTitle){
   const origTitle=document.title;
   document.title=fileTitle;
 
   // 展開所有 detail-content（攤還表之類的收合區塊）
+  // 這個要在呼叫 window.print() 前做，因為 CSS 的強制展開可能在某些瀏覽器下失效
   const page=document.getElementById(pageId);
   const expandedDetails=[];
   if(page){
@@ -2989,21 +3003,16 @@ function downloadReportPDF(pageId, fileTitle){
         expandedDetails.push(d);
       }
     });
-    // 標記此頁為 print-target
-    page.classList.add('print-target');
   }
 
-  // 進入列印模式
-  document.body.classList.add('printing-report');
-
-  // 觸發列印對話框
+  // 觸發列印對話框（CSS @media print 會自動套用）
   window.print();
 
-  // 列印完還原
-  document.body.classList.remove('printing-report');
-  if(page) page.classList.remove('print-target');
-  expandedDetails.forEach(d=>d.classList.remove('on'));
-  document.title=origTitle;
+  // 列印完還原 — 用 setTimeout 避免某些瀏覽器在 print() 還沒完成就執行
+  setTimeout(function(){
+    expandedDetails.forEach(d=>d.classList.remove('on'));
+    document.title=origTitle;
+  },500);
 }
 
 /* 房貸試算專用的下載函式：組合檔名並呼叫通用函式 */
