@@ -1,4 +1,4 @@
-var CACHE_NAME = 'tools-v1';
+var CACHE_NAME = 'tools-v2';
 var URLS_TO_CACHE = [
   './',
   './index.html',
