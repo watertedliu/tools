@@ -780,7 +780,12 @@ body{
 
   /* 4. active page 內部只保留 .printable-result，隱藏輸入區、計算按鈕、頁面標題等 */
   .page.active > *{display:none !important;}
-  .page.active > .printable-result{display:block !important;}
+  .page.active > .printable-result{
+    display:block !important;
+    /* 避免內容不多時 iOS Safari 硬塞成兩頁（留一頁空白）*/
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
 
   /* 5. 結果容器內：隱藏螢幕專用的 toggle 按鈕和「下載 PDF」按鈕 */
   .printable-result .toggle-detail{display:none !important;}
@@ -820,10 +825,12 @@ body{
   }
   .printable-result .print-footer{
     display:block !important;
-    margin-top:20px;padding-top:12px;
+    margin-top:12px;padding-top:10px;
     border-top:1px solid #c8a45a !important;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
-    font-size:11px;color:#666;line-height:1.6;text-align:center;
+    font-size:11px;color:#666;line-height:1.5;text-align:center;
+    page-break-before:avoid;
+    break-before:avoid;
   }
 
   /* 8. 結果卡片：精品風 — 深藍邊框 + 淡底 + 無 shadow */
