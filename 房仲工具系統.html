@@ -617,6 +617,9 @@ body{
 .print-footer,
 .print-only{display:none;}
 
+/* 平常隱藏、列印時顯示的區塊（例如買方/賣方費用的動態報告容器）*/
+.hidden-for-screen{display:none;}
+
 /* 進入列印模式時：body.printing-report + data-print-target="<pageId>" 決定要印哪一頁 */
 @media print{
   @page{size:A4;margin:12mm 10mm 14mm 10mm;}
@@ -1888,6 +1891,11 @@ body{
         <span class="bc-result" id="bcR_total" style="color:#FAFAF9;font-size:22px;font-weight:800;background:var(--deep);border-color:var(--deep);display:inline-flex;">160 元</span>
       </div>
 
+      <!-- PDF 報告容器（平常隱藏，列印時 CSS 會覆寫顯示） -->
+      <div id="buyerCostReport" class="printable-result hidden-for-screen"></div>
+
+      <button class="btn-calc primary" onclick="downloadBuyerCostPDF()">📄 下載 PDF 報告</button>
+
     </div>
 
     <!-- ========== 賣方應付費用 ========== -->
@@ -1975,6 +1983,11 @@ body{
         <div style="font-size:15px;font-weight:800;color:#FAFAF9;letter-spacing:1px;margin-bottom:10px;">賣方應付費用合計</div>
         <span class="bc-result" id="scR_total" style="color:#FAFAF9;font-size:22px;font-weight:800;background:var(--deep);border-color:var(--deep);display:inline-flex;">0 元</span>
       </div>
+
+      <!-- PDF 報告容器（平常隱藏，列印時 CSS 會覆寫顯示） -->
+      <div id="sellerCostReport" class="printable-result hidden-for-screen"></div>
+
+      <button class="btn-calc primary" onclick="downloadSellerCostPDF()">📄 下載 PDF 報告</button>
     </div>
 
     <!-- ========== 成交流程 ========== -->
@@ -3069,6 +3082,102 @@ function calcSellerCostLive(){
   document.getElementById('scR_scriv').textContent=f(scrivenerFee);
   document.getElementById('scR_incomeTax').textContent=f(incomeTax);
   document.getElementById('scR_total').textContent=f(total);
+}
+
+/* ========== 買方/賣方費用 PDF 報告生成 ========== */
+// 把即時計算的結果生成成「標準結果卡片」塞進 hidden 容器，然後列印
+function buildBuyerCostReport(){
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
+  const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
+
+  const houseValue=g('bcHouseValue');
+  const buildingContract=g('bcBuildingContract');
+  const landDeclValue=g('bcLandDeclValue');
+  const totalPrice=g('bcTotalPrice')*10000;
+  const mortgageAmt=g('bcMortgageAmt');
+  const scrivenerFee=g('bcSignFee')+g('bcTransferFee')+g('bcMortgageRegFee')+g('bcActualPriceFee');
+
+  const deedTax=houseValue*0.06;
+  const buildingStamp=buildingContract*0.001;
+  const landStamp=landDeclValue*0.001;
+  const regFee=(houseValue+landDeclValue)*0.001;
+  const mortgageRegFee=mortgageAmt*0.001;
+  const certFee=160;
+  const escrowFee=totalPrice*0.0006/2;
+  const total=deedTax+buildingStamp+landStamp+regFee+mortgageRegFee+certFee+escrowFee+scrivenerFee;
+
+  let html=`<div class="print-header">
+    <div class="title">🧾 買方應付費用試算報告</div>
+    <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  html+=`<div class="result-box">
+    <div class="result-title">📊 買方應付費用明細</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">契稅（房屋評定現值 × 6%）</span><span class="r-value">${f(deedTax)}</span></div>
+      <div class="result-item"><span class="r-label">建物契約印花稅</span><span class="r-value">${f(buildingStamp)}</span></div>
+      <div class="result-item"><span class="r-label">土地公告現值印花稅</span><span class="r-value">${f(landStamp)}</span></div>
+      <div class="result-item"><span class="r-label">所有權登記規費</span><span class="r-value">${f(regFee)}</span></div>
+      <div class="result-item"><span class="r-label">抵押權設定登記規費</span><span class="r-value">${f(mortgageRegFee)}</span></div>
+      <div class="result-item"><span class="r-label">權狀書狀費</span><span class="r-value">${f(certFee)}</span></div>
+      <div class="result-item"><span class="r-label">履約保證費（買方負擔 1/2）</span><span class="r-value">${f(escrowFee)}</span></div>
+      <div class="result-item"><span class="r-label">代書費（合計）</span><span class="r-value">${f(scrivenerFee)}</span></div>
+      <div class="result-item full"><span class="r-label">買方應付費用總計</span><span class="r-value highlight">${f(total)}</span></div>
+    </div>
+  </div>`;
+
+  html+=`<div class="print-footer">
+    本試算結果僅供參考，實際費用以各項收費單位核定為準。
+  </div>`;
+
+  document.getElementById('buyerCostReport').innerHTML=html;
+}
+
+function buildSellerCostReport(){
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
+  const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
+
+  const landTax=g('scLandTax');
+  const totalPrice=g('scTotalPrice')*10000;
+  const escrowFee=totalPrice*0.0006/2;
+  const scrivenerFee=g('scSignFee')+g('scCancelFee')+g('scActualPriceFee');
+  const incomeTax=g('scIncomeTax');
+  const total=landTax+escrowFee+scrivenerFee+incomeTax;
+
+  let html=`<div class="print-header">
+    <div class="title">💰 賣方應付費用試算報告</div>
+    <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  html+=`<div class="result-box">
+    <div class="result-title">📊 賣方應付費用明細</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">土地增值稅</span><span class="r-value">${f(landTax)}</span></div>
+      <div class="result-item"><span class="r-label">履約保證費（賣方負擔 1/2）</span><span class="r-value">${f(escrowFee)}</span></div>
+      <div class="result-item"><span class="r-label">代書費（合計）</span><span class="r-value">${f(scrivenerFee)}</span></div>
+      <div class="result-item"><span class="r-label">出售所得稅</span><span class="r-value">${f(incomeTax)}</span></div>
+      <div class="result-item full"><span class="r-label">賣方應付費用總計</span><span class="r-value highlight">${f(total)}</span></div>
+    </div>
+  </div>`;
+
+  html+=`<div class="print-footer">
+    本試算結果僅供參考，實際費用以各項收費單位核定為準。
+  </div>`;
+
+  document.getElementById('sellerCostReport').innerHTML=html;
+}
+
+function downloadBuyerCostPDF(){
+  buildBuyerCostReport();
+  const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  // 讓 hidden 容器在列印時可見（CSS 有 !important 會覆寫 inline style:none）
+  downloadReportPDF('page-buyerCost', `買方應付費用試算_${dateStr}`);
+}
+
+function downloadSellerCostPDF(){
+  buildSellerCostReport();
+  const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  downloadReportPDF('page-sellerCost', `賣方應付費用試算_${dateStr}`);
 }
 
 function calcLandHoldYears(){
