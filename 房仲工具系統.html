@@ -875,11 +875,19 @@ body{
   }
 
   /* 9. 攤還表：強制移除捲動容器、完整顯示、自動分頁 */
+  /* 特殊保護：當 .printable-result 含有攤還表時，覆寫 page-break-inside:avoid，
+     因為攤還表必須允許跨頁（360 期根本塞不進一頁）*/
+  .printable-result:has(.amort-wrap){
+    page-break-inside:auto !important;
+    break-inside:auto !important;
+  }
   .printable-result .amort-wrap{
     max-height:none !important;
     overflow:visible !important;
     border:1px solid #999 !important;
     margin-top:10px !important;
+    page-break-inside:auto;
+    break-inside:auto;
   }
   .printable-result .amort-table{
     width:100% !important;font-size:9px !important;border-collapse:collapse !important;
