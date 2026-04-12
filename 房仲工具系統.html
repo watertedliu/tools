@@ -678,6 +678,7 @@ body::before{
   .page-title{font-size:18px;}
   .section{padding:14px;}
   .radio-group{flex-wrap:wrap !important;}
+  .radio-group-4{display:grid !important;grid-template-columns:1fr 1fr;gap:6px;}
   .radio-btn{padding:6px 14px;font-size:13px;}
   body{font-size:16px;}
   .fg label{font-size:13px;}
@@ -1430,7 +1431,7 @@ body::before{
       <div class="section">
         <div class="sec-title"><span class="sec-icon">person</span> 納稅身份</div>
         <div class="fg">
-          <div class="radio-group" id="newIdentity" style="flex-wrap:nowrap;">
+          <div class="radio-group radio-group-4" id="newIdentity">
             <button class="radio-btn on" data-val="resident">境內居住者</button>
             <button class="radio-btn" data-val="foreign">非境內居住者</button>
             <button class="radio-btn" data-val="corp">境內營利事業</button>
