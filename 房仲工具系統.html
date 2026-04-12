@@ -3,29 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="description" content="房仲工具系統 — 房屋交易所得稅(舊制/新制)、土地增值稅、遺贈稅與房貸試算整合工具">
+<meta name="description" content="RealTools — 房屋交易所得稅(舊制/新制)、土地增值稅、遺贈稅與房貸試算整合工具">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="房仲工具">
+<meta name="apple-mobile-web-app-title" content="RealTools">
 <meta name="theme-color" content="#1C1917">
-<title>房仲工具系統</title>
+<title>RealTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --primary:#57534E;
   --bg:#F7F5F3;
   --text:#1C1917;
   --muted:#44403C;
   --border:#E7E5E4;
   --deep:#292524;
   --wood:#57534E;
-  --accent:#57534E;
-  --accent-light:#EDE8E0;
   --danger:#EF4444;
   --success:#16A34A;
   --radius:14px;
@@ -96,7 +93,7 @@ body::before{
   box-shadow:0 0 10px rgba(200,164,90,0.6);
 }
 .header-title{
-  font-size:18px;font-weight:800;letter-spacing:4px;
+  font-family:'Cinzel',serif;font-size:28px;font-weight:700;letter-spacing:5px;
   color:#FAFAF9;
   text-shadow:0 1px 2px rgba(0,0,0,0.2);
 }
@@ -121,7 +118,7 @@ body::before{
 
 /* Tab bar — 精品卡片式（圓角懸浮卡片，兩行） */
 .tab-bar-wrap{
-  position:fixed;top:66px;left:50%;transform:translateX(-50%);
+  position:fixed;top:74px;left:50%;transform:translateX(-50%);
   width:calc(100% - 16px);max-width:860px;z-index:99;
   background:var(--bg);
   border:1px solid var(--border);
@@ -536,7 +533,7 @@ body::before{
 }
 .guide-table .field-desc{color:var(--muted);font-weight:500;}
 .guide-table .field-arrow{
-  text-align:center;font-size:16px;width:36px;color:var(--accent);
+  text-align:center;font-size:16px;width:36px;color:var(--wood);
   background:var(--bg);
 }
 
@@ -1071,7 +1068,7 @@ body::before{
 <!-- Header -->
 <div class="header">
   <div class="header-dot"></div>
-  <div class="header-title">房仲工具系統</div>
+  <div class="header-title">RealTools</div>
   <div class="header-sep"></div>
   <div class="header-sub">稅務試算 ╱ 法規查詢 ╱ 房貸計算</div>
   <div class="header-ver">稅率更新至 114 年度</div>
@@ -3117,7 +3114,7 @@ function calcNewTax(){
   }
 
   if(expNote){
-    html+=`<div class="result-item full"><span class="r-label">費用提醒</span><span class="r-value" style="font-size:12px;font-weight:500;color:var(--accent);">${expNote}</span></div>`;
+    html+=`<div class="result-item full"><span class="r-label">費用提醒</span><span class="r-value" style="font-size:12px;font-weight:500;color:var(--wood);">${expNote}</span></div>`;
   }
   if(loanNote){
     html+=`<div class="result-item full"><span class="r-label">貸款扣除</span><span class="r-value" style="font-size:12px;font-weight:500;color:#2563EB;">${loanNote}</span></div>`;
@@ -3243,7 +3240,7 @@ function calcMortgage(){
       <div class="result-item"><span class="r-label">年利率</span><span class="r-value">${(annualRate*100).toFixed(3)}%</span></div>`;
 
   if(graceMonths>0){
-    html+=`<div class="result-item"><span class="r-label">寬限期月付（僅利息）</span><span class="r-value" style="color:var(--accent);">${fmt(Math.round(graceMonthly),0)} 元</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">寬限期月付（僅利息）</span><span class="r-value" style="color:var(--wood);">${fmt(Math.round(graceMonthly),0)} 元</span></div>`;
   }
 
   if(method==='annuity'){
