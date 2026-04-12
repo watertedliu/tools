@@ -663,7 +663,7 @@ body::before{
     flex-wrap:wrap;
   }
   .mini-result-bar .mini-title{font-size:13px;}
-  .mini-result-bar .mini-value{font-size:20px;}
+  .mini-result-bar .mini-value{font-size:18px;}
   .mini-result-bar .mini-link{font-size:11px;padding:3px 8px;}
   /* sec-title 附加說明文字：手機版靠左換行 */
   .sec-title > span[style*="margin-left:auto"]{
@@ -1068,7 +1068,7 @@ body::before{
   white-space:nowrap;
 }
 .mini-result-bar .mini-value{
-  font-size:24px;
+  font-size:20px;
   font-weight:800;
   color:var(--lux-navy);
   letter-spacing:-0.3px;
@@ -1146,10 +1146,10 @@ body::before{
         <div class="sec-title"><span class="sec-icon">person</span> 納稅身份</div>
         <div class="radio-group" id="oldIdentity">
           <button class="radio-btn on" data-val="resident">境內居住者</button>
-          <button class="radio-btn" data-val="nonresident">境外居住者</button>
+          <button class="radio-btn" data-val="nonresident">非境內居住者</button>
         </div>
         <div class="info-box" id="oldNonresidentNote" style="margin-top:10px;margin-bottom:0;display:none;">
-          <strong>境外居住者：</strong>按房屋交易所得額 20% 扣繳率課稅，不併入綜合所得稅。<br>
+          <strong>非境內居住者：</strong>按房屋交易所得額 20% 扣繳率課稅，不併入綜合所得稅。<br>
           （一課稅年度內在台居留未滿183天者適用）
         </div>
       </div>
@@ -1219,11 +1219,11 @@ body::before{
         <div class="sec-title"><span class="sec-icon">payments</span> 交易資料</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
           <div class="fg">
-            <label>房屋出售價</label>
+            <label>出售總價</label>
             <div class="input-grp"><input type="text" id="oldSellPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
           </div>
           <div class="fg">
-            <label>房屋買入價</label>
+            <label>買入總價</label>
             <div class="input-grp"><input type="text" id="oldBuyPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
           </div>
         </div>
@@ -1431,10 +1431,10 @@ body::before{
         <div class="sec-title"><span class="sec-icon">person</span> 納稅身份</div>
         <div class="fg">
           <div class="radio-group" id="newIdentity" style="flex-wrap:nowrap;">
-            <button class="radio-btn on" data-val="resident">境內個人</button>
-            <button class="radio-btn" data-val="foreign">境外個人</button>
-            <button class="radio-btn" data-val="corp">境內法人</button>
-            <button class="radio-btn" data-val="foreignCorp">境外法人</button>
+            <button class="radio-btn on" data-val="resident">境內居住者</button>
+            <button class="radio-btn" data-val="foreign">非境內居住者</button>
+            <button class="radio-btn" data-val="corp">境內營利事業</button>
+            <button class="radio-btn" data-val="foreignCorp">非境內營利事業</button>
           </div>
         </div>
       </div>
@@ -1628,7 +1628,7 @@ body::before{
           </div>
         </div>
         <div class="info-box" style="margin-top:10px;">
-          <strong>非自願性交易提醒：</strong>因調職、非自願離職、遭他人越界建築、重大疾病等情形出售房地，不論持有期間，境內個人適用 20% 稅率。詳細條件請參考所得稅法第14條之4第3項。
+          <strong>非自願性交易提醒：</strong>因調職、非自願離職、遭他人越界建築、重大疾病等情形出售房地，不論持有期間，境內居住者適用 20% 稅率。詳細條件請參考所得稅法第14條之4第3項。
         </div>
       </div>
 
@@ -1650,7 +1650,7 @@ body::before{
           <label for="newInvoluntary">非自願性交易（調職、非自願離職、重大疾病等）</label>
         </div>
         <div class="info-box" style="margin-top:10px;margin-bottom:0;">
-          境內個人因調職、非自願離職、遭他人越界建築、重大疾病等情形出售，不論持有期間一律適用 20% 稅率。
+          境內居住者因調職、非自願離職、遭他人越界建築、重大疾病等情形出售，不論持有期間一律適用 20% 稅率。
         </div>
       </div>
 
@@ -2139,11 +2139,11 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 房屋印花稅 ＝ 建物買賣契約金額 × 0.1%</div>
+        <div class="sec-title"><span class="sec-icon">push_pin</span> 房屋印花稅 ＝ 房屋評定現值 × 0.1%</div>
         <div class="bc-row">
           <div class="fg">
-            <label>建物買賣契約金額</label>
-            <div class="input-grp"><input type="text" id="bcBuildingContract" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
+            <label>房屋評定現值</label>
+            <div class="input-grp"><input type="text" id="bcHouseAssessStamp" placeholder="0" inputmode="numeric" oninput="calcBuyerCostLive()"><span class="input-sfx">元</span></div>
           </div>
 
           <span class="bc-result" id="bcR_buildStamp">0 元</span>
@@ -2371,7 +2371,7 @@ body::before{
     <div class="page" id="page-dealFlow">
       <div class="page-title"><span class="icon">description</span> 成交條件預定表</div>
       <div class="section" style="padding:12px;text-align:center;">
-        <img src="成交條件預定表.jpg" alt="成交條件預定表" style="max-width:100%;border-radius:var(--radius-xs);" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <img src="deal-checklist.jpg" alt="成交條件預定表" style="max-width:100%;border-radius:var(--radius-xs);" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
         <div class="info-box" style="display:none;text-align:center;margin-top:12px;">
           如圖片未顯示，請確認「成交條件預定表.jpg」檔案是否存在於同一資料夾。
         </div>
@@ -2420,7 +2420,7 @@ function fmtMoney(n){
 document.addEventListener('input',function(e){
   const el=e.target;
   if(el.tagName!=='INPUT'||el.type==='checkbox') return;
-  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='rateLookupInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritOrigDate'||el.id==='oldInheritDate'||el.id==='oldGiftDate'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI'||el.id==='landCPI'||el.id==='landShareNum'||el.id==='landShareDen') return;
+  if(el.id==='newAcquireDate'||el.id==='newTransferDate'||el.id==='rateSearchInput'||el.id==='inheritOrigDate'||el.id==='inheritDate'||el.id==='giftDate'||el.id==='inheritCPI'||el.id==='giftCPI'||el.id==='oldInheritCPI'||el.id==='oldGiftCPI'||el.id==='landCPI'||el.id==='landShareNum'||el.id==='landShareDen') return;
   if(el.closest('.input-grp')||el.id){
     const raw=el.value.replace(/,/g,'');
     if(raw===''||raw==='-'||raw==='.') return;
@@ -2852,11 +2852,11 @@ function calcOldTax(){
   </div>`;
 
   if(identity==='nonresident'){
-    /* 境外居住者：按所得額 20% 扣繳 */
+    /* 非境內居住者：按所得額 20% 扣繳 */
     const tax=income*0.20;
     _miniTaxVal=tax;
     html+=`<div class="result-box">
-      <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（境外居住者）</div>
+      <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（非境內居住者）</div>
       <div class="result-grid">
         <div class="result-item"><span class="r-label">房屋交易所得</span><span class="r-value">${fmtMoney(income)}</span></div>
         <div class="result-item"><span class="r-label">適用扣繳率</span><span class="r-value">20%</span></div>
@@ -2867,7 +2867,7 @@ function calcOldTax(){
     if(rawIncome<0&&method==='actual'){
       html+=`<div class="result-msg success">本次交易無獲利（虧損 ${fmtMoney(Math.abs(rawIncome))}），免課稅。</div>`;
     }else{
-      html+=`<div class="result-msg warning"><strong>注意：</strong>境外居住者之房屋交易所得採就源扣繳 20%，不併入綜合所得稅申報。買受人（扣繳義務人）應於給付時扣繳並於10日內繳納。</div>`;
+      html+=`<div class="result-msg warning"><strong>注意：</strong>非境內居住者之房屋交易所得採就源扣繳 20%，不併入綜合所得稅申報。買受人（扣繳義務人）應於給付時扣繳並於10日內繳納。</div>`;
     }
     html+=`</div>`;
   }else{
@@ -3085,7 +3085,7 @@ function calcNewTax(){
     else{rate=0.35;rateDesc='超過2年 → 35%';}
   }
 
-  // 非自願性交易：境內個人不論持有期間，適用 20%
+  // 非自願性交易：境內居住者不論持有期間，適用 20%
   const involuntary=document.getElementById('newInvoluntary').checked;
   if(involuntary&&identity==='resident'){
     rate=0.20;
@@ -3146,7 +3146,7 @@ function calcNewTax(){
   }
 
   if(identity==='foreign'||identity==='foreignCorp'){
-    html+=`<div class="result-msg warning"><strong>注意：</strong>境外居住者／境外法人之房地合一稅，由買受人（扣繳義務人）代為申報繳納，應於所有權移轉登記完成之次日起 30 天內辦理。</div>`;
+    html+=`<div class="result-msg warning"><strong>注意：</strong>非境內居住者／非境內營利事業之房地合一稅，由買受人（扣繳義務人）代為申報繳納，應於所有權移轉登記完成之次日起 30 天內辦理。</div>`;
   }else{
     html+=`<div class="result-msg warning"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">schedule</span><strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
   }
@@ -3519,7 +3519,7 @@ function autoFillCPI(){
 function _calcBuyerCostData(){
   const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
   const houseValue=g('bcHouseValue');
-  const buildingContract=g('bcBuildingContract');
+  const buildingContract=g('bcHouseAssessStamp');
   const landDeclValue=g('bcLandDeclValue');
   const totalPrice=g('bcTotalPrice')*10000;
   const mortgageAmt=g('bcMortgageAmt');
@@ -3928,42 +3928,6 @@ const rateData114=[
   {city:'其他',district:'其他未列明地區',rate:8}
 ];
 
-function searchRateDistrict(){
-  let q=document.getElementById('rateLookupInput').value.trim();
-  const box=document.getElementById('rateLookupResult');
-  if(!q){
-    box.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0;">請輸入區域名稱進行查詢</div>';
-    return;
-  }
-  // 台 <-> 臺 互換
-  const qNorm=q.replace(/台/g,'臺');
-  const qAlt=q.replace(/臺/g,'台');
-  const results=rateData114.filter(d=>{
-    const full=d.city+d.district;
-    return full.includes(qNorm)||full.includes(qAlt)||d.district.includes(qNorm)||d.district.includes(qAlt)||d.city.includes(qNorm)||d.city.includes(qAlt);
-  });
-  if(results.length===0){
-    box.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0;">查無符合「'+q+'」的區域資料。未列明地區一律適用 <strong>8%</strong>。</div>';
-    return;
-  }
-  let html='<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">共找到 '+results.length+' 筆結果</div>';
-  html+='<div style="border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;">';
-  html+='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
-  html+='<thead><tr style="background:var(--bg);border-bottom:2px solid var(--border);">';
-  html+='<th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--muted);font-size:12px;">縣市</th>';
-  html+='<th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--muted);font-size:12px;">區域</th>';
-  html+='<th style="padding:10px 14px;text-align:right;font-weight:700;color:var(--muted);font-size:12px;">所得率</th>';
-  html+='</tr></thead><tbody>';
-  results.forEach(d=>{
-    html+='<tr style="border-bottom:1px solid var(--border);">';
-    html+='<td style="padding:10px 14px;font-weight:500;">'+d.city+'</td>';
-    html+='<td style="padding:10px 14px;font-weight:600;color:var(--text);">'+d.district+'</td>';
-    html+='<td style="padding:10px 14px;text-align:right;font-weight:700;font-size:16px;color:#B45309;">'+d.rate+'%</td>';
-    html+='</tr>';
-  });
-  html+='</tbody></table></div>';
-  box.innerHTML=html;
-}
 function searchRate114(){
   let q=document.getElementById('rateSearchInput').value.trim();
   const box=document.getElementById('rateSearchResult');
