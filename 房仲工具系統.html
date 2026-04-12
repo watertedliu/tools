@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -181,21 +181,16 @@ body::before{
   height:3px;
   background:linear-gradient(90deg,var(--lux-gold),var(--lux-gold-light),var(--lux-gold));
 }
-/* tab icon — Material Symbols */
+/* tab icon — Tabler Icons */
 .nav-icon{
-  font-family:'Material Symbols Outlined';
   font-size:20px;
-  font-weight:300;
   line-height:1;
   color:var(--muted);
   margin-right:6px;
-  font-style:normal;
-  font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 20;
   vertical-align:middle;
 }
 .nav-btn.active .nav-icon{
   color:var(--lux-navy);
-  font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 20;
 }
 .tab-divider{width:1px;background:var(--border);margin:10px 0;flex-shrink:0;}
 
@@ -220,11 +215,9 @@ body::before{
   border-radius:2px;
 }
 .page-title .icon{
-  font-family:'Material Symbols Outlined';
-  font-size:22px;font-weight:normal;font-style:normal;line-height:1;
+  font-size:22px;line-height:1;
   vertical-align:middle;
   color:var(--lux-gold);
-  font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
 }
 
 /* Card */
@@ -261,11 +254,9 @@ body::before{
   background:var(--lux-gold);
 }
 .sec-title .sec-icon{
-  font-family:'Material Symbols Outlined';
-  font-size:16px;font-weight:normal;font-style:normal;line-height:1;
+  font-size:16px;line-height:1;
   vertical-align:middle;
   color:var(--lux-gold);
-  font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 20;
 }
 
 /* Form */
@@ -788,7 +779,7 @@ body::before{
   .mobile-bar-submenu button:hover,.mobile-bar-submenu button.active{
     background:var(--deep);color:#FAFAF9;border-color:var(--deep);
   }
-  .mobile-bar-submenu button .sub-icon{font-size:20px;font-family:'Material Symbols Outlined';}
+  .mobile-bar-submenu button .sub-icon{font-size:20px;}
   @keyframes mbarFadeIn{from{opacity:0;}to{opacity:1;}}
   @keyframes mbarSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 }
@@ -1031,13 +1022,9 @@ body::before{
   gap:6px;
 }
 .mini-result-bar .mini-title .icon{
-  font-family:'Material Symbols Outlined';
   font-size:18px;
-  font-weight:normal;
-  font-style:normal;
   line-height:1;
   color:var(--lux-gold);
-  font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
 }
 .mini-result-bar .mini-sep{
   width:1px;
@@ -1095,33 +1082,33 @@ body::before{
   <div class="tab-bar-wrap">
     <div class="tab-bar">
       <button class="nav-btn active" data-page="oldTax">
-        <span class="nav-icon">account_balance</span>舊制所得稅
+        <i class="ti ti-building-bank nav-icon"></i>舊制所得稅
       </button>
       <button class="nav-btn" data-page="newTax">
-        <span class="nav-icon">home_work</span>房地合一稅
+        <i class="ti ti-home-2 nav-icon"></i>房地合一稅
       </button>
       <button class="nav-btn" data-page="landTax">
-        <span class="nav-icon">landscape</span>土地增值稅
+        <i class="ti ti-mountain nav-icon"></i>土地增值稅
       </button>
       <div class="tab-divider"></div>
       <button class="nav-btn" data-page="estateTax">
-        <span class="nav-icon">gavel</span>其他稅法
+        <i class="ti ti-gavel nav-icon"></i>其他稅法
       </button>
     </div>
     <div class="tab-bar">
       <button class="nav-btn" data-page="buyerCost">
-        <span class="nav-icon">shopping_cart</span>買方費用
+        <i class="ti ti-shopping-cart nav-icon"></i>買方費用
       </button>
       <button class="nav-btn" data-page="sellerCost">
-        <span class="nav-icon">sell</span>賣方費用
+        <i class="ti ti-tag nav-icon"></i>賣方費用
       </button>
       <div class="tab-divider"></div>
       <button class="nav-btn" data-page="dealFlow">
-        <span class="nav-icon">timeline</span>成交流程
+        <i class="ti ti-timeline nav-icon"></i>成交流程
       </button>
       <div class="tab-divider"></div>
       <button class="nav-btn" data-page="mortgage">
-        <span class="nav-icon">calculate</span>房貸試算
+        <i class="ti ti-calculator nav-icon"></i>房貸試算
       </button>
     </div>
   </div>
@@ -1132,7 +1119,7 @@ body::before{
     <!-- ========== 舊制所得稅 ========== -->
     <div class="page active" id="page-oldTax">
       <div id="miniOldTax" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">home</span> 房屋交易所得稅（舊制）</span>
+        <span class="mini-title"><i class="ti ti-home icon"></i> 房屋交易所得稅（舊制）</span>
         <span class="mini-sep"></span>
         <span class="mini-label">應增繳稅額</span>
         <span class="mini-value" id="miniOldTaxVal">—</span>
@@ -1144,7 +1131,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">person</span> 納稅身份</div>
+        <div class="sec-title"><i class="ti ti-user sec-icon"></i> 納稅身份</div>
         <div class="radio-group" id="oldIdentity">
           <button class="radio-btn on" data-val="resident">境內居住者</button>
           <button class="radio-btn" data-val="nonresident">非境內居住者</button>
@@ -1156,7 +1143,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">description</span> 計算方式</div>
+        <div class="sec-title"><i class="ti ti-file-description sec-icon"></i> 計算方式</div>
         <div class="radio-group" id="oldCalcMethod">
           <button class="radio-btn on" data-val="actual">核實認定（可舉證成本）</button>
           <button class="radio-btn" data-val="standard">標準認定（無法舉證）</button>
@@ -1165,7 +1152,7 @@ body::before{
 
       <!-- 取得方式（核實認定時顯示） -->
       <div class="section" id="oldAcquireMethodSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">inventory_2</span> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">夫妻贈與請以原配偶資料填入「自行購買」</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><i class="ti ti-package sec-icon"></i> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">夫妻贈與請以原配偶資料填入「自行購買」</span></div>
         <div class="radio-group" id="oldAcquireMethod" style="flex-wrap:nowrap;">
           <button class="radio-btn on" data-val="purchase">自行購買</button>
           <button class="radio-btn" data-val="inherit">繼承取得</button>
@@ -1176,7 +1163,7 @@ body::before{
       <div class="section" id="oldAcquireMethodFields" style="display:none;">
         <!-- 繼承取得 -->
         <div id="oldInheritFields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">gavel</span> 繼承資料</div>
+          <div class="sec-title"><i class="ti ti-gavel sec-icon"></i> 繼承資料</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>繼承時房屋評定現值</label>
@@ -1191,12 +1178,12 @@ body::before{
               <div class="input-grp"><input type="text" id="oldInheritCPI" placeholder="例：1.05"></div>
             </div>
           </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:2px">open_in_new</span> 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><i class="ti ti-external-link" style="font-size:14px;vertical-align:middle;margin-right:2px"></i> 查詢CPI調整係數（財政部）</a></div>
         </div>
         <!-- 夫妻贈與 -->
         <!-- 一般贈與 -->
         <div id="oldGiftFields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">redeem</span> 贈與資料</div>
+          <div class="sec-title"><i class="ti ti-gift sec-icon"></i> 贈與資料</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>贈與時房屋評定現值</label>
@@ -1211,13 +1198,13 @@ body::before{
               <div class="input-grp"><input type="text" id="oldGiftCPI" placeholder="例：1.05"></div>
             </div>
           </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:2px">open_in_new</span> 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><i class="ti ti-external-link" style="font-size:14px;vertical-align:middle;margin-right:2px"></i> 查詢CPI調整係數（財政部）</a></div>
         </div>
       </div>
 
       <!-- 核實認定 -->
       <div class="section" id="oldActualSec">
-        <div class="sec-title"><span class="sec-icon">payments</span> 交易資料</div>
+        <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 交易資料</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
           <div class="fg">
             <label>出售總價</label>
@@ -1231,7 +1218,7 @@ body::before{
       </div>
 
       <div class="section" id="oldRatioSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">home</span> 房屋佔比（舊制僅對房屋課稅）<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><i class="ti ti-home sec-icon"></i> 房屋佔比（舊制僅對房屋課稅）<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）</span></div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
           <div class="fg">
             <label>房屋評定現值</label>
@@ -1249,10 +1236,10 @@ body::before{
       </div>
 
       <div class="section" id="oldExpSec">
-        <div class="sec-title"><span class="sec-icon">article</span> 相關費用</div>
+        <div class="sec-title"><i class="ti ti-article sec-icon"></i> 相關費用</div>
         <div id="oldExpDetail">
           <div id="oldBuyExpSection">
-          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">shopping_cart</span> 買入時費用（屬取得成本）</div>
+          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><i class="ti ti-shopping-cart sec-icon"></i> 買入時費用（屬取得成本）</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>買方仲介費</label>
@@ -1284,7 +1271,7 @@ body::before{
             </div>
           </div>
           </div>
-          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">sell</span> 賣出時費用</div>
+          <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><i class="ti ti-tag sec-icon"></i> 賣出時費用</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>賣方仲介費</label>
@@ -1314,7 +1301,7 @@ body::before{
 
       <!-- 標準認定 -->
       <div class="section" id="oldStdSec" style="display:none;">
-        <div class="sec-title"><span class="sec-icon">bar_chart</span> 標準認定資料</div>
+        <div class="sec-title"><i class="ti ti-chart-bar sec-icon"></i> 標準認定資料</div>
 
         <div class="radio-group" id="oldStdType" style="margin-bottom:14px;">
           <button class="radio-btn on" data-val="general">一般房屋</button>
@@ -1337,7 +1324,7 @@ body::before{
             </div>
             <div class="fg" style="position:relative;">
               <label>標準認定查詢</label>
-              <div class="input-grp"><input type="text" id="rateSearchInput" placeholder="區域名稱" oninput="searchRate114()"><span class="input-sfx"><span class="material-symbols-outlined" style="font-size:16px">search</span></span></div>
+              <div class="input-grp"><input type="text" id="rateSearchInput" placeholder="區域名稱" oninput="searchRate114()"><span class="input-sfx"><i class="ti ti-search" style="font-size:16px"></i></span></div>
               <div id="rateSearchResult" style="position:absolute;top:100%;left:0;right:0;z-index:10;margin-top:4px;max-height:200px;overflow-y:auto"></div>
             </div>
           </div>
@@ -1401,7 +1388,7 @@ body::before{
       </div>
 
       <div class="section" id="oldIncomeSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">article</span> 綜合所得稅資料<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">用以判斷適用稅率級距（僅境內居住者需填）</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><i class="ti ti-article sec-icon"></i> 綜合所得稅資料<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">用以判斷適用稅率級距（僅境內居住者需填）</span></div>
         <div class="old-expense-total">
           <div class="fg">
             <label style="white-space:nowrap;">其他綜合所得淨額（不含本次交易）</label>
@@ -1418,7 +1405,7 @@ body::before{
     <!-- ========== 房地合一稅（新制） ========== -->
     <div class="page" id="page-newTax">
       <div id="miniNewTax" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">home_work</span> 房地合一稅（新制）</span>
+        <span class="mini-title"><i class="ti ti-home-2 icon"></i> 房地合一稅（新制）</span>
         <span class="mini-sep"></span>
         <span class="mini-label">應繳稅額</span>
         <span class="mini-value" id="miniNewTaxVal">—</span>
@@ -1429,7 +1416,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">person</span> 納稅身份</div>
+        <div class="sec-title"><i class="ti ti-user sec-icon"></i> 納稅身份</div>
         <div class="fg">
           <div class="radio-group radio-group-4" id="newIdentity">
             <button class="radio-btn on" data-val="resident">境內居住者</button>
@@ -1441,7 +1428,7 @@ body::before{
       </div>
 
       <div class="section" id="newAcquireMethodSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">description</span> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><i class="ti ti-file-description sec-icon"></i> 取得方式<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">夫妻贈與請以原配偶資料填入「自行購買」，持有期間從原配偶取得日起算</span></div>
         <div class="fg" id="newAcquireMethodRow">
           <div class="radio-group" id="newAcquireMethod" style="flex-wrap:nowrap;">
             <button class="radio-btn on" data-val="purchase">自行購買</button>
@@ -1454,7 +1441,7 @@ body::before{
       <div class="section" id="acquireMethodFields" style="display:none;">
         <!-- 繼承取得 -->
         <div id="inheritFields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">gavel</span> 繼承資料</div>
+          <div class="sec-title"><i class="ti ti-gavel sec-icon"></i> 繼承資料</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>繼承時房屋評定現值</label>
@@ -1486,11 +1473,11 @@ body::before{
               <span class="hint" style="white-space:nowrap;">貸款超過公告現值的部分可列為額外負擔扣除</span>
             </div>
           </div>
-          <div class="info-box">取得成本 = (最後一次繼承時房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間，「被繼承人取得日」請填最早的取得日。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:2px">open_in_new</span> 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (最後一次繼承時房屋評定現值 + 土地公告現值) × CPI調整係數。貸款餘額超過公告現值部分為額外負擔，可從所得中扣除。持有期間可合併連續各次被繼承人持有期間，「被繼承人取得日」請填最早的取得日。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><i class="ti ti-external-link" style="font-size:14px;vertical-align:middle;margin-right:2px"></i> 查詢CPI調整係數（財政部）</a></div>
         </div>
         <!-- 一般贈與 -->
         <div id="giftFields" style="display:none;">
-          <div class="sec-title"><span class="sec-icon">redeem</span> 贈與資料</div>
+          <div class="sec-title"><i class="ti ti-gift sec-icon"></i> 贈與資料</div>
           <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
             <div class="fg">
               <label>贈與時房屋評定現值</label>
@@ -1511,12 +1498,12 @@ body::before{
               <input type="text" id="giftDate" placeholder="例：113/06/01" oninput="formatRocDate(this);calcHoldPeriod()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;font-family:inherit;text-align:center;">
             </div>
           </div>
-          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間從受贈日起算，不可合併贈與人持有期間。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:2px">open_in_new</span> 查詢CPI調整係數（財政部）</a></div>
+          <div class="info-box">取得成本 = (房屋評定現值 + 土地公告現值) × CPI調整係數。持有期間從受贈日起算，不可合併贈與人持有期間。<br><a href="https://svc.tax.nat.gov.tw/svc/irn/IrnQueryCPI.jsp" target="_blank" style="color:#2563EB;font-size:14px;"><i class="ti ti-external-link" style="font-size:14px;vertical-align:middle;margin-right:2px"></i> 查詢CPI調整係數（財政部）</a></div>
         </div>
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">payments</span> 交易資料</div>
+        <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 交易資料</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
           <div class="fg">
             <label>房地出售總價</label>
@@ -1530,7 +1517,7 @@ body::before{
             <label>相關費用明細</label>
             <div id="newExpDetail">
               <div id="newBuyExpSection">
-              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">shopping_cart</span> 買入時費用（屬取得成本）</div>
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><i class="ti ti-shopping-cart sec-icon"></i> 買入時費用（屬取得成本）</div>
               <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
                 <div class="fg">
                   <label>買方仲介費</label>
@@ -1562,7 +1549,7 @@ body::before{
                 </div>
               </div>
               </div>
-              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><span class="sec-icon">sell</span> 賣出時費用（移轉費用）</div>
+              <div class="sec-title" style="font-size:14px;margin-bottom:10px;padding-bottom:6px;"><i class="ti ti-tag sec-icon"></i> 賣出時費用（移轉費用）</div>
               <div class="check-row" style="margin-bottom:10px;">
                 <input type="checkbox" id="newExpAuto">
                 <label for="newExpAuto">無法舉證，按成交價 3% 計算（上限 30 萬）</label>
@@ -1607,7 +1594,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">calendar_month</span> 持有期間</div>
+        <div class="sec-title"><i class="ti ti-calendar sec-icon"></i> 持有期間</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;margin-bottom:14px;">
           <div class="fg" id="newAcquireDateRow">
             <label>取得日期（民國）</label>
@@ -1634,7 +1621,7 @@ body::before{
       </div>
 
       <div class="section" id="newSelfUseSec">
-        <div class="sec-title" style="flex-wrap:wrap;"><span class="sec-icon">cottage</span> 自用住宅優惠<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">課稅所得400萬免稅，超過部分10%</span></div>
+        <div class="sec-title" style="flex-wrap:wrap;"><i class="ti ti-home-eco sec-icon"></i> 自用住宅優惠<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:auto;text-transform:none;letter-spacing:0;">課稅所得400萬免稅，超過部分10%</span></div>
         <div class="check-row">
           <input type="checkbox" id="newSelfUse">
           <label for="newSelfUse">自用住宅優惠</label>
@@ -1645,7 +1632,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">gavel</span> 非自願性交易</div>
+        <div class="sec-title"><i class="ti ti-gavel sec-icon"></i> 非自願性交易</div>
         <div class="check-row">
           <input type="checkbox" id="newInvoluntary">
           <label for="newInvoluntary">非自願性交易（調職、非自願離職、重大疾病等）</label>
@@ -1663,13 +1650,13 @@ body::before{
     <!-- ========== 土地增值稅 ========== -->
     <div class="page" id="page-landTax">
       <div id="miniLandTax" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">landscape</span> 土地增值稅試算</span>
+        <span class="mini-title"><i class="ti ti-mountain icon"></i> 土地增值稅試算</span>
         <span class="mini-sep"></span>
         <span class="mini-label">一般用地</span>
         <span class="mini-value" id="miniLandTaxVal">—</span>
         <span class="mini-label" style="margin-left:8px">自用住宅</span>
         <span class="mini-value" id="miniLandTaxSelfVal">—</span>
-        <a href="https://i.land.ntpc.gov.tw/iland/index.php/land-value/vatcal" target="_blank" class="mini-link"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;margin-right:2px">open_in_new</span>愛連網（新北市）</a>
+        <a href="https://i.land.ntpc.gov.tw/iland/index.php/land-value/vatcal" target="_blank" class="mini-link"><i class="ti ti-external-link" style="font-size:13px;vertical-align:middle;margin-right:2px"></i>愛連網（新北市）</a>
       </div>
 
       <div class="info-box">
@@ -1682,14 +1669,14 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">map</span> 謄本欄位對照指南</div>
+        <div class="sec-title"><i class="ti ti-map sec-icon"></i> 謄本欄位對照指南</div>
         <div class="info-box" style="margin-bottom:8px;">
           以下對照表說明每個輸入欄位對應謄本上的<strong>哪個位置</strong>，方便手動查找填入。
         </div>
         <span class="toggle-detail" onclick="toggleGuide(this)">▼ 展開謄本欄位對照表</span>
         <div class="detail-content" id="guideContent">
           <div class="guide-diagram">
-            <div class="guide-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">description</span> 土地登記謄本 — 關鍵欄位對照</div>
+            <div class="guide-title"><i class="ti ti-file-description" style="font-size:16px;vertical-align:middle;margin-right:4px"></i> 土地登記謄本 — 關鍵欄位對照</div>
             <table class="guide-table">
               <tr>
                 <td class="field-name">前次移轉年期</td>
@@ -1751,7 +1738,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">payments</span> 謄本資料輸入</div>
+        <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 謄本資料輸入</div>
         <div class="fg" style="margin-bottom:14px;">
           <label>前次移轉年期</label>
           <div style="display:flex;gap:8px;align-items:center;">
@@ -1802,7 +1789,7 @@ body::before{
       <input type="hidden" id="landHoldYears" value="0">
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">menu_book</span> 稅率參考</div>
+        <div class="sec-title"><i class="ti ti-book sec-icon"></i> 稅率參考</div>
         <span class="toggle-detail" onclick="toggleRateTable(this)">▼ 展開稅率表與自用住宅條件</span>
         <div class="detail-content" id="rateTableContent">
           <div class="info-box" style="margin-bottom:12px;">
@@ -1869,7 +1856,7 @@ body::before{
 
     <!-- ========== 遺贈稅法規 ========== -->
     <div class="page" id="page-estateTax">
-      <div class="page-title"><span class="icon">gavel</span> 其他稅法</div>
+      <div class="page-title"><i class="ti ti-gavel icon"></i> 其他稅法</div>
 
       <div class="radio-group" id="otherTaxTab" style="margin-bottom:18px;flex-wrap:wrap;">
         <button class="radio-btn on" data-val="newRepurchase">房地合一稅重購退稅</button>
@@ -1882,7 +1869,7 @@ body::before{
       <!-- 一、房地合一稅重購退稅 -->
       <div class="other-tax-panel" id="otherPanel-newRepurchase">
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">home_work</span> 房地合一稅重購退稅</div>
+          <div class="sec-title"><i class="ti ti-home-2 sec-icon"></i> 房地合一稅重購退稅</div>
           <div class="info-box">
             <strong>適用條件：</strong>個人出售自用住宅房地後，於 2 年內重購自用住宅房地（先買後賣或先賣後買皆可），可申請退還或扣抵已繳納之房地合一稅。<br><br>
             <strong>適用要件：</strong>
@@ -1908,7 +1895,7 @@ body::before{
       <!-- 二、舊制所得稅重購扣抵 -->
       <div class="other-tax-panel" id="otherPanel-oldRepurchase" style="display:none;">
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">home</span> 舊制所得稅重購扣抵</div>
+          <div class="sec-title"><i class="ti ti-home sec-icon"></i> 舊制所得稅重購扣抵</div>
           <div class="info-box">
             <strong>適用條件：</strong>個人出售自用住宅房屋，於完成移轉登記日起 2 年內重購自用住宅房屋，可申請扣抵綜合所得稅。<br><br>
             <strong>適用要件：</strong>
@@ -1934,7 +1921,7 @@ body::before{
       <!-- 三、土地增值稅重購退稅 -->
       <div class="other-tax-panel" id="otherPanel-landRepurchase" style="display:none;">
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">landscape</span> 土地增值稅重購退稅</div>
+          <div class="sec-title"><i class="ti ti-mountain sec-icon"></i> 土地增值稅重購退稅</div>
           <div class="info-box">
             <strong>適用條件：</strong>土地所有權人出售自用住宅用地後，於 2 年內另行購買自用住宅用地，可申請退還已繳之土地增值稅。<br><br>
             <strong>適用要件：</strong>
@@ -1966,7 +1953,7 @@ body::before{
       <!-- 四、贈與稅 -->
       <div class="other-tax-panel" id="otherPanel-giftTax" style="display:none;">
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">redeem</span> 贈與稅</div>
+          <div class="sec-title"><i class="ti ti-gift sec-icon"></i> 贈與稅</div>
           <div class="info-box" style="margin-bottom:12px;">
             <strong>免稅額：</strong>每位贈與人每年 244 萬元（同一年度內累計計算）<br><br>
 
@@ -2008,7 +1995,7 @@ body::before{
         </div>
 
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">home</span> 不動產贈與相關</div>
+          <div class="sec-title"><i class="ti ti-home sec-icon"></i> 不動產贈與相關</div>
           <div class="info-box" style="margin-bottom:0;">
             <strong>不動產贈與價值計算：</strong>
             <ul>
@@ -2028,7 +2015,7 @@ body::before{
       <!-- 五、遺產稅 -->
       <div class="other-tax-panel" id="otherPanel-estateTaxSub" style="display:none;">
         <div class="section">
-          <div class="sec-title"><span class="sec-icon">church</span> 遺產稅</div>
+          <div class="sec-title"><i class="ti ti-building-church sec-icon"></i> 遺產稅</div>
           <div class="info-box" style="margin-bottom:0;">
             <strong>免稅額：</strong>1,333 萬元<br><br>
 
@@ -2076,14 +2063,14 @@ body::before{
     <!-- ========== 房貸試算 ========== -->
     <div class="page" id="page-mortgage">
       <div id="miniMortgage" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">account_balance</span> 房貸試算</span>
+        <span class="mini-title"><i class="ti ti-building-bank icon"></i> 房貸試算</span>
         <span class="mini-sep"></span>
         <span class="mini-label">每月還款</span>
         <span class="mini-value" id="miniMortgageVal">—</span>
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">payments</span> 貸款條件</div>
+        <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 貸款條件</div>
         <div class="form-grid">
           <div class="fg">
             <label>貸款金額</label>
@@ -2106,7 +2093,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">description</span> 還款方式</div>
+        <div class="sec-title"><i class="ti ti-file-description sec-icon"></i> 還款方式</div>
         <div class="radio-group" id="mMethod">
           <button class="radio-btn on" data-val="annuity">本息均攤（等額本息）</button>
           <button class="radio-btn" data-val="principal">本金均攤（等額本金）</button>
@@ -2121,14 +2108,14 @@ body::before{
     <!-- ========== 買方買房費用 ========== -->
     <div class="page" id="page-buyerCost">
       <div id="miniBuyerCost" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">receipt_long</span> 買方應付費用</span>
+        <span class="mini-title"><i class="ti ti-receipt icon"></i> 買方應付費用</span>
         <span class="mini-sep"></span>
         <span class="mini-label">費用合計</span>
         <span class="mini-value" id="miniBuyerCostVal">—</span>
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 契稅 ＝ 房屋評定現值 × 6%</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 契稅 ＝ 房屋評定現值 × 6%</div>
         <div class="bc-row">
           <div class="fg">
             <label>房屋評定現值</label>
@@ -2140,7 +2127,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 房屋印花稅 ＝ 房屋評定現值 × 0.1%</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 房屋印花稅 ＝ 房屋評定現值 × 0.1%</div>
         <div class="bc-row">
           <div class="fg">
             <label>房屋評定現值</label>
@@ -2152,7 +2139,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 土地印花稅 ＝ 土地公告現值總額 × 0.1%</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 土地印花稅 ＝ 土地公告現值總額 × 0.1%</div>
         <div class="bc-row">
           <div class="fg">
             <label>土地公告現值總額</label>
@@ -2164,7 +2151,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 登記規費 ＝（房屋現值 ＋ 土地現值）× 0.1%</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 登記規費 ＝（房屋現值 ＋ 土地現值）× 0.1%</div>
         <div class="bc-row">
           <span class="bc-auto-hint">自動依上方房屋評定現值＋土地公告現值計算</span>
 
@@ -2173,7 +2160,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 設定規費 ＝ 抵押權設定金額 × 0.1%</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 設定規費 ＝ 抵押權設定金額 × 0.1%</div>
         <div class="bc-row">
           <div class="fg">
             <label>抵押權設定金額</label>
@@ -2185,7 +2172,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 書狀費 ＝ 每張 80 元（建物＋土地各 1 張）</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 書狀費 ＝ 每張 80 元（建物＋土地各 1 張）</div>
         <div class="bc-row">
           <span class="bc-auto-hint">預設 2 張，如有多筆土地請自行加計</span>
 
@@ -2194,7 +2181,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 履約保證費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 履約保證費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
         <div class="bc-row">
           <div class="fg">
             <label>買賣總價</label>
@@ -2206,7 +2193,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 代書費</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 代書費</div>
         <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
           <div class="bc-fee-item">
             <div class="bc-row">
@@ -2265,7 +2252,7 @@ body::before{
       <!-- PDF 報告容器（平常隱藏，列印時 CSS 會覆寫顯示） -->
       <div id="buyerCostReport" class="printable-result hidden-for-screen"></div>
 
-      <button class="btn-calc primary" onclick="downloadBuyerCostPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>
+      <button class="btn-calc primary" onclick="downloadBuyerCostPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>
       <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-buyerCost');calcBuyerCostLive()">清除所有欄位</button>
 
     </div>
@@ -2273,14 +2260,14 @@ body::before{
     <!-- ========== 賣方應付費用 ========== -->
     <div class="page" id="page-sellerCost">
       <div id="miniSellerCost" class="mini-result-bar visible">
-        <span class="mini-title"><span class="icon">payments</span> 賣方應付費用</span>
+        <span class="mini-title"><i class="ti ti-cash icon"></i> 賣方應付費用</span>
         <span class="mini-sep"></span>
         <span class="mini-label">費用合計</span>
         <span class="mini-value" id="miniSellerCostVal">—</span>
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 土地增值稅</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 土地增值稅</div>
         <div class="bc-row">
           <div class="fg">
             <label>土地增值稅</label>
@@ -2292,7 +2279,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 履約保證費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 履約保證費 ＝ 成交總價 × 萬分之六 ÷ 2<span class="sm-br">（買賣雙方各半）</span><span class="sm-hide">（買賣雙方各半）</span></div>
         <div class="bc-row">
           <div class="fg">
             <label>買賣總價</label>
@@ -2303,7 +2290,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 代書費</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 代書費</div>
         <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;gap:10px;">
           <div class="bc-fee-item">
             <div class="bc-row">
@@ -2345,7 +2332,7 @@ body::before{
       </div>
 
       <div class="section">
-        <div class="sec-title"><span class="sec-icon">push_pin</span> 出售所得稅</div>
+        <div class="sec-title"><i class="ti ti-pin sec-icon"></i> 出售所得稅</div>
         <div class="bc-row">
           <div class="fg">
             <label>出售所得稅</label>
@@ -2364,13 +2351,13 @@ body::before{
       <!-- PDF 報告容器（平常隱藏，列印時 CSS 會覆寫顯示） -->
       <div id="sellerCostReport" class="printable-result hidden-for-screen"></div>
 
-      <button class="btn-calc primary" onclick="downloadSellerCostPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>
+      <button class="btn-calc primary" onclick="downloadSellerCostPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>
       <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-sellerCost');calcSellerCostLive()">清除所有欄位</button>
     </div>
 
     <!-- ========== 成交流程 ========== -->
     <div class="page" id="page-dealFlow">
-      <div class="page-title"><span class="icon">description</span> 成交條件預定表</div>
+      <div class="page-title"><i class="ti ti-file-description icon"></i> 成交條件預定表</div>
       <div class="section" style="padding:12px;text-align:center;">
         <img src="deal-checklist.jpg" alt="成交條件預定表" style="max-width:100%;border-radius:var(--radius-xs);" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
         <div class="info-box" style="display:none;text-align:center;margin-top:12px;">
@@ -2386,19 +2373,19 @@ body::before{
 <!-- ══ 手機底部 Bar（桌面預設隱藏） ══ -->
 <div class="mobile-bottom-bar">
   <button class="mobile-bar-btn" data-mgroup="tax">
-    <span class="mbar-icon material-symbols-outlined">calculate</span>
+    <i class="ti ti-calculator mbar-icon"></i>
     <span>稅務</span>
   </button>
   <button class="mobile-bar-btn" data-mgroup="cost">
-    <span class="mbar-icon material-symbols-outlined">payments</span>
+    <i class="ti ti-cash mbar-icon"></i>
     <span>費用</span>
   </button>
   <button class="mobile-bar-btn" data-mpage="dealFlow">
-    <span class="mbar-icon material-symbols-outlined">description</span>
+    <i class="ti ti-file-description mbar-icon"></i>
     <span>流程</span>
   </button>
   <button class="mobile-bar-btn" data-mpage="mortgage">
-    <span class="mbar-icon material-symbols-outlined">account_balance</span>
+    <i class="ti ti-building-bank mbar-icon"></i>
     <span>房貸</span>
   </button>
 </div>
@@ -2441,14 +2428,14 @@ var MOBILE_GROUP_MAP = {
 };
 var MOBILE_GROUP_LABELS = {
   tax: [
-    { page:'oldTax',    icon:'home',   label:'舊制所得稅' },
-    { page:'newTax',    icon:'home_work',   label:'房地合一稅' },
-    { page:'landTax',   icon:'landscape', label:'土地增值稅' },
-    { page:'estateTax', icon:'gavel',   label:'其他稅法'   }
+    { page:'oldTax',    icon:'ti-home',   label:'舊制所得稅' },
+    { page:'newTax',    icon:'ti-home-2',   label:'房地合一稅' },
+    { page:'landTax',   icon:'ti-mountain', label:'土地增值稅' },
+    { page:'estateTax', icon:'ti-gavel',   label:'其他稅法'   }
   ],
   cost: [
-    { page:'buyerCost',  icon:'receipt_long', label:'買方費用' },
-    { page:'sellerCost', icon:'payments', label:'賣方費用' }
+    { page:'buyerCost',  icon:'ti-receipt', label:'買方費用' },
+    { page:'sellerCost', icon:'ti-cash', label:'賣方費用' }
   ]
 };
 
@@ -2538,7 +2525,7 @@ function openMobileSubmenu(group){
   items.forEach(function(it){
     var act=(it.page===curPage)?' class="active"':'';
     html+='<button data-mp="'+it.page+'"'+act+'>' +
-          '<span class="sub-icon material-symbols-outlined">'+it.icon+'</span>' +
+          '<i class="ti '+it.icon+' sub-icon"></i>' +
           '<span>'+it.label+'</span></button>';
   });
   menu.innerHTML=html;
@@ -2848,7 +2835,7 @@ function calcOldTax(){
 
   // 列印用標題
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">home</span>舊制所得稅試算報告</div>
+    <div class="title"><i class="ti ti-home" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>舊制所得稅試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
 
@@ -2857,7 +2844,7 @@ function calcOldTax(){
     const tax=income*0.20;
     _miniTaxVal=tax;
     html+=`<div class="result-box">
-      <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（非境內居住者）</div>
+      <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>計算結果（非境內居住者）</div>
       <div class="result-grid">
         <div class="result-item"><span class="r-label">房屋交易所得</span><span class="r-value">${fmtMoney(income)}</span></div>
         <div class="result-item"><span class="r-label">適用扣繳率</span><span class="r-value">20%</span></div>
@@ -2903,7 +2890,7 @@ function calcOldTax(){
     }
 
     html+=`<div class="result-box">
-      <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（境內居住者）<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px;">綜所稅級距：114 年度適用</span></div>
+      <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>計算結果（境內居住者）<span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px;">綜所稅級距：114 年度適用</span></div>
       <div class="result-grid">
         <div class="result-item"><span class="r-label">房屋交易所得</span><span class="r-value">${fmtMoney(income)}</span></div>
         <div class="result-item"><span class="r-label">適用邊際稅率</span><span class="r-value">${(marginalRate*100).toFixed(0)}%</span></div>
@@ -2918,7 +2905,7 @@ function calcOldTax(){
       html+=`<div class="result-msg success">本次交易無獲利（虧損 ${fmtMoney(Math.abs(rawIncome))}），虧損可在往後3年的財產交易所得中扣除。</div>`;
     }
 
-    html+=`<div class="result-msg warning"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">schedule</span><strong>申報期限：</strong>隔年 5 月併入綜合所得稅申報。</div>`;
+    html+=`<div class="result-msg warning"><i class="ti ti-clock" style="font-size:16px;vertical-align:middle;margin-right:4px"></i><strong>申報期限：</strong>隔年 5 月併入綜合所得稅申報。</div>`;
     html+=`</div>`;
   }
 
@@ -2928,7 +2915,7 @@ function calcOldTax(){
   </div>`;
 
   // 下載 PDF 按鈕（列印時 CSS 會隱藏）
-  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadOldTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadOldTaxPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
 
   document.getElementById('oldResult').innerHTML=html;
 
@@ -3113,11 +3100,11 @@ function calcNewTax(){
   }
 
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">home_work</span>房地合一稅試算報告</div>
+    <div class="title"><i class="ti ti-home-2" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>房地合一稅試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
   html+=`<div class="result-box">
-    <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（房地合一稅 ${version}）</div>
+    <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>計算結果（房地合一稅 ${version}）</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">課稅所得</span><span class="r-value">${income>0?fmtMoney(income):'0 元（虧損 '+fmtMoney(Math.abs(income))+'）'}</span></div>
       <div class="result-item"><span class="r-label">持有期間</span><span class="r-value">${holdDesc}</span></div>
@@ -3149,7 +3136,7 @@ function calcNewTax(){
   if(identity==='foreign'||identity==='foreignCorp'){
     html+=`<div class="result-msg warning"><strong>注意：</strong>非境內居住者／非境內營利事業之房地合一稅，由買受人（扣繳義務人）代為申報繳納，應於所有權移轉登記完成之次日起 30 天內辦理。</div>`;
   }else{
-    html+=`<div class="result-msg warning"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">schedule</span><strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
+    html+=`<div class="result-msg warning"><i class="ti ti-clock" style="font-size:16px;vertical-align:middle;margin-right:4px"></i><strong>申報期限：</strong>所有權移轉登記完成之次日起 30 天內申報繳納。</div>`;
   }
   html+=`</div>`;
 
@@ -3157,7 +3144,7 @@ function calcNewTax(){
     本試算結果僅供參考，實際稅額以國稅局核定為準。
   </div>`;
 
-  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadNewTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadNewTaxPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
 
   document.getElementById('newResult').innerHTML=html;
 
@@ -3185,7 +3172,7 @@ function calcMortgage(){
   const method=getRadioVal('mMethod');
 
   if(P<=0||annualRate<=0||years<=0){
-    document.getElementById('mortgageResult').innerHTML='<div class="result-box"><div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">warning</span>請輸入完整的貸款條件</div></div>';
+    document.getElementById('mortgageResult').innerHTML='<div class="result-box"><div class="result-title"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>請輸入完整的貸款條件</div></div>';
     return;
   }
 
@@ -3194,7 +3181,7 @@ function calcMortgage(){
   const repayMonths=totalMonths-graceMonths;
 
   if(repayMonths<=0){
-    document.getElementById('mortgageResult').innerHTML='<div class="result-box"><div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">warning</span>寬限期不能大於或等於貸款年限</div></div>';
+    document.getElementById('mortgageResult').innerHTML='<div class="result-box"><div class="result-title"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>寬限期不能大於或等於貸款年限</div></div>';
     return;
   }
 
@@ -3245,12 +3232,12 @@ function calcMortgage(){
 
   // 列印時顯示的頁首（CSS @media print 會 display:block；平常 display:none）
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">account_balance</span>房貸試算報告</div>
+    <div class="title"><i class="ti ti-building-bank" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>房貸試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
 
   html+=`<div class="result-box">
-    <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>房貸試算結果（${method==='annuity'?'本息均攤':'本金均攤'}）</div>
+    <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>房貸試算結果（${method==='annuity'?'本息均攤':'本金均攤'}）</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">貸款金額</span><span class="r-value">${fmt(P/10000,0)} 萬元</span></div>
       <div class="result-item"><span class="r-label">年利率</span><span class="r-value">${(annualRate*100).toFixed(3)}%</span></div>`;
@@ -3297,7 +3284,7 @@ function calcMortgage(){
   </div>`;
 
   // 下載 PDF 按鈕（列印時 CSS 會隱藏）
-  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadMortgagePDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadMortgagePDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
 
   document.getElementById('mortgageResult').innerHTML=html;
 
@@ -3597,12 +3584,12 @@ function buildBuyerCostReport(){
   const {deedTax,buildingStamp,landStamp,regFee,mortgageRegFee,certFee,escrowFee,scrivenerFee,total}=d;
 
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">receipt_long</span>買方應付費用試算報告</div>
+    <div class="title"><i class="ti ti-receipt" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>買方應付費用試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
 
   html+=`<div class="result-box">
-    <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>買方應付費用明細</div>
+    <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>買方應付費用明細</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">契稅（房屋評定現值 × 6%）</span><span class="r-value">${f(deedTax)}</span></div>
       <div class="result-item"><span class="r-label">建物契約印花稅</span><span class="r-value">${f(buildingStamp)}</span></div>
@@ -3629,12 +3616,12 @@ function buildSellerCostReport(){
   const {landTax,escrowFee,scrivenerFee,incomeTax,total}=d;
 
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">payments</span>賣方應付費用試算報告</div>
+    <div class="title"><i class="ti ti-cash" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>賣方應付費用試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
 
   html+=`<div class="result-box">
-    <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>賣方應付費用明細</div>
+    <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>賣方應付費用明細</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">土地增值稅</span><span class="r-value">${f(landTax)}</span></div>
       <div class="result-item"><span class="r-label">履約保證費（賣方負擔 1/2）</span><span class="r-value">${f(escrowFee)}</span></div>
@@ -3744,11 +3731,11 @@ function calcLandTax(){
   let selfUseTax=Math.round(appreciation*0.10);
 
   let html=`<div class="print-header">
-    <div class="title"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:6px">landscape</span>土地增值稅試算報告</div>
+    <div class="title"><i class="ti ti-mountain" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>土地增值稅試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
   html+=`<div class="result-box">
-    <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>土地增值稅試算結果</div>
+    <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>土地增值稅試算結果</div>
     <div class="result-grid">
       <div class="result-item"><span class="r-label">土地公告現值（元/m²）</span><span class="r-value">${fmt(currValue,0)} 元</span></div>
       <div class="result-item"><span class="r-label">前次移轉現值（元/m²）</span><span class="r-value">${fmt(prevValue,0)} 元</span></div>
@@ -3782,7 +3769,7 @@ function calcLandTax(){
     本試算結果僅供參考，實際稅額以地政機關核定為準。
   </div>`;
 
-  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadLandTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadLandTaxPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
 
   document.getElementById('landTaxResult').innerHTML=html;
 
