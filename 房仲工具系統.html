@@ -49,7 +49,7 @@ body{
   min-height:100vh;
   color:var(--text);
   font-size:18px;
-  overflow-x:hidden;
+  overflow-x:clip;
   background:var(--bg);
   font-variant-numeric:tabular-nums;
 }
@@ -108,6 +108,12 @@ body::before{
 .header-sub{
   font-size:12px;color:rgba(232,212,154,0.85);
   letter-spacing:0.5px;
+}
+.header-ver{
+  font-size:10px;
+  color:rgba(232,212,154,0.5);
+  letter-spacing:0.3px;
+  margin-left:auto;
 }
 
 /* Layout */
@@ -194,12 +200,12 @@ body::before{
 .tab-divider{width:1px;background:var(--border);margin:10px 0;flex-shrink:0;}
 
 /* Main */
-.main{flex:1;padding:12px 0 28px 0;overflow-x:hidden;max-width:860px;width:calc(100% - 16px);margin:0 auto;}
+.main{flex:1;padding:12px 0 28px 0;overflow-x:clip;max-width:860px;width:calc(100% - 16px);margin:0 auto;}
 .page{display:none;}
 .page.active{display:block;}
 .page-title{
   font-size:22px;font-weight:800;color:var(--lux-navy);
-  margin-bottom:24px;display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;display:flex;align-items:center;gap:10px;
   letter-spacing:0.3px;
   padding-bottom:12px;
   border-bottom:1px solid var(--border);
@@ -635,9 +641,37 @@ body::before{
   /* 手機版：隱藏桌面 header 和頂部 tab-bar，改用底部 bar */
   .header{display:none;}
   .tab-bar-wrap{display:none;}
-  .layout{padding-top:16px;padding-bottom:90px;}
+  body::before{display:none !important;}
+  .layout{padding-top:0;padding-bottom:90px;}
 
   .main{padding:16px 14px;}
+
+  /* 手機版迷你結果條：固定在頂部 */
+  .mini-result-bar{
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    transform:none !important;
+    border-radius:0 !important;
+    border-left:none !important;
+    border-right:none !important;
+    border-top:none !important;
+    padding:10px 14px !important;
+    gap:8px !important;
+    flex-wrap:wrap;
+  }
+  .mini-result-bar .mini-title{font-size:13px;}
+  .mini-result-bar .mini-value{font-size:20px;}
+  .mini-result-bar .mini-link{font-size:11px;padding:3px 8px;}
+  /* sec-title 附加說明文字：手機版靠左換行 */
+  .sec-title > span[style*="margin-left:auto"]{
+    margin-left:0 !important;
+    flex-basis:100%;
+    padding-left:21px;
+    margin-top:4px;
+  }
   .form-grid{grid-template-columns:1fr 1fr !important;}
   .form-grid.three{grid-template-columns:1fr 1fr !important;}
   .result-grid{grid-template-columns:1fr;}
@@ -968,6 +1002,78 @@ body::before{
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
 }
+/* ===== Mini Result Bar ===== */
+.mini-result-bar{
+  background:linear-gradient(180deg,#FFFBF0 0%,#FFFFFF 100%);
+  border:1px solid var(--lux-gold-light);
+  border-left:3px solid var(--lux-gold);
+  border-radius:var(--radius-sm);
+  padding:10px 18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 16px);
+  max-width:860px;
+  z-index:98;
+  box-shadow:0 4px 12px rgba(15,40,71,0.08);
+}
+.mini-result-bar .mini-title{
+  font-size:15px;
+  font-weight:800;
+  color:var(--lux-navy);
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.mini-result-bar .mini-title .icon{
+  font-family:'Material Symbols Outlined';
+  font-size:18px;
+  font-weight:normal;
+  font-style:normal;
+  line-height:1;
+  color:var(--lux-gold);
+  font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+}
+.mini-result-bar .mini-sep{
+  width:1px;
+  height:20px;
+  background:var(--border);
+  flex-shrink:0;
+}
+.mini-result-bar .mini-link{
+  margin-left:auto;
+  font-size:12px;
+  font-weight:600;
+  color:var(--lux-navy);
+  text-decoration:none;
+  white-space:nowrap;
+  padding:4px 10px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-xs);
+  transition:all 0.18s;
+}
+.mini-result-bar .mini-link:hover{
+  border-color:var(--lux-gold-light);
+  background:#FFFBF0;
+}
+.mini-result-bar .mini-label{
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:0.5px;
+  white-space:nowrap;
+}
+.mini-result-bar .mini-value{
+  font-size:24px;
+  font-weight:800;
+  color:var(--lux-navy);
+  letter-spacing:-0.3px;
+  font-variant-numeric:tabular-nums;
+}
 </style>
 </head>
 <body>
@@ -980,6 +1086,7 @@ body::before{
   <div class="header-title">房仲工具系統</div>
   <div class="header-sep"></div>
   <div class="header-sub">稅務試算 ╱ 法規查詢 ╱ 房貸計算</div>
+  <div class="header-ver">稅率更新至 114 年度</div>
 </div>
 
 <div class="layout">
@@ -1023,7 +1130,12 @@ body::before{
 
     <!-- ========== 舊制所得稅 ========== -->
     <div class="page active" id="page-oldTax">
-      <div class="page-title"><span class="icon">home</span> 房屋交易所得稅（舊制）</div>
+      <div id="miniOldTax" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">home</span> 房屋交易所得稅（舊制）</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">應增繳稅額</span>
+        <span class="mini-value" id="miniOldTaxVal">—</span>
+      </div>
 
       <div class="info-box">
         <strong>適用條件：</strong>民國 104 年 12 月 31 日以前取得之房屋。舊制僅對「房屋」部分課稅，土地部分免課所得稅（另繳土地增值稅）。<br>
@@ -1223,8 +1335,8 @@ body::before{
               <div class="input-grp"><input type="text" id="oldStdRate" placeholder="例：48" inputmode="numeric"><span class="input-sfx">%</span></div>
             </div>
             <div class="fg" style="position:relative;">
-              <label>查詢所得稅標準認定</label>
-              <div class="input-grp"><input type="text" id="rateSearchInput" placeholder="輸入區域名稱" oninput="searchRate114()"><span class="input-sfx"><span class="material-symbols-outlined" style="font-size:16px">search</span></span></div>
+              <label>標準認定查詢</label>
+              <div class="input-grp"><input type="text" id="rateSearchInput" placeholder="區域名稱" oninput="searchRate114()"><span class="input-sfx"><span class="material-symbols-outlined" style="font-size:16px">search</span></span></div>
               <div id="rateSearchResult" style="position:absolute;top:100%;left:0;right:0;z-index:10;margin-top:4px;max-height:200px;overflow-y:auto"></div>
             </div>
           </div>
@@ -1297,7 +1409,6 @@ body::before{
         </div>
       </div>
 
-      <button class="btn-calc primary" onclick="calcOldTax()">計算舊制所得稅</button>
       <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-oldTax')">清除所有欄位</button>
 
       <div id="oldResult" class="printable-result"></div>
@@ -1305,7 +1416,12 @@ body::before{
 
     <!-- ========== 房地合一稅（新制） ========== -->
     <div class="page" id="page-newTax">
-      <div class="page-title"><span class="icon">home_work</span> 房地合一稅（新制）</div>
+      <div id="miniNewTax" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">home_work</span> 房地合一稅（新制）</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">應繳稅額</span>
+        <span class="mini-value" id="miniNewTaxVal">—</span>
+      </div>
 
       <div class="info-box">
         <strong>適用條件：</strong>民國 105 年 1 月 1 日以後取得之房地產。房屋與土地合併課稅，分離課稅不併入綜所稅。
@@ -1538,7 +1654,6 @@ body::before{
         </div>
       </div>
 
-      <button class="btn-calc primary" onclick="calcNewTax()">計算房地合一稅</button>
       <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-newTax')">清除所有欄位</button>
 
       <div id="newResult" class="printable-result"></div>
@@ -1546,7 +1661,15 @@ body::before{
 
     <!-- ========== 土地增值稅 ========== -->
     <div class="page" id="page-landTax">
-      <div class="page-title"><span class="icon">landscape</span> 土地增值稅試算</div>
+      <div id="miniLandTax" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">landscape</span> 土地增值稅試算</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">一般用地</span>
+        <span class="mini-value" id="miniLandTaxVal">—</span>
+        <span class="mini-label" style="margin-left:8px">自用住宅</span>
+        <span class="mini-value" id="miniLandTaxSelfVal">—</span>
+        <a href="https://i.land.ntpc.gov.tw/iland/index.php/land-value/vatcal" target="_blank" class="mini-link"><span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;margin-right:2px">open_in_new</span>愛連網（新北市）</a>
+      </div>
 
       <div class="info-box">
         <strong>土地增值稅</strong>是土地所有權移轉時，按土地漲價總數額課徵的稅。<br>
@@ -1737,9 +1860,7 @@ body::before{
       </div>
 
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <button class="btn-calc primary" onclick="calcLandTax()">計算土地增值稅</button>
         <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border)" onclick="clearPage('page-landTax')">清除所有欄位</button>
-        <a href="https://i.land.ntpc.gov.tw/iland/index.php/land-value/vatcal" target="_blank" style="font-size:14px;color:#2563EB;font-weight:600;text-decoration:none;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:2px">open_in_new</span> 愛連網土地增值稅試算（輸入身份證＋地號自動計算）</a>
       </div>
 
       <div id="landTaxResult" class="printable-result"></div>
@@ -1953,7 +2074,12 @@ body::before{
 
     <!-- ========== 房貸試算 ========== -->
     <div class="page" id="page-mortgage">
-      <div class="page-title"><span class="icon">account_balance</span> 房貸試算</div>
+      <div id="miniMortgage" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">account_balance</span> 房貸試算</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">每月還款</span>
+        <span class="mini-value" id="miniMortgageVal">—</span>
+      </div>
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">payments</span> 貸款條件</div>
@@ -1986,7 +2112,6 @@ body::before{
         </div>
       </div>
 
-      <button class="btn-calc primary" onclick="calcMortgage()">計算房貸</button>
       <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-mortgage')">清除所有欄位</button>
 
       <div id="mortgageResult" class="printable-result"></div>
@@ -1994,7 +2119,12 @@ body::before{
 
     <!-- ========== 買方買房費用 ========== -->
     <div class="page" id="page-buyerCost">
-      <div class="page-title"><span class="icon">receipt_long</span> 買方應付費用</div>
+      <div id="miniBuyerCost" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">receipt_long</span> 買方應付費用</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">費用合計</span>
+        <span class="mini-value" id="miniBuyerCostVal">—</span>
+      </div>
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">push_pin</span> 契稅 ＝ 房屋評定現值 × 6%</div>
@@ -2141,7 +2271,12 @@ body::before{
 
     <!-- ========== 賣方應付費用 ========== -->
     <div class="page" id="page-sellerCost">
-      <div class="page-title"><span class="icon">payments</span> 賣方應付費用</div>
+      <div id="miniSellerCost" class="mini-result-bar visible">
+        <span class="mini-title"><span class="icon">payments</span> 賣方應付費用</span>
+        <span class="mini-sep"></span>
+        <span class="mini-label">費用合計</span>
+        <span class="mini-value" id="miniSellerCostVal">—</span>
+      </div>
 
       <div class="section">
         <div class="sec-title"><span class="sec-icon">push_pin</span> 土地增值稅</div>
@@ -2354,6 +2489,8 @@ function switchToPage(pageName){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   var el=document.getElementById('page-'+pageName);
   if(el) el.classList.add('active');
+  // 更新迷你 bar 定位和 main padding
+  if(window._updateMiniLayout) window._updateMiniLayout();
   syncSharedFields();
   updateMobileBarActive(pageName);
   window.scrollTo(0,0);
@@ -2621,6 +2758,8 @@ function clearPage(pageId){
   page.querySelectorAll('.result-box,.printable-result').forEach(el=>{el.innerHTML='';});
   // 清除 bc-result 顯示
   page.querySelectorAll('.bc-result').forEach(el=>{el.textContent='0 元';});
+  // 重置 mini result bar 數字
+  page.querySelectorAll('.mini-value').forEach(function(v){ v.textContent='\u2014'; });
 }
 
 /* ========== 土增稅結果帶入賣方費用 ========== */
@@ -2645,6 +2784,7 @@ function calcOldTax(){
   const identity=getRadioVal('oldIdentity');
   let income=0;
   let rawIncome=0;
+  let _miniTaxVal=0; // for mini result bar
 
   let expNote='';
   let ratioNote='';
@@ -2714,6 +2854,7 @@ function calcOldTax(){
   if(identity==='nonresident'){
     /* 境外居住者：按所得額 20% 扣繳 */
     const tax=income*0.20;
+    _miniTaxVal=tax;
     html+=`<div class="result-box">
       <div class="result-title"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">bar_chart</span>計算結果（境外居住者）</div>
       <div class="result-grid">
@@ -2753,6 +2894,7 @@ function calcOldTax(){
     const taxWithDeal=calcProgressiveTax(totalIncome);
     const taxWithout=calcProgressiveTax(otherIncome);
     const taxOnDeal=taxWithDeal-taxWithout;
+    _miniTaxVal=taxOnDeal;
 
     let marginalRate=0;
     for(const b of brackets){
@@ -2788,6 +2930,14 @@ function calcOldTax(){
   html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadOldTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
 
   document.getElementById('oldResult').innerHTML=html;
+
+  // Update mini result bar
+  var miniBar=document.getElementById('miniOldTax');
+  var miniVal=document.getElementById('miniOldTaxVal');
+  if(miniBar&&miniVal){
+    miniVal.textContent=fmtMoney(_miniTaxVal);
+  }
+
 }
 
 function downloadOldTaxPDF(){
@@ -3009,6 +3159,14 @@ function calcNewTax(){
   html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadNewTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
 
   document.getElementById('newResult').innerHTML=html;
+
+  // Update mini result bar
+  var miniBar=document.getElementById('miniNewTax');
+  var miniVal=document.getElementById('miniNewTaxVal');
+  if(miniBar&&miniVal){
+    miniVal.textContent=fmtMoney(tax);
+  }
+
 }
 
 function downloadNewTaxPDF(){
@@ -3141,6 +3299,14 @@ function calcMortgage(){
   html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadMortgagePDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
 
   document.getElementById('mortgageResult').innerHTML=html;
+
+  // Update mini result bar
+  var miniBar=document.getElementById('miniMortgage');
+  var miniVal=document.getElementById('miniMortgageVal');
+  if(miniBar&&miniVal){
+    miniVal.textContent=fmt(Math.round(monthlyPayAfterGrace),0)+' 元';
+  }
+
 }
 
 /* ========== 通用 PDF 下載函式 ==========
@@ -3384,6 +3550,12 @@ function calcBuyerCostLive(){
   document.getElementById('bcR_escrow').textContent=f(d.escrowFee);
   document.getElementById('bcR_scriv').textContent=f(d.scrivenerFee);
   document.getElementById('bcR_total').textContent=f(d.total);
+  // 更新迷你結果條
+  var miniBar=document.getElementById('miniBuyerCost');
+  var miniVal=document.getElementById('miniBuyerCostVal');
+  if(miniBar&&miniVal){
+    miniVal.textContent=f(d.total);
+  }
 }
 
 /* ========== 賣方費用即時試算 ========== */
@@ -3408,6 +3580,12 @@ function calcSellerCostLive(){
   document.getElementById('scR_scriv').textContent=f(d.scrivenerFee);
   document.getElementById('scR_incomeTax').textContent=f(d.incomeTax);
   document.getElementById('scR_total').textContent=f(d.total);
+  // 更新迷你結果條
+  var miniBar=document.getElementById('miniSellerCost');
+  var miniVal=document.getElementById('miniSellerCostVal');
+  if(miniBar&&miniVal){
+    miniVal.textContent=f(d.total);
+  }
 }
 
 /* ========== 買方/賣方費用 PDF 報告生成 ========== */
@@ -3606,6 +3784,16 @@ function calcLandTax(){
   html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadLandTaxPDF()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;margin-right:4px">picture_as_pdf</span>下載 PDF 報告</button>`;
 
   document.getElementById('landTaxResult').innerHTML=html;
+
+  // Update mini result bar
+  var miniBar=document.getElementById('miniLandTax');
+  var miniVal=document.getElementById('miniLandTaxVal');
+  var miniSelfVal=document.getElementById('miniLandTaxSelfVal');
+  if(miniBar&&miniVal&&miniSelfVal){
+    miniVal.textContent=fmt(generalTax,0)+' 元';
+    miniSelfVal.textContent=fmt(selfUseTax,0)+' 元';
+  }
+
 }
 
 function toggleAmort(el){
@@ -3796,6 +3984,59 @@ function searchRate114(){
   });
   box.innerHTML='<div style="border:2px solid #B45309;border-radius:8px;overflow:hidden;max-height:180px;overflow-y:auto;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">'+html+'</div>';
 }
+
+/* ========== 即時計算：4 個試算頁面輸入時自動更新結果 ========== */
+function initLiveCalc(){
+  var pages=[
+    {id:'page-oldTax',fn:calcOldTax},
+    {id:'page-newTax',fn:calcNewTax},
+    {id:'page-landTax',fn:calcLandTax},
+    {id:'page-mortgage',fn:calcMortgage}
+  ];
+  pages.forEach(function(p){
+    var el=document.getElementById(p.id);
+    if(!el) return;
+    var timer=null;
+    var handler=function(){
+      clearTimeout(timer);
+      timer=setTimeout(function(){
+        try{ p.fn(); }catch(e){/* 輸入不完整時忽略錯誤 */}
+      },300);
+    };
+    el.querySelectorAll('input,select').forEach(function(input){
+      input.addEventListener('input',handler);
+      input.addEventListener('change',handler);
+    });
+  });
+}
+initLiveCalc();
+
+// 動態定位迷你結果條 + 設定 main padding-top
+(function(){
+  function updateMiniLayout(){
+    var tbWrap=document.querySelector('.tab-bar-wrap');
+    var isMobile=!tbWrap||getComputedStyle(tbWrap).display==='none';
+    var top=isMobile?0:Math.round(tbWrap.getBoundingClientRect().bottom+6);
+    document.querySelectorAll('.mini-result-bar').forEach(function(bar){
+      bar.style.top=top+'px';
+    });
+    var mainEl=document.querySelector('.main');
+    var activePage=document.querySelector('.page.active');
+    var hasMini=activePage&&activePage.querySelector('.mini-result-bar');
+    if(mainEl){
+      if(!hasMini) mainEl.style.paddingTop=isMobile?'16px':'12px';
+      else{
+        var miniH=hasMini.offsetHeight||50;
+        mainEl.style.paddingTop=(isMobile?miniH+8:60)+'px';
+      }
+    }
+  }
+  // 延遲執行確保 CSS media query 已生效
+  setTimeout(updateMiniLayout,50);
+  window.addEventListener('resize',updateMiniLayout);
+  // 暴露給 switchToPage 使用
+  window._updateMiniLayout=updateMiniLayout;
+})();
 </script>
 <script>
 if ('serviceWorker' in navigator) {
