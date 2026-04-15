@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="description" content="RealTools — 房屋交易所得稅(舊制/新制)、土地增值稅、遺贈稅與房貸試算整合工具">
+<meta name="description" content="RealTools — 稅務試算、費用計算、貸款試算、租金投報率、可負擔總價反推整合工具">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -594,6 +594,47 @@ body::before{
   }
 }
 
+/* 貸款試算子分頁（膠囊切換，比照 otherTaxTab） */
+#mortgageSubTab{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:6px;
+  padding:6px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:999px;
+  flex-wrap:nowrap !important;
+  box-shadow:inset 0 2px 4px rgba(28,25,23,.04);
+}
+#mortgageSubTab .radio-btn{
+  padding:10px 6px;
+  font-size:14px;
+  border-radius:999px;
+  background:transparent;
+  border:none;
+  white-space:nowrap;
+  text-align:center;
+  color:var(--muted);
+}
+#mortgageSubTab .radio-btn:hover{
+  background:rgba(87,83,78,.08);
+  color:var(--text);
+  border-color:transparent;
+}
+#mortgageSubTab .radio-btn.on{
+  background:#FFFFFF;
+  color:#5C4A32;
+  border:none;
+  box-shadow:0 2px 8px rgba(28,25,23,.1);
+  font-weight:800;
+}
+@media(max-width:400px){
+  #mortgageSubTab .radio-btn{
+    font-size:12px;
+    padding:9px 4px;
+  }
+}
+
 .old-expense-total{display:flex;justify-content:flex-start;}
 .old-expense-total .fg{width:25%;}
 .transfer-summary{display:flex;flex-direction:column;gap:10px;}
@@ -622,6 +663,9 @@ body::before{
   .top-fixed{display:none;}
   .header{display:none;}
   .tab-bar-wrap{display:none;}
+  #mortgageSubTab{display:none !important;}
+  #otherTaxTab{display:none !important;}
+  #page-estateTax > .page-title{display:none !important;}
   body::before{display:none !important;}
   .layout{padding-top:0;padding-bottom:90px;}
 
@@ -854,6 +898,15 @@ body::before{
     page-break-inside:avoid;
     break-inside:avoid;
   }
+  /* 4b. 房貸子分頁：顯示帶 .mSub-active 的子頁容器，隱藏其輸入區，只印 .printable-result */
+  .page.active > [id^="mSub-"]{display:none !important;}
+  .page.active > .mSub-active{display:block !important;}
+  .page.active > .mSub-active > *{display:none !important;}
+  .page.active > .mSub-active > .printable-result{
+    display:block !important;
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
 
   /* 5. 結果容器內：隱藏螢幕專用的 toggle 按鈕和「下載 PDF」按鈕 */
   .printable-result .toggle-detail{display:none !important;}
@@ -1063,7 +1116,7 @@ body::before{
 <div class="header">
   <div class="header-title">RealTools</div>
   <div class="header-sep"></div>
-  <div class="header-sub">稅務試算 ╱ 法規查詢 ╱ 房貸計算</div>
+  <div class="header-sub">稅務試算 ╱ 費用計算 ╱ 貸款試算</div>
   <div class="header-ver">稅率更新至 114 年度</div>
 </div>
   <!-- Tab Bar -->
@@ -1096,7 +1149,7 @@ body::before{
       </button>
       <div class="tab-divider"></div>
       <button class="nav-btn" data-page="mortgage">
-        <i class="ti ti-calculator nav-icon"></i>房貸試算
+        <i class="ti ti-calculator nav-icon"></i>貸款試算
       </button>
     </div>
   </div>
@@ -2050,7 +2103,7 @@ body::before{
       </div>
     </div>
 
-    <!-- ========== 房貸試算 ========== -->
+    <!-- ========== 房貸試算（含租金投報率 + 可負擔總價） ========== -->
     <div class="page" id="page-mortgage">
       <div id="miniMortgage" class="mini-result-bar visible">
         <span class="mini-title"><i class="ti ti-building-bank icon"></i> 房貸試算</span>
@@ -2059,40 +2112,180 @@ body::before{
         <span class="mini-value" id="miniMortgageVal">—</span>
       </div>
 
-      <div class="section">
-        <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 貸款條件</div>
-        <div class="form-grid">
-          <div class="fg">
-            <label>貸款金額</label>
-            <div class="input-grp"><input type="text" id="mLoan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
-          </div>
-          <div class="fg">
-            <label>年利率</label>
-            <div class="input-grp"><input type="text" id="mRate" placeholder="2.185" inputmode="decimal"><span class="input-sfx">%</span></div>
-          </div>
-          <div class="fg">
-            <label>貸款年限</label>
-            <div class="input-grp"><input type="text" id="mYears" placeholder="30" inputmode="numeric"><span class="input-sfx">年</span></div>
-          </div>
-          <div class="fg">
-            <label>寬限期</label>
-            <div class="input-grp"><input type="text" id="mGrace" placeholder="0" inputmode="numeric"><span class="input-sfx">年</span></div>
-            <span class="hint">寬限期內僅繳利息不還本金</span>
-          </div>
-        </div>
+      <!-- 子分頁切換 -->
+      <div class="radio-group" id="mortgageSubTab" style="margin-bottom:18px;">
+        <button class="radio-btn on" data-val="calc">房貸試算</button>
+        <button class="radio-btn" data-val="afford">可負擔總價</button>
+        <button class="radio-btn" data-val="rental">租金投報率</button>
       </div>
 
-      <div class="section">
-        <div class="sec-title"><i class="ti ti-file-description sec-icon"></i> 還款方式</div>
-        <div class="radio-group" id="mMethod">
-          <button class="radio-btn on" data-val="annuity">本息均攤（等額本息）</button>
-          <button class="radio-btn" data-val="principal">本金均攤（等額本金）</button>
+      <!-- ── 子頁：房貸試算 ── -->
+      <div id="mSub-calc" class="mSub-active">
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 貸款條件</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>貸款金額</label>
+              <div class="input-grp"><input type="text" id="mLoan" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>年利率</label>
+              <div class="input-grp"><input type="text" id="mRate" placeholder="2.185" inputmode="decimal"><span class="input-sfx">%</span></div>
+            </div>
+            <div class="fg">
+              <label>貸款年限</label>
+              <div class="input-grp"><input type="text" id="mYears" placeholder="30" inputmode="numeric"><span class="input-sfx">年</span></div>
+            </div>
+            <div class="fg">
+              <label>寬限期</label>
+              <div class="input-grp"><input type="text" id="mGrace" placeholder="0" inputmode="numeric"><span class="input-sfx">年</span></div>
+              <span class="hint">寬限期內僅繳利息不還本金</span>
+            </div>
+          </div>
         </div>
+
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-file-description sec-icon"></i> 還款方式</div>
+          <div class="radio-group" id="mMethod">
+            <button class="radio-btn on" data-val="annuity">本息均攤（等額本息）</button>
+            <button class="radio-btn" data-val="principal">本金均攤（等額本金）</button>
+          </div>
+        </div>
+
+        <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearMortgageSub('calc')">清除所有欄位</button>
+
+        <div id="mortgageResult" class="printable-result"></div>
       </div>
 
-      <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearPage('page-mortgage')">清除所有欄位</button>
+      <!-- ── 子頁：租金投報率 ── -->
+      <div id="mSub-rental" style="display:none;">
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-home-dollar sec-icon"></i> 購入成本</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>房屋總價</label>
+              <div class="input-grp"><input type="text" id="ryTotalPrice" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+            </div>
+            <div class="fg">
+              <label>自備款（頭期+雜費）</label>
+              <div class="input-grp"><input type="text" id="ryDownPayment" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <span class="hint">含頭期款、裝潢、仲介費、稅費等</span>
+            </div>
+          </div>
+        </div>
 
-      <div id="mortgageResult" class="printable-result"></div>
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 租金收入</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>每月租金</label>
+              <div class="input-grp"><input type="text" id="ryMonthlyRent" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            </div>
+            <div class="fg">
+              <label>年空置月數</label>
+              <div class="input-grp"><input type="text" id="ryVacancy" placeholder="0" inputmode="decimal"><span class="input-sfx">月</span></div>
+              <span class="hint">預估每年空置幾個月</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-building-bank sec-icon"></i> 房貸條件（選填）</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>貸款金額</label>
+              <div class="input-grp"><input type="text" id="ryLoanAmt" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <span class="hint">不填則視為全額現金購入</span>
+            </div>
+            <div class="fg">
+              <label>年利率</label>
+              <div class="input-grp"><input type="text" id="ryLoanRate" placeholder="2.185" inputmode="decimal"><span class="input-sfx">%</span></div>
+            </div>
+            <div class="fg">
+              <label>貸款年限</label>
+              <div class="input-grp"><input type="text" id="ryLoanYears" placeholder="30" inputmode="numeric"><span class="input-sfx">年</span></div>
+            </div>
+            <div class="fg">
+              <label>寬限期</label>
+              <div class="input-grp"><input type="text" id="ryGrace" placeholder="0" inputmode="numeric"><span class="input-sfx">年</span></div>
+              <span class="hint">寬限期內僅繳利息不還本金</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-receipt-2 sec-icon"></i> 年度支出</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>管理費（年）</label>
+              <div class="input-grp"><input type="text" id="ryMgmtFee" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            </div>
+            <div class="fg">
+              <label>房屋稅 + 地價稅（年）</label>
+              <div class="input-grp"><input type="text" id="ryTax" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            </div>
+            <div class="fg">
+              <label>保險費（年）</label>
+              <div class="input-grp"><input type="text" id="ryInsurance" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            </div>
+            <div class="fg">
+              <label>其他支出（年）</label>
+              <div class="input-grp"><input type="text" id="ryOtherExp" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+              <span class="hint">修繕、代管費等</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearMortgageSub('rental')">清除所有欄位</button>
+
+        <div id="rentalYieldResult" class="printable-result"></div>
+      </div>
+
+      <!-- ── 子頁：可負擔總價反推 ── -->
+      <div id="mSub-afford" style="display:none;">
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-cash sec-icon"></i> 每月收支</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>家庭月收入</label>
+              <div class="input-grp"><input type="text" id="apMonthlyIncome" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+            </div>
+            <div class="fg">
+              <label>每月可負擔房貸</label>
+              <div class="input-grp"><input type="text" id="apMonthlyPay" placeholder="0" inputmode="numeric"><span class="input-sfx">元</span></div>
+              <span class="hint" style="white-space:nowrap;">≤40% 輕鬆｜40~60% 合理｜>60% 偏高</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-title"><i class="ti ti-building-bank sec-icon"></i> 貸款條件</div>
+          <div class="form-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="fg">
+              <label>年利率</label>
+              <div class="input-grp"><input type="text" id="apRate" placeholder="2.185" inputmode="decimal"><span class="input-sfx">%</span></div>
+            </div>
+            <div class="fg">
+              <label>貸款年限</label>
+              <div class="input-grp"><input type="text" id="apYears" placeholder="30" inputmode="numeric"><span class="input-sfx">年</span></div>
+            </div>
+            <div class="fg">
+              <label>貸款成數</label>
+              <div class="input-grp"><input type="text" id="apLTV" placeholder="80" inputmode="numeric"><span class="input-sfx">%</span></div>
+              <span class="hint">銀行核貸比例，一般 70~80%</span>
+            </div>
+            <div class="fg">
+              <label>目前自備款</label>
+              <div class="input-grp"><input type="text" id="apSavings" placeholder="0" inputmode="numeric"><span class="input-sfx">萬元</span></div>
+              <span class="hint">選填，檢查自備款是否足夠</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-calc" style="background:var(--card);color:var(--muted);border:1px solid var(--border);margin-top:8px" onclick="clearMortgageSub('afford')">清除所有欄位</button>
+
+        <div id="affordPriceResult" class="printable-result"></div>
+      </div>
     </div>
 
     <!-- ========== 買方買房費用 ========== -->
@@ -2357,6 +2550,7 @@ body::before{
     </div>
 
 
+
   </div>
 </div>
 
@@ -2370,13 +2564,13 @@ body::before{
     <i class="ti ti-cash mbar-icon"></i>
     <span>費用</span>
   </button>
+  <button class="mobile-bar-btn" data-mgroup="loan">
+    <i class="ti ti-building-bank mbar-icon"></i>
+    <span>貸款</span>
+  </button>
   <button class="mobile-bar-btn" data-mpage="dealFlow">
     <i class="ti ti-file-description mbar-icon"></i>
     <span>流程</span>
-  </button>
-  <button class="mobile-bar-btn" data-mpage="mortgage">
-    <i class="ti ti-building-bank mbar-icon"></i>
-    <span>房貸</span>
   </button>
 </div>
 <div class="mobile-bar-overlay" id="mobileBarOverlay" onclick="closeMobileSubmenu()"></div>
@@ -2414,18 +2608,28 @@ document.addEventListener('input',function(e){
 // 底部 bar：哪一頁屬於哪一個群組
 var MOBILE_GROUP_MAP = {
   tax:  ['oldTax','newTax','landTax','estateTax'],
-  cost: ['buyerCost','sellerCost']
+  cost: ['buyerCost','sellerCost'],
+  loan: ['mortgage']
 };
 var MOBILE_GROUP_LABELS = {
   tax: [
-    { page:'oldTax',    icon:'ti-home',   label:'舊制所得稅' },
-    { page:'newTax',    icon:'ti-home-2',   label:'房地合一稅' },
-    { page:'landTax',   icon:'ti-mountain', label:'土地增值稅' },
-    { page:'estateTax', icon:'ti-gavel',   label:'其他稅法'   }
+    { page:'oldTax',    icon:'ti-home',       label:'舊制所得稅' },
+    { page:'newTax',    icon:'ti-home-2',     label:'房地合一稅' },
+    { page:'landTax',   icon:'ti-mountain',   label:'土地增值稅' },
+    { page:'estateTax', icon:'ti-home-2',     label:'合一稅重購退稅', sub:'newRepurchase' },
+    { page:'estateTax', icon:'ti-home',       label:'舊制重購扣抵',   sub:'oldRepurchase' },
+    { page:'estateTax', icon:'ti-mountain',   label:'土增稅重購退稅', sub:'landRepurchase' },
+    { page:'estateTax', icon:'ti-gift',       label:'贈與稅',         sub:'giftTax' },
+    { page:'estateTax', icon:'ti-gavel',      label:'遺產稅',         sub:'estateTaxSub' }
   ],
   cost: [
     { page:'buyerCost',  icon:'ti-receipt', label:'買方費用' },
-    { page:'sellerCost', icon:'ti-cash', label:'賣方費用' }
+    { page:'sellerCost', icon:'ti-cash',    label:'賣方費用' }
+  ],
+  loan: [
+    { page:'mortgage', icon:'ti-calculator',  label:'房貸試算',   sub:'calc' },
+    { page:'mortgage', icon:'ti-wallet',      label:'可負擔總價', sub:'afford' },
+    { page:'mortgage', icon:'ti-percentage',  label:'租金投報率', sub:'rental' }
   ]
 };
 
@@ -2510,11 +2714,11 @@ function openMobileSubmenu(group){
   var curPage=(document.querySelector('.page.active')||{}).id||'';
   curPage=curPage.replace(/^page-/,'');
   var menu=document.getElementById('mobileBarSubmenu');
-  var title=group==='tax'?'稅務試算':'費用試算';
-  var html='<h4>'+title+'</h4>';
-  items.forEach(function(it){
-    var act=(it.page===curPage)?' class="active"':'';
-    html+='<button data-mp="'+it.page+'"'+act+'>' +
+  var titles={tax:'稅務試算',cost:'費用試算',loan:'貸款試算'};
+  var html='<h4>'+(titles[group]||group)+'</h4>';
+  items.forEach(function(it,i){
+    var act=(it.page===curPage&&!it.sub)?' class="active"':'';
+    html+='<button data-mp="'+it.page+'" data-sub="'+(it.sub||'')+'"'+act+'>' +
           '<i class="ti '+it.icon+' sub-icon"></i>' +
           '<span>'+it.label+'</span></button>';
   });
@@ -2523,7 +2727,23 @@ function openMobileSubmenu(group){
   document.getElementById('mobileBarOverlay').classList.add('on');
   menu.querySelectorAll('button').forEach(function(b){
     b.addEventListener('click',function(){
-      switchToPage(b.dataset.mp);
+      var page=b.dataset.mp;
+      var sub=b.dataset.sub;
+      switchToPage(page);
+      // 其他稅法子面板切換
+      if(page==='estateTax'&&sub){
+        document.querySelectorAll('#otherTaxTab .radio-btn').forEach(function(rb){rb.classList.remove('on');});
+        var targetBtn=document.querySelector('#otherTaxTab .radio-btn[data-val="'+sub+'"]');
+        if(targetBtn) targetBtn.classList.add('on');
+        document.querySelectorAll('.other-tax-panel').forEach(function(p){p.style.display='none';});
+        var panel=document.getElementById('otherPanel-'+sub);
+        if(panel) panel.style.display='';
+      }
+      // 貸款子分頁切換
+      if(page==='mortgage'&&sub){
+        var subBtn=document.querySelector('#mortgageSubTab .radio-btn[data-val="'+sub+'"]');
+        if(subBtn) subBtn.click();
+      }
       closeMobileSubmenu();
     });
   });
@@ -3328,6 +3548,16 @@ function downloadMortgagePDF(){
   const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
   downloadReportPDF('page-mortgage', `房貸試算_貸款${loanAmt}萬_${years}年_${dateStr}`);
 }
+function downloadRentalYieldPDF(){
+  const price=parseNum('ryTotalPrice');
+  const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  downloadReportPDF('page-mortgage', `租金投報率_${price}萬_${dateStr}`);
+}
+function downloadAffordPricePDF(){
+  const pay=parseNum('apMonthlyPay');
+  const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  downloadReportPDF('page-mortgage', `可負擔總價_月付${pay>0?fmt(pay,0):''}元_${dateStr}`);
+}
 
 function downloadLandTaxPDF(){
   const dateStr=new Date().toISOString().slice(0,10).replace(/-/g,'');
@@ -3927,13 +4157,325 @@ function searchRate114(){
   box.innerHTML='<div style="border:2px solid #B45309;border-radius:8px;overflow:hidden;max-height:180px;overflow-y:auto;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">'+html+'</div>';
 }
 
-/* ========== 即時計算：4 個試算頁面輸入時自動更新結果 ========== */
+/* ========== 租金投報率計算 ========== */
+function calcRentalYield(){
+  const totalPrice=parseNum('ryTotalPrice');     // 萬元
+  const downPayment=parseNum('ryDownPayment');   // 萬元（自備款）
+  const monthlyRent=parseNum('ryMonthlyRent');   // 元
+  const vacancy=parseNum('ryVacancy');           // 月
+  const loanAmt=parseNum('ryLoanAmt');           // 萬元
+  const loanRate=parseNum('ryLoanRate')/100;     // 年利率
+  const loanYears=parseNum('ryLoanYears');       // 年
+  const graceYears=parseNum('ryGrace');          // 寬限期（年）
+  const mgmtFee=parseNum('ryMgmtFee');           // 元/年
+  const tax=parseNum('ryTax');                   // 元/年
+  const insurance=parseNum('ryInsurance');        // 元/年
+  const otherExp=parseNum('ryOtherExp');          // 元/年
+
+  if(totalPrice<=0||monthlyRent<=0){
+    document.getElementById('rentalYieldResult').innerHTML='<div class="result-box"><div class="result-title"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>請輸入房屋總價與每月租金</div></div>';
+    document.getElementById('miniMortgageVal').textContent='—';
+    return;
+  }
+
+  const totalCost=totalPrice*10000;
+  const selfFund=downPayment>0?downPayment*10000:totalCost;
+  const annualRent=monthlyRent*(12-vacancy);
+  const annualOtherExp=mgmtFee+tax+insurance+otherExp;
+
+  // 房貸計算（本息均攤，含寬限期）
+  let monthlyAfterGrace=0, graceMonthly=0, annualInterest=0;
+  const hasLoan=loanAmt>0&&loanRate>0&&loanYears>0;
+  const hasGrace=hasLoan&&graceYears>0;
+  if(hasLoan){
+    if(graceYears>=loanYears){
+      document.getElementById('rentalYieldResult').innerHTML='<div class="result-box"><div class="result-title"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>寬限期不能大於或等於貸款年限</div></div>';
+      document.getElementById('miniMortgageVal').textContent='—';
+      return;
+    }
+    const P=loanAmt*10000;
+    const r=loanRate/12;
+    annualInterest=P*loanRate;  // 年利息（全額本金×年利率，簡化估算）
+    graceMonthly=P*r;           // 寬限期月付（僅利息）
+    const repayMonths=(loanYears-graceYears)*12;
+    const rn=Math.pow(1+r,repayMonths);
+    monthlyAfterGrace=P*r*rn/(rn-1);
+  }
+
+  // ── 寬限期內 ──
+  const graceCashFlow=hasLoan?(annualRent-annualOtherExp-graceMonthly*12):0;
+  // ── 寬限期後 ──
+  const afterGraceCashFlow=hasLoan?(annualRent-annualOtherExp-monthlyAfterGrace*12):0;
+
+  // 淨投報率＝（年租金 - 雜支 - 年利息）/ 房屋總價
+  const netIncome=annualRent-annualOtherExp-(hasLoan?annualInterest:0);
+  const grossYield=(annualRent/totalCost)*100;
+  const netYield=(netIncome/totalCost)*100;
+  const leveragedYield=selfFund>0?((netIncome/selfFund)*100):0;
+  const paybackYears=netIncome>0?(selfFund/netIncome):0;
+
+  // mini bar
+  if(hasLoan){
+    document.getElementById('miniMortgageVal').textContent='ROE '+leveragedYield.toFixed(2)+'%';
+  }else{
+    document.getElementById('miniMortgageVal').textContent=netYield.toFixed(2)+'%';
+  }
+
+  let html=`<div class="print-header">
+    <div class="title"><i class="ti ti-percentage" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>租金投報率分析</div>
+    <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  // ── 投報率分析結果（含試算條件） ──
+  html+=`<div class="result-box">
+    <div class="result-title"><i class="ti ti-chart-pie" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>投報率分析結果</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">房屋總價</span><span class="r-value">${fmt(totalPrice,0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">自備款</span><span class="r-value">${fmt(selfFund/10000,0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">每月租金</span><span class="r-value">${fmt(monthlyRent,0)} 元</span></div>
+      ${vacancy>0?`<div class="result-item"><span class="r-label">年空置月數</span><span class="r-value">${vacancy} 月</span></div>`:''}
+      ${hasLoan?`<div class="result-item"><span class="r-label">貸款金額</span><span class="r-value">${fmt(loanAmt,0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">年利率 / 年限</span><span class="r-value">${(loanRate*100).toFixed(3)}% / ${loanYears} 年</span></div>
+      ${hasGrace?`<div class="result-item"><span class="r-label">寬限期</span><span class="r-value">${graceYears} 年</span></div>`:''}`:''}
+      <div class="result-item"><span class="r-label">年度雜支合計</span><span class="r-value">${fmt(annualOtherExp,0)} 元</span></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">年租金收入</span><span class="r-value">${fmt(annualRent,0)} 元</span></div>
+      <div class="result-item"><span class="r-label">年度雜支合計</span><span class="r-value">${fmt(annualOtherExp,0)} 元</span></div>
+      ${hasLoan?`<div class="result-item"><span class="r-label">年房貸利息</span><span class="r-value">${fmt(Math.round(annualInterest),0)} 元</span></div>`:''}
+      <div class="result-item"><span class="r-label">年淨收入（扣利息+雜支）</span><span class="r-value" style="color:${netIncome>=0?'var(--success)':'var(--danger)'}">${fmt(Math.round(netIncome),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">毛投報率</span><span class="r-value">${grossYield.toFixed(2)}%</span></div>
+      <div class="result-item"><span class="r-label">淨投報率</span><span class="r-value">${netYield.toFixed(2)}%</span></div>
+      <div class="result-item"><span class="r-label">自備款投報率（ROE）</span><span class="r-value highlight">${leveragedYield.toFixed(2)}%</span></div>
+      ${paybackYears>0?`<div class="result-item"><span class="r-label">自備款回本年數</span><span class="r-value">${fmt(paybackYears,1)} 年</span></div>`:''}
+    </div>
+  </div>`;
+
+  // ── 有寬限期：分兩階段顯示現金流 ──
+  if(hasGrace){
+    html+=`<div class="result-box">
+      <div class="result-title"><i class="ti ti-clock" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>寬限期內（前 ${graceYears} 年）</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="r-label">每月繳款（僅利息）</span><span class="r-value" style="color:var(--wood)">${fmt(Math.round(graceMonthly),0)} 元</span></div>
+        <div class="result-item"><span class="r-label">年現金流</span><span class="r-value" style="color:${graceCashFlow>=0?'var(--success)':'var(--danger)'}">${fmt(Math.round(graceCashFlow),0)} 元</span></div>
+      </div>
+    </div>`;
+    html+=`<div class="result-box">
+      <div class="result-title"><i class="ti ti-clock-play" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>寬限期後（第 ${graceYears+1}～${loanYears} 年）</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="r-label">每月繳款（本息均攤）</span><span class="r-value">${fmt(Math.round(monthlyAfterGrace),0)} 元</span></div>
+        <div class="result-item"><span class="r-label">年現金流</span><span class="r-value" style="color:${afterGraceCashFlow>=0?'var(--success)':'var(--danger)'}">${fmt(Math.round(afterGraceCashFlow),0)} 元</span></div>
+      </div>
+      ${afterGraceCashFlow<0?`<div style="padding:8px 12px 4px;font-size:13px;color:var(--danger)">⚠ 寬限期後每月需額外貼錢 ${fmt(Math.round(Math.abs(afterGraceCashFlow)/12),0)} 元</div>`:''}
+    </div>`;
+  } else if(hasLoan){
+    // 有貸款但無寬限期：只顯示一組現金流
+    html+=`<div class="result-box">
+      <div class="result-title"><i class="ti ti-arrows-exchange sec-icon" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>每月現金流</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="r-label">每月繳款（本息均攤）</span><span class="r-value">${fmt(Math.round(monthlyAfterGrace),0)} 元</span></div>
+        <div class="result-item"><span class="r-label">年現金流</span><span class="r-value" style="color:${afterGraceCashFlow>=0?'var(--success)':'var(--danger)'}">${fmt(Math.round(afterGraceCashFlow),0)} 元</span></div>
+      </div>
+      ${afterGraceCashFlow<0?`<div style="padding:8px 12px 4px;font-size:13px;color:var(--danger)">⚠ 每月需額外貼錢 ${fmt(Math.round(Math.abs(afterGraceCashFlow)/12),0)} 元</div>`:''}
+    </div>`;
+  }
+
+  // ── 投報率評等 ──
+  const mainYield=leveragedYield;
+  let grade='',gradeColor='';
+  if(mainYield>=8){grade='優秀';gradeColor='var(--success)';}
+  else if(mainYield>=5){grade='良好';gradeColor='#B45309';}
+  else if(mainYield>=3){grade='普通';gradeColor='var(--muted)';}
+  else{grade='偏低';gradeColor='var(--danger)';}
+
+  html+=`<div class="result-box">
+    <div class="result-title"><i class="ti ti-star" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>投報率評等</div>
+    <div style="text-align:center;padding:12px 0;">
+      <span style="font-size:28px;font-weight:800;color:${gradeColor}">${grade}</span>
+      <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+        自備款投報率 ${leveragedYield.toFixed(2)}%｜淨投報率 ${netYield.toFixed(2)}%
+      </div>
+    </div>
+  </div>`;
+
+  html+=`<div class="result-box">
+    <div class="result-title"><i class="ti ti-book" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>名詞解釋</div>
+    <div style="padding:8px 12px;font-size:13px;color:var(--muted);line-height:1.9">
+      <b>毛投報率</b>＝年租金收入 ÷ 房屋總價。不扣任何成本，快速比較不同物件的租金水準。<br>
+      <b>淨投報率</b>＝（年租金 − 雜支 − 房貸利息）÷ 房屋總價。扣除持有成本後，衡量物件本身的投資效率。<br>
+      <b>自備款投報率（ROE）</b>＝（年租金 − 雜支 − 房貸利息）÷ 自備款。衡量「自己掏的錢」每年賺回多少，貸款槓桿越大 ROE 越高，但風險也越大。<br>
+      <b>年淨收入</b>＝年租金 − 雜支 − 房貸利息。不含本金攤還，反映物件的稅前獲利能力。<br>
+      <b>年現金流</b>＝年租金 − 雜支 − 每月房貸月供×12。含本金攤還，反映口袋實際進出；負數代表每月要額外貼錢。<br>
+      <b>回本年數</b>＝自備款 ÷ 年淨收入。多少年後累積淨收入可回收自備款。
+    </div>
+  </div>`;
+
+  html+=`<div class="print-footer">
+    本試算結果僅供參考，實際投報率受租金波動、空置率、維修支出及利率調整等因素影響。
+  </div>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadRentalYieldPDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
+
+  document.getElementById('rentalYieldResult').innerHTML=html;
+}
+
+/* ========== 可負擔總價反推 ========== */
+function calcAffordPrice(){
+  const monthlyIncome=parseNum('apMonthlyIncome'); // 元
+  const monthlyPay=parseNum('apMonthlyPay');       // 元
+  const annualRate=parseNum('apRate')/100;
+  const years=parseNum('apYears');
+  const ltv=parseNum('apLTV')/100;
+  const savings=parseNum('apSavings'); // 萬元
+
+  if(monthlyPay<=0||annualRate<=0||years<=0||ltv<=0){
+    document.getElementById('affordPriceResult').innerHTML='<div class="result-box"><div class="result-title"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>請輸入每月可負擔房貸、利率、年限與貸款成數</div></div>';
+    document.getElementById('miniMortgageVal').textContent='—';
+    return;
+  }
+
+  const r=annualRate/12;
+  const n=years*12;
+  // 本息均攤反推：P = M * [(1+r)^n - 1] / [r * (1+r)^n]
+  const rn=Math.pow(1+r,n);
+  const maxLoan=monthlyPay*(rn-1)/(r*rn);
+  const maxTotalPrice=maxLoan/ltv;
+  const downPayment=maxTotalPrice-maxLoan;
+
+  document.getElementById('miniMortgageVal').textContent=fmt(Math.round(maxTotalPrice/10000),0)+' 萬';
+
+  const incomeRatio=monthlyIncome>0?((monthlyPay/monthlyIncome)*100):0;
+
+  let html=`<div class="print-header">
+    <div class="title"><i class="ti ti-wallet" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>可負擔總價分析</div>
+    <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  html+=`<div class="result-box">
+    <div class="result-title"><i class="ti ti-home-search" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>反推結果（本息均攤）</div>
+    <div class="result-grid">
+      ${monthlyIncome>0?`<div class="result-item"><span class="r-label">家庭月收入</span><span class="r-value">${fmt(Math.round(monthlyIncome),0)} 元</span></div>`:''}
+      <div class="result-item"><span class="r-label">每月可負擔房貸</span><span class="r-value">${fmt(Math.round(monthlyPay),0)} 元</span></div>
+      <div class="result-item"><span class="r-label">年利率 / 年限</span><span class="r-value">${(annualRate*100).toFixed(3)}% / ${years} 年</span></div>
+      <div class="result-item"><span class="r-label">貸款成數</span><span class="r-value">${(ltv*100).toFixed(0)}%</span></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">可負擔房屋總價</span><span class="r-value highlight">${fmt(Math.round(maxTotalPrice/10000),0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">最高貸款金額</span><span class="r-value">${fmt(Math.round(maxLoan/10000),0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">所需自備款</span><span class="r-value">${fmt(Math.round(downPayment/10000),0)} 萬元</span></div>
+      ${monthlyIncome>0?`<div class="result-item"><span class="r-label">房貸佔月收入比</span><span class="r-value" style="color:${incomeRatio<=40?'var(--success)':incomeRatio<=60?'#B45309':'var(--danger)'}">${incomeRatio.toFixed(1)}%</span></div>`:''}
+    </div>
+  </div>`;
+
+  // 自備款檢查
+  if(savings>0){
+    const savingsAmt=savings*10000;
+    const downPayAmt=downPayment;
+    const enough=savingsAmt>=downPayAmt;
+    const gap=downPayAmt-savingsAmt;
+    html+=`<div class="result-box">
+      <div class="result-title"><i class="ti ti-piggy-bank" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>自備款檢查</div>
+      <div style="text-align:center;padding:12px 0;">
+        <span style="font-size:24px;font-weight:800;color:${enough?'var(--success)':'var(--danger)'}">${enough?'✓ 自備款足夠':'✗ 自備款不足'}</span>
+        <div style="margin-top:8px;font-size:14px;color:var(--muted)">
+          目前自備款 ${fmt(savings,0)} 萬元，需要 ${fmt(Math.round(downPayAmt/10000),0)} 萬元${!enough?`，尚差 ${fmt(Math.round(gap/10000),0)} 萬元`:''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // 建議提示
+  if(monthlyIncome>0){
+    let advice='';
+    if(incomeRatio<=40) advice='房貸佔比在輕鬆範圍內（≤40%），財務壓力較小。';
+    else if(incomeRatio<=60) advice='房貸佔比在合理範圍（40~60%），建議保留緊急預備金。';
+    else advice='房貸佔比偏高（>60%），建議降低總價目標或拉長貸款年限。';
+
+    html+=`<div class="result-box">
+      <div class="result-title"><i class="ti ti-bulb" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>財務建議</div>
+      <div style="padding:8px 12px;font-size:14px;color:var(--muted);line-height:1.7">${advice}</div>
+    </div>`;
+  }
+
+  html+=`<div class="result-box">
+    <div class="result-title"><i class="ti ti-book" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>名詞解釋</div>
+    <div style="padding:8px 12px;font-size:13px;color:var(--muted);line-height:1.9">
+      <b>本息均攤</b>＝每月還款金額固定（含本金＋利息），前期利息佔比高、本金少，後期反轉。最常見的房貸還款方式。<br>
+      <b>貸款成數</b>＝銀行核貸金額 ÷ 房屋總價。成數 80% 表示銀行貸 8 成、自備 2 成。實際依物件、區域及個人信用而異。<br>
+      <b>自備款</b>＝房屋總價 − 貸款金額。除了頭期款，還需預留契稅、規費、仲介費、裝潢等雜費。<br>
+      <b>房貸佔月收入比</b>＝每月房貸 ÷ 家庭月收入。≤40% 輕鬆、40~60% 合理、超過 60% 財務壓力偏高。
+    </div>
+  </div>`;
+
+  html+=`<div class="print-footer">
+    本試算結果僅供參考，實際可負擔金額受銀行審核、利率調整及個人信用條件等因素影響。
+  </div>`;
+  html+=`<button class="btn-calc primary" style="margin-top:14px;" onclick="downloadAffordPricePDF()"><i class="ti ti-file-type-pdf" style="font-size:18px;vertical-align:middle;margin-right:4px"></i>下載 PDF 報告</button>`;
+
+  document.getElementById('affordPriceResult').innerHTML=html;
+}
+
+/* ========== 房貸子分頁切換 ========== */
+var _mortgageSubTab='calc';
+(function initMortgageSubTab(){
+  var grp=document.getElementById('mortgageSubTab');
+  if(!grp) return;
+  var mini=document.getElementById('miniMortgage');
+  var labels={calc:{title:'房貸試算',label:'每月還款',valId:'miniMortgageVal'},
+              rental:{title:'租金投報率',label:'淨投報率',valId:'miniMortgageVal'},
+              afford:{title:'可負擔總價',label:'可負擔總價',valId:'miniMortgageVal'}};
+  grp.querySelectorAll('.radio-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      grp.querySelectorAll('.radio-btn').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      var mode=btn.dataset.val;
+      _mortgageSubTab=mode;
+      ['calc','rental','afford'].forEach(function(k){
+        var el=document.getElementById('mSub-'+k);
+        if(!el) return;
+        el.style.display=(k===mode)?'':'none';
+        el.classList.toggle('mSub-active', k===mode);
+      });
+      // 更新 mini bar
+      var L=labels[mode];
+      if(mini){
+        mini.querySelector('.mini-title').innerHTML='<i class="ti ti-building-bank icon"></i> '+L.title;
+        mini.querySelector('.mini-label').textContent=L.label;
+      }
+      document.getElementById('miniMortgageVal').textContent='—';
+      // 觸發即時計算
+      if(mode==='calc') try{calcMortgage();}catch(e){}
+      else if(mode==='rental') try{calcRentalYield();}catch(e){}
+      else if(mode==='afford') try{calcAffordPrice();}catch(e){}
+    });
+  });
+})();
+
+function clearMortgageSub(mode){
+  var container=document.getElementById('mSub-'+mode);
+  if(!container) return;
+  container.querySelectorAll('input[type=text]').forEach(function(el){el.value='';});
+  container.querySelectorAll('.radio-group').forEach(function(grp){
+    var btns=grp.querySelectorAll('.radio-btn');
+    btns.forEach(function(b,i){i===0?b.classList.add('on'):b.classList.remove('on');});
+  });
+  container.querySelectorAll('.printable-result').forEach(function(el){el.innerHTML='';});
+  document.getElementById('miniMortgageVal').textContent='—';
+}
+
+/* ========== 即時計算 ========== */
+function calcMortgagePage(){
+  if(_mortgageSubTab==='calc') try{calcMortgage();}catch(e){}
+  else if(_mortgageSubTab==='rental') try{calcRentalYield();}catch(e){}
+  else if(_mortgageSubTab==='afford') try{calcAffordPrice();}catch(e){}
+}
 function initLiveCalc(){
   var pages=[
     {id:'page-oldTax',fn:calcOldTax},
     {id:'page-newTax',fn:calcNewTax},
     {id:'page-landTax',fn:calcLandTax},
-    {id:'page-mortgage',fn:calcMortgage}
+    {id:'page-mortgage',fn:calcMortgagePage}
   ];
   pages.forEach(function(p){
     var el=document.getElementById(p.id);
