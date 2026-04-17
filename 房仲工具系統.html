@@ -1004,6 +1004,18 @@ body::before{
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
 
+  /* 8b. 輸入數值摘要區塊 — 列印時淡色背景區分 */
+  .printable-result .input-summary{
+    background:#F8FAFC !important;
+    border:1px solid #CBD5E1 !important;
+    border-left:3px solid #c8a45a !important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    margin-bottom:8px !important;
+  }
+  .printable-result .input-summary .result-item{
+    background:#FFFFFF !important;
+  }
+
   /* 9. 攤還表：強制移除捲動容器、完整顯示、自動分頁 */
   /* 特殊保護：當 .printable-result 含有攤還表時，覆寫 page-break-inside:avoid，
      因為攤還表必須允許跨頁（360 期根本塞不進一頁）*/
@@ -3093,6 +3105,60 @@ function calcOldTax(){
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
 
+  // 列印用輸入數值摘要
+  html+=`<div class="result-box input-summary">
+    <div class="result-title"><i class="ti ti-list-details" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>輸入數值</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">納稅身份</span><span class="r-value">${identity==='resident'?'境內居住者':'非境內居住者'}</span></div>
+      <div class="result-item"><span class="r-label">計算方式</span><span class="r-value">${method==='actual'?'核實認定':'標準認定'}</span></div>`;
+
+  if(method==='actual'){
+    const _sell=parseNum('oldSellPrice');
+    const _buy=parseNum('oldBuyPrice');
+    const _exp=parseNum('oldExpense');
+    const oldMethod=getRadioVal('oldAcquireMethod');
+    html+=`<div class="result-item"><span class="r-label">出售總價</span><span class="r-value">${fmt(_sell,0)} 元</span></div>`;
+    if(oldMethod==='purchase'){
+      html+=`<div class="result-item"><span class="r-label">買入總價</span><span class="r-value">${fmt(_buy,0)} 元</span></div>`;
+    }else if(oldMethod==='inherit'){
+      html+=`<div class="result-item"><span class="r-label">取得方式</span><span class="r-value">繼承取得</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">繼承時房屋現值</span><span class="r-value">${fmt(parseNum('oldInheritHouseVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">繼承時土地現值</span><span class="r-value">${fmt(parseNum('oldInheritLandVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('oldInheritCPI').value||'1'}</span></div>`;
+    }else if(oldMethod==='gift'){
+      html+=`<div class="result-item"><span class="r-label">取得方式</span><span class="r-value">一般贈與</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">贈與時房屋現值</span><span class="r-value">${fmt(parseNum('oldGiftHouseVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">贈與時土地現值</span><span class="r-value">${fmt(parseNum('oldGiftLandVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('oldGiftCPI').value||'1'}</span></div>`;
+    }
+    html+=`<div class="result-item"><span class="r-label">相關費用合計</span><span class="r-value">${fmt(_exp,0)} 元</span></div>`;
+    const _hv=parseNum('oldHouseAssess');
+    const _lv=parseNum('oldLandAssess');
+    if(_hv+_lv>0){
+      html+=`<div class="result-item"><span class="r-label">房屋評定現值</span><span class="r-value">${fmt(_hv,0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">土地公告現值</span><span class="r-value">${fmt(_lv,0)} 元</span></div>`;
+    }
+  }else{
+    const stdType=getRadioVal('oldStdType');
+    if(stdType==='luxury'){
+      html+=`<div class="result-item"><span class="r-label">類型</span><span class="r-value">高價住宅</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">房地總成交金額</span><span class="r-value">${fmt(parseNum('oldLuxSellPrice'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">房屋評定現值</span><span class="r-value">${fmt(parseNum('oldLuxHouseVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">土地公告現值</span><span class="r-value">${fmt(parseNum('oldLuxLandVal'),0)} 元</span></div>`;
+    }else{
+      html+=`<div class="result-item"><span class="r-label">類型</span><span class="r-value">一般房屋</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">房屋評定現值</span><span class="r-value">${fmt(parseNum('oldAssessVal'),0)} 元</span></div>`;
+      html+=`<div class="result-item"><span class="r-label">所得標準率</span><span class="r-value">${parseNum('oldStdRate')}%</span></div>`;
+    }
+  }
+
+  if(identity==='resident'){
+    const _other=parseNum('oldOtherIncome');
+    if(_other>0) html+=`<div class="result-item"><span class="r-label">其他綜合所得淨額</span><span class="r-value">${fmt(_other,0)} 元</span></div>`;
+  }
+
+  html+=`</div></div>`;
+
   if(identity==='nonresident'){
     /* 非境內居住者：按所得額 20% 扣繳 */
     const tax=income*0.20;
@@ -3357,6 +3423,45 @@ function calcNewTax(){
     <div class="title"><i class="ti ti-home-2" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>房地合一稅試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
   </div>`;
+
+  // 列印用輸入數值摘要
+  const _identityLabels={'resident':'境內居住者','foreign':'非境內居住者','corp':'境內營利事業','foreignCorp':'非境內營利事業'};
+  const _methodLabels={'purchase':'自行購買','inherit':'繼承取得','gift':'一般贈與'};
+  html+=`<div class="result-box input-summary">
+    <div class="result-title"><i class="ti ti-list-details" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>輸入數值</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">納稅身份</span><span class="r-value">${_identityLabels[identity]||identity}</span></div>
+      <div class="result-item"><span class="r-label">取得方式</span><span class="r-value">${_methodLabels[method]||method}</span></div>
+      <div class="result-item"><span class="r-label">房地出售總價</span><span class="r-value">${fmt(parseNum('newSellPrice'),0)} 元</span></div>`;
+
+  if(method==='purchase'){
+    html+=`<div class="result-item"><span class="r-label">房地買入總價</span><span class="r-value">${fmt(parseNum('newBuyPrice'),0)} 元</span></div>`;
+  }else if(method==='inherit'){
+    html+=`<div class="result-item"><span class="r-label">繼承時房屋現值</span><span class="r-value">${fmt(parseNum('inheritHouseVal'),0)} 元</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">繼承時土地現值</span><span class="r-value">${fmt(parseNum('inheritLandVal'),0)} 元</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('inheritCPI').value||'1'}</span></div>`;
+    const _loan=parseNum('inheritLoan');
+    if(_loan>0) html+=`<div class="result-item"><span class="r-label">繼承時貸款餘額</span><span class="r-value">${fmt(_loan,0)} 元</span></div>`;
+  }else if(method==='gift'){
+    html+=`<div class="result-item"><span class="r-label">贈與時房屋現值</span><span class="r-value">${fmt(parseNum('giftHouseVal'),0)} 元</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">贈與時土地現值</span><span class="r-value">${fmt(parseNum('giftLandVal'),0)} 元</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('giftCPI').value||'1'}</span></div>`;
+  }
+
+  html+=`<div class="result-item"><span class="r-label">相關費用合計</span><span class="r-value">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
+  html+=`<div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(parseNum('newLandInc'),0)} 元</span></div>`;
+
+  if(fromDate&&toDate){
+    const _fromEl=method==='inherit'?'inheritOrigDate':(method==='gift'?'giftDate':'newAcquireDate');
+    html+=`<div class="result-item"><span class="r-label">取得日期</span><span class="r-value">${document.getElementById(_fromEl).value}</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">移轉日期</span><span class="r-value">${document.getElementById('newTransferDate').value}</span></div>`;
+  }
+
+  if(selfUse) html+=`<div class="result-item"><span class="r-label">自用住宅優惠</span><span class="r-value">適用</span></div>`;
+  if(involuntary&&identity==='resident') html+=`<div class="result-item"><span class="r-label">非自願性交易</span><span class="r-value">適用</span></div>`;
+
+  html+=`</div></div>`;
+
   html+=`<div class="result-box">
     <div class="result-title"><i class="ti ti-chart-bar" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>計算結果（房地合一稅 ${version}）</div>
     <div class="result-grid">
@@ -3488,6 +3593,18 @@ function calcMortgage(){
   let html=`<div class="print-header">
     <div class="title"><i class="ti ti-building-bank" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>房貸試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  // 列印用輸入數值摘要
+  html+=`<div class="result-box input-summary">
+    <div class="result-title"><i class="ti ti-list-details" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>輸入數值</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">貸款金額</span><span class="r-value">${fmt(P/10000,0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">年利率</span><span class="r-value">${(annualRate*100).toFixed(3)}%</span></div>
+      <div class="result-item"><span class="r-label">貸款年限</span><span class="r-value">${years} 年</span></div>
+      <div class="result-item"><span class="r-label">還款方式</span><span class="r-value">${method==='annuity'?'本息均攤':'本金均攤'}</span></div>
+      ${graceYears>0?`<div class="result-item"><span class="r-label">寬限期</span><span class="r-value">${graceYears} 年</span></div>`:''}
+    </div>
   </div>`;
 
   html+=`<div class="result-box">
@@ -3852,10 +3969,23 @@ function buildBuyerCostReport(){
   const d=_calcBuyerCostData();
   const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
   const {deedTax,buildingStamp,landStamp,regFee,mortgageRegFee,certFee,escrowFee,scrivenerFee,total}=d;
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
 
   let html=`<div class="print-header">
     <div class="title"><i class="ti ti-receipt" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>買方應付費用試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  // 列印用輸入數值摘要
+  html+=`<div class="result-box input-summary">
+    <div class="result-title"><i class="ti ti-list-details" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>輸入數值</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">房屋評定現值</span><span class="r-value">${f(g('bcHouseValue'))}</span></div>
+      <div class="result-item"><span class="r-label">建物契約價格</span><span class="r-value">${f(g('bcHouseAssessStamp'))}</span></div>
+      <div class="result-item"><span class="r-label">土地申報移轉現值</span><span class="r-value">${f(g('bcLandDeclValue'))}</span></div>
+      <div class="result-item"><span class="r-label">成交總價</span><span class="r-value">${fmt(g('bcTotalPrice'),0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">抵押權設定金額</span><span class="r-value">${f(g('bcMortgageAmt'))}</span></div>
+    </div>
   </div>`;
 
   html+=`<div class="result-box">
@@ -3884,10 +4014,21 @@ function buildSellerCostReport(){
   const d=_calcSellerCostData();
   const f=n=>Math.round(n).toLocaleString('zh-TW')+' 元';
   const {landTax,escrowFee,scrivenerFee,incomeTax,total}=d;
+  const g=id=>(parseFloat(document.getElementById(id).value.replace(/,/g,''))||0);
 
   let html=`<div class="print-header">
     <div class="title"><i class="ti ti-cash" style="font-size:20px;vertical-align:middle;margin-right:6px"></i>賣方應付費用試算報告</div>
     <div class="date">試算日期：${new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'})}</div>
+  </div>`;
+
+  // 列印用輸入數值摘要
+  html+=`<div class="result-box input-summary">
+    <div class="result-title"><i class="ti ti-list-details" style="font-size:16px;vertical-align:middle;margin-right:4px"></i>輸入數值</div>
+    <div class="result-grid">
+      <div class="result-item"><span class="r-label">成交總價</span><span class="r-value">${fmt(g('scTotalPrice'),0)} 萬元</span></div>
+      <div class="result-item"><span class="r-label">土地增值稅</span><span class="r-value">${f(g('scLandTax'))}</span></div>
+      <div class="result-item"><span class="r-label">出售所得稅</span><span class="r-value">${f(g('scIncomeTax'))}</span></div>
+    </div>
   </div>`;
 
   html+=`<div class="result-box">
