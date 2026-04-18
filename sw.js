@@ -1,9 +1,11 @@
-var CACHE_NAME = 'tools-v37';
+var CACHE_NAME = 'tools-v38';
 var URLS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './icon-1.svg'
+  './icon-1.svg',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', function(e) {
