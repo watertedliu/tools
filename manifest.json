@@ -1,0 +1,20 @@
+{
+  "name": "RealTools 房仲工具系統",
+  "short_name": "RealTools",
+  "description": "房仲試算工具集：稅務、費用、貸款、租金投報率等整合試算",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F5F3",
+  "theme_color": "#1C1917",
+  "orientation": "any",
+  "categories": ["business", "productivity", "finance"],
+  "icons": [
+    {
+      "src": "./icon-1.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

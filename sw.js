@@ -1,8 +1,9 @@
-var CACHE_NAME = 'tools-v36';
+var CACHE_NAME = 'tools-v37';
 var URLS_TO_CACHE = [
   './',
   './index.html',
-  './房仲工具系統.html'
+  './manifest.json',
+  './icon-1.svg'
 ];
 
 self.addEventListener('install', function(e) {
