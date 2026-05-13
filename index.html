@@ -3188,14 +3188,14 @@ function calcOldTax(){
     if(_oldBuySum>0||_oldSellSum>0){
       html+=`<div class="exp-pair">
         <div class="exp-col">
-          <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
-          ${_oldBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
-          <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldBuySum,0)} 元</span></div>
-        </div>
-        <div class="exp-col">
           <div class="exp-col-title"><i class="ti ti-tag"></i>賣出時費用（移轉費用）</div>
           ${_oldSellHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
           <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">賣出小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldSellSum,0)} 元</span></div>
+        </div>
+        <div class="exp-col">
+          <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
+          ${_oldBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+          <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldBuySum,0)} 元</span></div>
         </div>
       </div>`;
     }
@@ -3560,14 +3560,14 @@ function calcNewTax(){
   if(_newBuySum>0||_newSellSum>0){
     html+=`<div class="exp-pair">
       <div class="exp-col">
-        <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
-        ${_newBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
-        <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_newBuySum,0)} 元</span></div>
-      </div>
-      <div class="exp-col">
         <div class="exp-col-title"><i class="ti ti-tag"></i>賣出時費用（移轉費用）</div>
         ${_newSellHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
         <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">賣出小計</span><span class="r-value" style="font-weight:700;">${fmt(_newSellSum,0)} 元</span></div>
+      </div>
+      <div class="exp-col">
+        <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
+        ${_newBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+        <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_newBuySum,0)} 元</span></div>
       </div>
     </div>`;
   }
