@@ -3136,7 +3136,40 @@ function calcOldTax(){
       html+=`<div class="result-item"><span class="r-label">贈與時土地現值</span><span class="r-value">${fmt(parseNum('oldGiftLandVal'),0)} 元</span></div>`;
       html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('oldGiftCPI').value||'1'}</span></div>`;
     }
-    html+=`<div class="result-item"><span class="r-label">相關費用合計</span><span class="r-value">${fmt(_exp,0)} 元</span></div>`;
+    // 買入時費用逐項（>0 才列）
+    const _oldBuyItems=[
+      ['買方仲介費','oldExpBuyBroker'],
+      ['買方代書費','oldExpBuyScrivener'],
+      ['契稅','oldExpBuyDeed'],
+      ['規費','oldExpBuyRegFee'],
+      ['印花稅','oldExpBuyStamp'],
+      ['履約保證費（買）','oldExpBuyEscrow'],
+      ['裝修/改良費用','oldExpBuyRenovation']
+    ];
+    let _oldBuySum=0;
+    _oldBuyItems.forEach(([lab,id])=>{
+      const v=parseNum(id);
+      _oldBuySum+=v;
+      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+    });
+    if(_oldBuySum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">買入時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldBuySum,0)} 元</span></div>`;
+
+    // 賣出時費用逐項（>0 才列）
+    const _oldSellItems=[
+      ['賣方仲介費','oldExpSellBroker'],
+      ['賣方代書費','oldExpSellScrivener'],
+      ['土地增值稅','oldExpSellLandTax'],
+      ['履約保證費（賣）','oldExpSellEscrow']
+    ];
+    let _oldSellSum=0;
+    _oldSellItems.forEach(([lab,id])=>{
+      const v=parseNum(id);
+      _oldSellSum+=v;
+      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+    });
+    if(_oldSellSum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">賣出時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldSellSum,0)} 元</span></div>`;
+
+    html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(_exp,0)} 元</span></div>`;
     const _hv=parseNum('oldHouseAssess');
     const _lv=parseNum('oldLandAssess');
     if(_hv+_lv>0){
@@ -3273,7 +3306,11 @@ function parseRocDate(id){
   const m=parseInt(parts[1])||0;
   const d=parseInt(parts[2])||0;
   if(!y||!m||!d) return null;
-  return new Date(y+1911,m-1,d);
+  if(m<1||m>12||d<1||d>31) return null;
+  const dt=new Date(y+1911,m-1,d);
+  // rollover 檢查：new Date(2026,1,30) 會變成 3/2，這裡要擋
+  if(dt.getFullYear()!==y+1911||dt.getMonth()!==m-1||dt.getDate()!==d) return null;
+  return dt;
 }
 function calcHoldPeriod(){
   const method=getRadioVal('newAcquireMethod');
@@ -3453,12 +3490,54 @@ function calcNewTax(){
     html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('giftCPI').value||'1'}</span></div>`;
   }
 
-  html+=`<div class="result-item"><span class="r-label">相關費用合計</span><span class="r-value">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
+  // 買入時費用逐項（>0 才列）
+  const _newBuyItems=[
+    ['買方仲介費','newExpBuyBroker'],
+    ['買方代書費','newExpBuyScrivener'],
+    ['契稅','newExpBuyDeed'],
+    ['規費','newExpBuyRegFee'],
+    ['印花稅','newExpBuyStamp'],
+    ['履約保證費（買）','newExpBuyEscrow'],
+    ['裝修/改良費用','newExpBuyRenovation']
+  ];
+  let _newBuySum=0;
+  _newBuyItems.forEach(([lab,id])=>{
+    const v=parseNum(id);
+    _newBuySum+=v;
+    if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+  });
+  if(_newBuySum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">買入時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_newBuySum,0)} 元</span></div>`;
+
+  // 賣出時費用：若勾選「無法舉證 3%」則顯示自動推算值；否則逐項列
+  if(newAutoExp){
+    const _sellAuto=Math.min(parseNum('newSellPrice')*0.03,300000);
+    html+=`<div class="result-item"><span class="r-label">賣出費用（無法舉證，3%）</span><span class="r-value">${fmt(_sellAuto,0)} 元（上限 30 萬）</span></div>`;
+  }else{
+    const _newSellItems=[
+      ['賣方仲介費','newExpSellBroker'],
+      ['賣方代書費','newExpSellScrivener'],
+      ['履約保證費（賣）','newExpSellEscrow']
+    ];
+    let _newSellSum=0;
+    _newSellItems.forEach(([lab,id])=>{
+      const v=parseNum(id);
+      _newSellSum+=v;
+      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+    });
+    if(_newSellSum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">賣出時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_newSellSum,0)} 元</span></div>`;
+  }
+
+  html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
   html+=`<div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(parseNum('newLandInc'),0)} 元</span></div>`;
 
   if(fromDate&&toDate){
+    const _fromLabel=method==='inherit'?'被繼承人取得日':(method==='gift'?'贈與日':'取得日期');
     const _fromEl=method==='inherit'?'inheritOrigDate':(method==='gift'?'giftDate':'newAcquireDate');
-    html+=`<div class="result-item"><span class="r-label">取得日期</span><span class="r-value">${document.getElementById(_fromEl).value}</span></div>`;
+    html+=`<div class="result-item"><span class="r-label">${_fromLabel}</span><span class="r-value">${document.getElementById(_fromEl).value}</span></div>`;
+    if(method==='inherit'){
+      const _inhDate=document.getElementById('inheritDate').value;
+      if(_inhDate) html+=`<div class="result-item"><span class="r-label">繼承日</span><span class="r-value">${_inhDate}</span></div>`;
+    }
     html+=`<div class="result-item"><span class="r-label">移轉日期</span><span class="r-value">${document.getElementById('newTransferDate').value}</span></div>`;
   }
 
@@ -3892,6 +3971,11 @@ function autoFillCPI(){
   const cpi=getCPI(y,m);
   if(cpi!=null){
     el.value=cpi;
+    el.placeholder='';
+  } else {
+    // 查無 CPI：清空並提示，避免沿用前一個月的舊值導致土增稅算錯
+    el.value='';
+    el.placeholder='該月尚未公告 CPI，請手動輸入';
   }
 }
 
