@@ -383,6 +383,19 @@ body::before{
 }
 .result-item .r-value.green{color:var(--success);}
 .result-item.full{grid-column:1/-1;}
+/* 買入 / 賣出 費用左右分欄 */
+.exp-pair{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.exp-col{display:flex;flex-direction:column;gap:8px;}
+.exp-col-title{
+  font-size:12px;font-weight:700;color:var(--muted);
+  letter-spacing:0.4px;
+  padding:6px 4px 0;
+  display:flex;align-items:center;gap:6px;
+}
+.exp-col-title i{font-size:14px;color:var(--lux-gold);}
+@media (max-width:720px){
+  .exp-pair{grid-template-columns:1fr;}
+}
 
 /* Progress bar */
 .progress-bar{
@@ -987,6 +1000,14 @@ body::before{
   .printable-result .result-grid{
     grid-template-columns:1fr 1fr !important;gap:5px !important;
   }
+  .printable-result .exp-pair{
+    grid-template-columns:1fr 1fr !important;gap:5px !important;
+  }
+  .printable-result .exp-col{gap:5px !important;}
+  .printable-result .exp-col-title{
+    font-size:10px !important;color:#666 !important;padding:4px 2px 0 !important;
+  }
+  .printable-result .exp-col-title i{color:#c8a45a !important;}
   .printable-result .result-item{
     background:#FAFAF9 !important;
     border:1px solid #DDD !important;
@@ -3136,40 +3157,50 @@ function calcOldTax(){
       html+=`<div class="result-item"><span class="r-label">贈與時土地現值</span><span class="r-value">${fmt(parseNum('oldGiftLandVal'),0)} 元</span></div>`;
       html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('oldGiftCPI').value||'1'}</span></div>`;
     }
-    // 買入時費用逐項（>0 才列）
+    // 買入 / 賣出 費用左右分欄
     const _oldBuyItems=[
       ['買方仲介費','oldExpBuyBroker'],
       ['買方代書費','oldExpBuyScrivener'],
       ['契稅','oldExpBuyDeed'],
       ['規費','oldExpBuyRegFee'],
       ['印花稅','oldExpBuyStamp'],
-      ['履約保證費（買）','oldExpBuyEscrow'],
+      ['履約保證費','oldExpBuyEscrow'],
       ['裝修/改良費用','oldExpBuyRenovation']
     ];
-    let _oldBuySum=0;
-    _oldBuyItems.forEach(([lab,id])=>{
-      const v=parseNum(id);
-      _oldBuySum+=v;
-      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
-    });
-    if(_oldBuySum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">買入時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldBuySum,0)} 元</span></div>`;
-
-    // 賣出時費用逐項（>0 才列）
     const _oldSellItems=[
       ['賣方仲介費','oldExpSellBroker'],
       ['賣方代書費','oldExpSellScrivener'],
       ['土地增值稅','oldExpSellLandTax'],
-      ['履約保證費（賣）','oldExpSellEscrow']
+      ['履約保證費','oldExpSellEscrow']
     ];
-    let _oldSellSum=0;
+    let _oldBuySum=0,_oldSellSum=0;
+    let _oldBuyHtml='',_oldSellHtml='';
+    _oldBuyItems.forEach(([lab,id])=>{
+      const v=parseNum(id);
+      _oldBuySum+=v;
+      if(v>0) _oldBuyHtml+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+    });
     _oldSellItems.forEach(([lab,id])=>{
       const v=parseNum(id);
       _oldSellSum+=v;
-      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+      if(v>0) _oldSellHtml+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
     });
-    if(_oldSellSum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">賣出時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldSellSum,0)} 元</span></div>`;
+    if(_oldBuySum>0||_oldSellSum>0){
+      html+=`<div class="exp-pair">
+        <div class="exp-col">
+          <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
+          ${_oldBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+          <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldBuySum,0)} 元</span></div>
+        </div>
+        <div class="exp-col">
+          <div class="exp-col-title"><i class="ti ti-tag"></i>賣出時費用（移轉費用）</div>
+          ${_oldSellHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+          <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">賣出小計</span><span class="r-value" style="font-weight:700;">${fmt(_oldSellSum,0)} 元</span></div>
+        </div>
+      </div>`;
+    }
 
-    html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(_exp,0)} 元</span></div>`;
+    html+=`<div class="result-item full"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(_exp,0)} 元</span></div>`;
     const _hv=parseNum('oldHouseAssess');
     const _lv=parseNum('oldLandAssess');
     if(_hv+_lv>0){
@@ -3490,44 +3521,58 @@ function calcNewTax(){
     html+=`<div class="result-item"><span class="r-label">CPI 係數</span><span class="r-value">${document.getElementById('giftCPI').value||'1'}</span></div>`;
   }
 
-  // 買入時費用逐項（>0 才列）
+  // 買入 / 賣出 費用左右分欄
   const _newBuyItems=[
     ['買方仲介費','newExpBuyBroker'],
     ['買方代書費','newExpBuyScrivener'],
     ['契稅','newExpBuyDeed'],
     ['規費','newExpBuyRegFee'],
     ['印花稅','newExpBuyStamp'],
-    ['履約保證費（買）','newExpBuyEscrow'],
+    ['履約保證費','newExpBuyEscrow'],
     ['裝修/改良費用','newExpBuyRenovation']
   ];
-  let _newBuySum=0;
+  let _newBuySum=0,_newBuyHtml='';
   _newBuyItems.forEach(([lab,id])=>{
     const v=parseNum(id);
     _newBuySum+=v;
-    if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+    if(v>0) _newBuyHtml+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
   });
-  if(_newBuySum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">買入時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_newBuySum,0)} 元</span></div>`;
 
-  // 賣出時費用：若勾選「無法舉證 3%」則顯示自動推算值；否則逐項列
+  let _newSellSum=0,_newSellHtml='';
   if(newAutoExp){
     const _sellAuto=Math.min(parseNum('newSellPrice')*0.03,300000);
-    html+=`<div class="result-item"><span class="r-label">賣出費用（無法舉證，3%）</span><span class="r-value">${fmt(_sellAuto,0)} 元（上限 30 萬）</span></div>`;
+    _newSellSum=_sellAuto;
+    _newSellHtml=`<div class="result-item"><span class="r-label">無法舉證 3%</span><span class="r-value">${fmt(_sellAuto,0)} 元</span></div>
+      <div class="result-item" style="background:transparent;border-color:transparent;padding:2px 10px;"><span class="r-label" style="font-size:11px;">（上限 30 萬）</span><span class="r-value" style="font-size:11px;font-weight:500;">　</span></div>`;
   }else{
     const _newSellItems=[
       ['賣方仲介費','newExpSellBroker'],
       ['賣方代書費','newExpSellScrivener'],
-      ['履約保證費（賣）','newExpSellEscrow']
+      ['履約保證費','newExpSellEscrow']
     ];
-    let _newSellSum=0;
     _newSellItems.forEach(([lab,id])=>{
       const v=parseNum(id);
       _newSellSum+=v;
-      if(v>0) html+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
+      if(v>0) _newSellHtml+=`<div class="result-item"><span class="r-label">${lab}</span><span class="r-value">${fmt(v,0)} 元</span></div>`;
     });
-    if(_newSellSum>0) html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">賣出時費用小計</span><span class="r-value" style="font-weight:700;">${fmt(_newSellSum,0)} 元</span></div>`;
   }
 
-  html+=`<div class="result-item"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
+  if(_newBuySum>0||_newSellSum>0){
+    html+=`<div class="exp-pair">
+      <div class="exp-col">
+        <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
+        ${_newBuyHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+        <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">買入小計</span><span class="r-value" style="font-weight:700;">${fmt(_newBuySum,0)} 元</span></div>
+      </div>
+      <div class="exp-col">
+        <div class="exp-col-title"><i class="ti ti-tag"></i>賣出時費用（移轉費用）</div>
+        ${_newSellHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
+        <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">賣出小計</span><span class="r-value" style="font-weight:700;">${fmt(_newSellSum,0)} 元</span></div>
+      </div>
+    </div>`;
+  }
+
+  html+=`<div class="result-item full"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
   html+=`<div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(parseNum('newLandInc'),0)} 元</span></div>`;
 
   if(fromDate&&toDate){
