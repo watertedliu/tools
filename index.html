@@ -386,6 +386,8 @@ body::before{
 /* 買入 / 賣出 費用左右分欄 */
 .exp-pair{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .exp-col{display:flex;flex-direction:column;gap:8px;}
+/* 取得日期 / 移轉日期 強制同一橫列 */
+.date-pair{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .exp-col-title{
   font-size:12px;font-weight:700;color:var(--muted);
   letter-spacing:0.4px;
@@ -1000,7 +1002,8 @@ body::before{
   .printable-result .result-grid{
     grid-template-columns:1fr 1fr !important;gap:5px !important;
   }
-  .printable-result .exp-pair{
+  .printable-result .exp-pair,
+  .printable-result .date-pair{
     grid-template-columns:1fr 1fr !important;gap:5px !important;
   }
   .printable-result .exp-col{gap:5px !important;}
@@ -3557,12 +3560,19 @@ function calcNewTax(){
     });
   }
 
+  const _newLandInc=parseNum('newLandInc');
+  const _newExpenseTotal=parseNum('newExpense');
+  const _newTotalTransfer=_newExpenseTotal+_newLandInc;
   if(_newBuySum>0||_newSellSum>0){
+    const _landRow=_newLandInc>0
+      ? `<div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(_newLandInc,0)} 元</span></div>`
+      : '';
     html+=`<div class="exp-pair">
       <div class="exp-col">
         <div class="exp-col-title"><i class="ti ti-tag"></i>賣出時費用（移轉費用）</div>
         ${_newSellHtml||'<div class="result-item"><span class="r-label">（無）</span><span class="r-value">0 元</span></div>'}
         <div class="result-item" style="border-color:var(--lux-gold);"><span class="r-label" style="font-weight:700;">賣出小計</span><span class="r-value" style="font-weight:700;">${fmt(_newSellSum,0)} 元</span></div>
+        ${_landRow}
       </div>
       <div class="exp-col">
         <div class="exp-col-title"><i class="ti ti-shopping-cart"></i>買入時費用（屬取得成本）</div>
@@ -3572,18 +3582,24 @@ function calcNewTax(){
     </div>`;
   }
 
-  html+=`<div class="result-item full"><span class="r-label" style="font-weight:700;">相關費用合計</span><span class="r-value" style="font-weight:700;">${fmt(parseNum('newExpense'),0)} 元</span></div>`;
-  html+=`<div class="result-item"><span class="r-label">土地漲價總數額</span><span class="r-value">${fmt(parseNum('newLandInc'),0)} 元</span></div>`;
+  if(_newLandInc>0){
+    html+=`<div class="result-item full"><span class="r-label" style="font-weight:700;">總移轉費用<span style="font-weight:500;color:var(--muted);margin-left:6px;">（費用合計 ${fmt(_newExpenseTotal,0)} ＋ 土地漲價 ${fmt(_newLandInc,0)}）</span></span><span class="r-value" style="font-weight:700;">${fmt(_newTotalTransfer,0)} 元</span></div>`;
+  }else{
+    html+=`<div class="result-item full"><span class="r-label" style="font-weight:700;">總移轉費用</span><span class="r-value" style="font-weight:700;">${fmt(_newTotalTransfer,0)} 元</span></div>`;
+  }
 
   if(fromDate&&toDate){
     const _fromLabel=method==='inherit'?'被繼承人取得日':(method==='gift'?'贈與日':'取得日期');
     const _fromEl=method==='inherit'?'inheritOrigDate':(method==='gift'?'giftDate':'newAcquireDate');
-    html+=`<div class="result-item"><span class="r-label">${_fromLabel}</span><span class="r-value">${document.getElementById(_fromEl).value}</span></div>`;
-    if(method==='inherit'){
-      const _inhDate=document.getElementById('inheritDate').value;
-      if(_inhDate) html+=`<div class="result-item"><span class="r-label">繼承日</span><span class="r-value">${_inhDate}</span></div>`;
+    const _inhDate=method==='inherit'?(document.getElementById('inheritDate').value||''):'';
+    // 用獨立 2 欄 grid 包住日期區，確保取得日期 + 移轉日期 永遠同一橫列
+    html+=`<div class="date-pair">
+      <div class="result-item"><span class="r-label">${_fromLabel}</span><span class="r-value">${document.getElementById(_fromEl).value}</span></div>
+      <div class="result-item"><span class="r-label">移轉日期</span><span class="r-value">${document.getElementById('newTransferDate').value}</span></div>
+    </div>`;
+    if(_inhDate){
+      html+=`<div class="result-item full"><span class="r-label">繼承日</span><span class="r-value">${_inhDate}</span></div>`;
     }
-    html+=`<div class="result-item"><span class="r-label">移轉日期</span><span class="r-value">${document.getElementById('newTransferDate').value}</span></div>`;
   }
 
   if(selfUse) html+=`<div class="result-item"><span class="r-label">自用住宅優惠</span><span class="r-value">適用</span></div>`;
